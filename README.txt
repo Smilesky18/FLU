@@ -1,2 +1,2 @@
 In demo folder, run:
-	make ssn_column_storage_multi_row_computing 
+	rm -rf plan_3; make plan_3 
