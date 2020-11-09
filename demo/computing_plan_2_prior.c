@@ -7,6 +7,12 @@
 # include <math.h>
 # include <omp.h>
 # include <stdbool.h>
+
+typedef union{
+	unsigned int bit32;
+	char boolvec[4];
+} bitInt;
+
 #define MICRO_IN_SEC 1000000.00
 
   typedef __attribute__((aligned(64))) union
@@ -20,11 +26,6 @@
     __m256i vec;
     int ptr_vec[8];
   }v2if_t;
-
-  typedef union{
-	unsigned int bit32;
-	char boolvec[4];
-} bitInt;
 
 // int mmm_multi_value( int a, int b )
 // {
@@ -41,33 +42,19 @@
 // 	return tv.tv_sec+tv.tv_usec/MICRO_IN_SEC;
 // }
 
-double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, int *sn_num_record, int *sn_column_start, int *sn_column_end, int sn_sum, int *flag, double *nic_x, int num_thread, int thread_number, int *start, int *end, int *seperator_in_column, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int thread_number_prior_level, int *asub_U_level, int *seperator_in_column_2, double *lx, double *ux, bitInt *tag, int sum_level, int max_level, int *xa_trans)
+double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, int sn_sum, int *flag, double *nic_x, int num_thread, int thread_number, int *start, int *end, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int thread_number_prior_level, int *asub_U_level, double *lx, double *ux, bitInt *tag, int sum_level, int max_level, int *xa_trans)
 {
-	// printf("prior prior prior prior !\n");
+
+	// printf("func: num_th = %d n/4+1 = %d\n", num_thread, n/4+1);
+
+	// for ( int i = 0; i < (n/4+1); i++ )
+	// {
+	// 	printf("%d: %d %d %d %d\n", i , tag[i].boolvec[0], tag[i].boolvec[1], tag[i].boolvec[2], tag[i].boolvec[3]);
+	// 	// printf("%d: %d\n", tag[i].bit32);
+	// }
+	// printf("next next next next next !\n");
    omp_set_num_threads(num_thread);
-//    omp_set_num_threads(1);
- 
-   /*int kk, cc, jj, ii;
-   double *xxx = (double *)malloc(sizeof(double) * n);
-   memset(xxx, 0, sizeof(double) * n);
-   for ( kk = 0; kk < n; kk++ )
-  {
-	  cc = perm_c[kk];
-	  for ( jj = offset[cc]; jj < offset[cc+1]; jj++ )
-	  {
-		  xxx[perm_r[row_ptr[jj]]] = a[jj];
-	  }
-	  for ( ii = offset_U[kk]; ii < offset_U[kk+1]; ii++ )
-	  {
-		  U[ii] = xxx[row_ptr_U[ii]];
-		  xxx[row_ptr_U[ii]] = 0;
-	  }				  
-	  for ( ii = offset_L[kk]+1; ii < offset_L[kk+1]; ii++ )
-	  {
-		  L[ii] = xxx[row_ptr_L[ii]];
-		  xxx[row_ptr_L[ii]] = 0;
-	  }
-  }*/
+	// omp_set_num_threads(1);
 
   #pragma omp parallel
 {
@@ -75,7 +62,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 	double U_diag;
     int j, k, current_column;
     int i;
-	int  val, columns, column_end, pack, column_start, column_number_sn, column_sn_end, row_num, row_count, column_divid, divid, row_sn_start, qqq, row_else1, row_else2, dense_vec_counter, sss, dividd, row_record, current_next_column, columns_next_column, column_end_next_column, j_next_column, pack_next_column, val_next_column, column_start_next_column, column_number_sn_next_column, pack_k, rrr, row_column, row_column_start, pack_j, column_next, row_else3, row_else4;
+	int  val, columns, column_end, pack, column_start, column_number_sn, column_sn_end, row_num, row_count, column_divid, divid, row_sn_start, qqq, row_else1, row_else2, dense_vec_counter, sss, dividd, row_record, current_next_column, columns_next_column, column_end_next_column, j_next_column, pack_next_column, val_next_column, column_start_next_column, column_number_sn_next_column, pack_k, rrr, row_column, row_column_start, pack_j, row_else3, row_else4;
     double temp, temp_next_column, U_diag_next_column;
     double *dense_vec_2;
 	v2df_t v_l, v_row, v_mul, v_sub, v, add_sum, zero, v_sub_2, v_2, add_sum_2, v_l_2, v_row_2, add_sum_3, add_sum_4, add_sum_5, add_sum_6, add_sum_7, add_sum_8, v_l_3, v_l_4, v_3, v_4, v_sub_3, v_sub_4, x0, x1, x2, x3;
@@ -84,24 +71,23 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 	int kk, m, columns_1, columns_next_column_1;
 	
 	int tn = omp_get_thread_num();
+	// int tn = 0;
 	xx_next_column = xx2[tn];
 	dense_vec_2 = dv2[tn];
-//	volatile int *wait;
-	volatile char *wait;
+	// int M;
 
 	int div;
 
-	#pragma omp for schedule(static, 1) 
-	for ( kk = xa_trans[sum_level]; kk < xa_trans[max_level]; kk++ )
-	// for ( kk = xa_trans[sum_level]+thread_number; kk < xa_trans[sum_level]+thread_number+num_thread; kk++ )
-	//   for ( kk = 0; kk < 3400000; kk++ )
-	  {
+	#pragma omp for schedule(static, 1)
+	  for ( m = thread_number_prior_level; m < thread_number; m++ )
+	 {
 		  {
-			//   for ( kk = start[m]; kk <= end[m]; kk++ )
-			//   for ( kk = xa_trans[m]; kk < xa_trans[m+1]; kk++ )
+			  for ( kk = start[m]; kk <= end[m]; kk++ )
+			// #pragma omp for schedule(static, 1)
+			//   for ( kk = xa_trans[thread_number_prior_level]; kk < xa_trans[thread_number_prior_level+1]; kk++ )
 			  {
+			//   printf("kk = %d k = %d start = %d end = %d\n", kk, asub_U_level[kk], start[m], end[m]);
 			  k = asub_U_level[kk];
-			//   printf("k = %d\n", k);
 			//   k = kk;
 			  current_column = perm_c[k];
 			  for ( j = offset[current_column]; j < offset[current_column+1]; j++ )
@@ -115,20 +101,9 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 			  {
 				  val = j+offset_U[k];
 				  column_start = row_ptr_U[val];
-				
 				  temp = xx_next_column[column_start];
 				  if ( column_end-column_start > sn_record[column_start] ) column_number_sn = sn_record[column_start]+1;
 				  else column_number_sn = column_end-column_start+1;
-
-				  column_next = row_ptr_U[val+column_number_sn-1];
-
-//				  wait = (volatile int *)&(tag[column_next]);
-				  wait = (volatile char*)&(tag[column_next/4].boolvec[column_next%4]);
-				//   wait = (volatile char*)&(tag[0].boolvec[0]);
-				  while ( !(*wait) ) 
-				  { 
-					;
-				  }
 
 				  if ( column_number_sn < thresold )
 				  {
@@ -138,7 +113,6 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
                           }
 					  pack_j = 1;
 				  }
-				  
 				  else
 				  {
 					  column_sn_end = row_ptr_U[val+column_number_sn-1];
@@ -175,7 +149,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 						  dense_vec_2[dense_vec_counter] = 0;
 						  dense_vec_counter++;
 					  }
-					  
+
 					  dividd = divid;
 					  for ( qqq = 0; qqq < divid; qqq++ )
 					  {
@@ -210,7 +184,6 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 					  
 					  pack_j = column_number_sn;
 				  }    
-			  
 			  }
 			  
 			  // _mm_prefetch(&asub_U_level[kk+1], _MM_HINT_T0);
@@ -226,11 +199,13 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 				  L[i] = xx_next_column[row_ptr_L[i]] / U_diag;
 				  xx_next_column[row_ptr_L[i]] = 0;
 			  }
+			//   printf("n/4+1 = %d k/4 = %d k mod 4 = %d k = %d\n", n/4+1, k/4, k%4, k);
 			  tag[k/4].boolvec[k%4] = 1;
+			  	//   printf("n/4+1 = %d k/4 = %d k mod 4 = %d k = %d tag = %d\n", n/4+1, k/4, k%4, k, tag[k/4].boolvec[k%4]);
+			//   if ( k == 99336 ) printf("yeah! k = 99336\n");
 		  }
-		    
 		  }
-		  
+		//  #pragma omp barrier
 	 }
 }
 

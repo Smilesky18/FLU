@@ -9,5 +9,6 @@ plan_3:
 plan_3_debug:
 	icc -g main_plan_3.c computing_plan_3.c computing_plan_2_next.c computing_plan_2_prior.c  -O3  -I ../include -L ../lib64 -lnicslu -o plan_3_debug -Wl,-rpath=../lib64 -fopenmp	
 
-
+clean:
+	rm -rf plan_3 
 

@@ -1433,7 +1433,7 @@ int main( int argc[], char *argv[])
 		{
 			x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, ux, lx, tag, 0, 0, xa_trans);
 		}
-		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, sum_level+1, max_level+1, xa_trans);
+//		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, sum_level+1, max_level+1, xa_trans);
 
 		//  x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level_2, seperator_in_column_2, ux, lx, tag, 0, 1, xa_trans_2);
 
