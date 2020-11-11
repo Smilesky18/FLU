@@ -26,24 +26,10 @@
 	char boolvec[4];
 } bitInt;
 
-// int mmm_multi_value( int a, int b )
-// {
-// 	if ( a < b ) return a;
-// 	return b;
-// }
 
-// double microtime()
-// {
-// 	struct timeval tv;
-// 	struct timezone tz;
-// 	gettimeofday(&tv,&tz);
-
-// 	return tv.tv_sec+tv.tv_usec/MICRO_IN_SEC;
-// }
 
 double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, int *sn_num_record, int *sn_column_start, int *sn_column_end, int sn_sum, int *flag, double *nic_x, int num_thread, int thread_number, int *start, int *end, int *seperator_in_column, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int thread_number_prior_level, int *asub_U_level, int *seperator_in_column_2, double *lx, double *ux, char *tag, int sum_level, int max_level, int *xa_trans, int *wait_col_index, char *wait_index, char *no_wait)
 {
-	// printf("prior prior prior prior !\n");
    omp_set_num_threads(num_thread);
 //    for ( int i = 0; i < nzu; i++ )
 //    {
@@ -74,10 +60,9 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 	int wait_col;
 	int val2;
 
-	#pragma omp for schedule(static, 1)
-	for ( kk = xa_trans[sum_level]; kk < xa_trans[max_level]; kk++ )
+	#pragma omp for schedule(static, 1)	
+	for ( kk = xa_trans[0]; kk < xa_trans[max_level]; kk++ )
 	// for ( kk = xa_trans[sum_level]+thread_number; kk < xa_trans[sum_level]+thread_number+num_thread; kk++ )
-	//   for ( kk = 0; kk < 3400000; kk++ )
 	  {
 		  {
 			//   for ( kk = start[m]; kk <= end[m]; kk++ )
@@ -95,7 +80,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 			  }
 			  columns = offset_U[k+1] - offset_U[k] - 1;
 			  column_end = row_ptr_U[offset_U[k+1] - 2];
-			  wait_col = wait_col_index[k];
+		//	  wait_col = wait_col_index[k];
 
 			//   for ( j = 0; j < wait_col; j+=pack_j )
 			//   {
@@ -213,14 +198,22 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 						}
 					  }
 				  }*/
-				  val2 = j+offset_U[k]+column_number_sn-1;
+			//	  val2 = j+offset_U[k]+column_number_sn-1;
 
 				// if ( wait_index[val2] )
+
 				{
+					
 				  column_next = row_ptr_U[val+column_number_sn-1];
 				//   wait = (volatile char *)&(tag[column_start/4].boolvec[column_start%4]);
 				//   wait = (volatile char*)&(tag[column_next/4].boolvec[column_next%4]);
-				  wait = (volatile char*)&(tag[column_next]);
+				if(column_number_sn > 8)
+				  wait = (volatile char*)&(tag[column_next -column_number_sn + 4]);
+				  else
+				  {
+					  wait = (volatile char*)&(tag[column_next]);
+				  }
+				  
 				  while ( !(*wait) ) 
 				  { 
 					// printf("func: %d no_wait[%d] = %d tag[%d] = %d\n", val2, column_next, no_wait[column_next], column_next, tag[column_next]);
@@ -229,8 +222,10 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 					;
 				  }
 				}
-
-				  if ( column_number_sn < thresold )
+//				int tnn = omp_get_thread_num();
+//				if(tnn == 16 && column_number_sn != 1)
+//					printf(" column_number_sn = %d\n",column_number_sn);
+				  if ( column_number_sn < thresold)
 				  {
 						  for ( i = offset_L[column_start]+1; i < offset_L[column_start+1]; i++ )
 						  {

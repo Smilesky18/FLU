@@ -1522,7 +1522,7 @@ int main( int argc[], char *argv[])
 		// 	if ( tag[i].boolvec[0] != 0 || tag[i].boolvec[1] != 0 || tag[i].boolvec[2] != 0 || tag[i].boolvec[3] != 0 )
 		// 		printf("main: jj = %d - %d: %d %d %d %d\n", jj, i, tag[i].boolvec[0], tag[i].boolvec[1], tag[i].boolvec[2], tag[i].boolvec[3]);
 		// }
-
+		if(0)
 		for ( i = 0; i < thread_number_prior_level; i+=num_thread )
 		// for ( i = 0; i < max_level+1; i++ )
 		{
@@ -1708,7 +1708,7 @@ int main( int argc[], char *argv[])
 	  if ( fabs(ux[i]-L[i]) > 0.1 )
 	  {
 		  error_lu_gp++;
-		   printf("nicslu[%d] = %lf me_L[%d] = %lf\n", i, ux[i], i, L[i]);
+//		   printf("nicslu[%d] = %lf me_L[%d] = %lf\n", i, ux[i], i, L[i]);
 	  }
 	}
 	printf("error of L results are: %d\n", error_lu_gp); 
