@@ -26,7 +26,7 @@
 	char boolvec[4];
 } bitInt;
 
-double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_next(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, int *sn_num_record, int *sn_column_start, int *sn_column_end, int sn_sum, int *flag, double *nic_x, int prior_column, int next_column, int num_thread, int thread_number, int *start, int *end, int *seperator_in_column, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int thread_number_prior_level, int *asub_U_level, int *seperator_in_column_2, int *sign, double *lx, double *ux, int thread_number_c, int thread_number_a, bitInt *tag, int *assign)
+double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_next(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, int *sn_num_record, int *sn_column_start, int *sn_column_end, int sn_sum, int *flag, double *nic_x, int prior_column, int next_column, int num_thread, int thread_number, int *start, int *end, int *seperator_in_column, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int thread_number_prior_level, int *asub_U_level, int *seperator_in_column_2, int *sign, double *lx, double *ux, int thread_number_c, int thread_number_a, char *tag, int *assign)
 {
   omp_set_num_threads(num_thread);
 
@@ -65,7 +65,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_nex
 		  m = M*num_thread+thr_num+thread_number_c;
 		//   m = M;
 		  {  
-		  if ( sign[m] == 0 ) // parallel < serial : 
+		  if ( sign[m] == 0 ) // tri
 		  {
 		   for ( k = start[m]; k <= end[m]; k+=pack_k )
 		  {
@@ -797,20 +797,6 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_nex
 					  xx[row_ptr_L[j]] = L[j];
 					} 
 
-					// if ( k == 1089597 ) printf("sign = 0/5: xx[1089597] = %lf\n", xx[1089597]);
-					// if ( k == 1089582 ) printf("sign = 0/5: xx[1089586] = %lf\n", xx[1089586]);
-
-					/*if ( assign[m] )
-					{
-							current_column = perm_c[k];
-							for ( j = offset[current_column]; j < offset[current_column+1]; j++ )
-							{
-								xx[perm_r[row_ptr[j]]] = a[j];
-							}
-					}*/
-				
-				    // if ( k == 1089581 ) printf("sign = 0: xx[1089581] = %lf\n", xx[1089581]);
-
 					row_column = offset_U[k+1] - offset_U[k] - 1;
 					row_column_start = seperator_in_column_2[k];
 					column_end = row_ptr_U[offset_U[k+1] - 2];
@@ -922,10 +908,10 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_nex
 					pack_k = 1;
 			  }
 		  }
-		   
+		  
 		  }
 
-		  else if ( sign[m] == 1 ) // parallel > serial : 5~6
+		  else if ( sign[m] == 1 ) // square-1
 		  {
 		 	for ( k = start[m]; k <= end[m]; k+=pack_k )
 			{
@@ -1416,7 +1402,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_nex
 		    
 		  }
 
-	      else // parallel > serial : 3~4
+	      else // square-2
 		  {
 	     	for ( k = start[m]; k <= end[m]; k+=pack_k )
 			{
