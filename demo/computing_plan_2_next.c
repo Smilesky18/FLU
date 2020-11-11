@@ -91,6 +91,15 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 
 	int div;
 
+	int min = n;
+
+	for ( kk = xa_trans[sum_level]; kk < xa_trans[max_level]; kk++ )
+	{
+		k = asub_U_level[kk];
+		if(k<min)
+			min = k;
+	}
+
 	#pragma omp for schedule(static, 1) 
 	for ( kk = xa_trans[sum_level]; kk < xa_trans[max_level]; kk++ )
 	// for ( kk = xa_trans[sum_level]+thread_number; kk < xa_trans[sum_level]+thread_number+num_thread; kk++ )
@@ -121,15 +130,16 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 				  else column_number_sn = column_end-column_start+1;
 
 				  column_next = row_ptr_U[val+column_number_sn-1];
-
+				  if(column_start>=min){
 //				  wait = (volatile int *)&(tag[column_next]);
 				  wait = (volatile char*)&(tag[column_next/4].boolvec[column_next%4]);
 				//   wait = (volatile char*)&(tag[0].boolvec[0]);
+				  
 				  while ( !(*wait) ) 
 				  { 
 					;
 				  }
-
+				  }
 				  if ( column_number_sn < thresold )
 				  {
 						  for ( i = offset_L[column_start]+1; i < offset_L[column_start+1]; i++ )

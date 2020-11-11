@@ -1360,6 +1360,7 @@ int main( int argc[], char *argv[])
     memset(dv1[i], 0, sizeof(double) * 4096);
 	dv2[i] = ( double * )_mm_malloc(sizeof(double) * 4096, 64);
     memset(dv2[i], 0, sizeof(double) * 4096);
+	
 }
 
 	double t11, t12;
@@ -1399,6 +1400,28 @@ int main( int argc[], char *argv[])
 
 	for ( jj = 0; jj < loop; jj++ )
 	{
+
+		memset(L,0, sizeof(double) * lnz );
+		memset(U,0, sizeof(double) * unz );
+
+ #pragma omp parallel for
+ for(int i=0; i<num_thread; i++){
+	memset(xx1[i], 0, sizeof(double) * 2*n);
+	xx2[i] = xx1[i] + n; 
+	 // xx2[i] = ( double *)_mm_malloc(sizeof(double) * n, 64); 
+	 // memset(xx2[i], 0, sizeof(double) * n);  
+	// xx_next_column = xx;
+    memset(dv1[i], 0, sizeof(double) * 4096);
+    memset(dv2[i], 0, sizeof(double) * 4096);
+	
+}
+
+
+		for ( i = 0; i < n; i++ )
+  		{
+			//xx[i] = 0;
+  	  		L[offset_L[i]] = 1.0;
+  		}
         /*for ( i = 0; i < unz; i++ )
 		{
 			if ( U[i] != 0 && lx[i] == 0 ) printf("U[%d] = %lf nicslu_U[%d] = %lf\n", i, U[i], i, lx[i]);
@@ -1433,7 +1456,7 @@ int main( int argc[], char *argv[])
 		{
 			x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, ux, lx, tag, 0, 0, xa_trans);
 		}
-//		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, sum_level+1, max_level+1, xa_trans);
+		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, sum_level+1, max_level+1, xa_trans);
 
 		//  x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level_2, seperator_in_column_2, ux, lx, tag, 0, 1, xa_trans_2);
 
@@ -1441,6 +1464,8 @@ int main( int argc[], char *argv[])
 
 		t_e = microtime() - t_s;
 		sum_time += t_e;
+		
+		
 
 		/*NicsLU_ReFactorize(solver, ax, 0);
 		NicsLU_Solve(solver, b, x);
@@ -1606,7 +1631,7 @@ int main( int argc[], char *argv[])
 	  if ( fabs(ux[i]-L[i]) > 0.1 )
 	  {
 		  error_lu_gp++;
-		//   printf("nicslu[%d] = %lf me_L[%d] = %lf\n", i, ux[i], i, L[i]);
+		   printf("nicslu[%d] = %lf me_L[%d] = %lf\n", i, ux[i], i, L[i]);
 	  }
 	}
 	printf("error of L results are: %d\n", error_lu_gp); 
