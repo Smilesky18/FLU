@@ -299,6 +299,35 @@ int main( int argc[], char *argv[])
 		printf("supernode %d: %d~%d\n", i, sn_column_start[i], sn_column_end[i]);
 	} */
 
+	int l, m;
+	int prior_column_c = atoi(argv[7]);
+	int *length = ( int *)malloc( sizeof(int) * n);
+	memset(length, -1, sizeof(int) * n);
+	int length_pack, len1, len2;
+	for ( i = 0; i < prior_column_c; i++ )
+	{
+		if ( offset_U[i+1] - offset_U[i] == 1 ) length[i] = 0;
+		else
+		{
+			length[i] = belong(i, offset_U, row_ptr_U, length);
+		}
+	}
+
+	int max_level = 0;
+	for ( i = 0; i < prior_column_c; i++ )
+	{
+		if ( length[i] > max_level ) max_level = length[i];
+	}
+
+	int *level = ( int *)malloc( sizeof(int) *( max_level+1 ) );
+	memset(level, 0, sizeof(int) *(  max_level+1 ));
+	for ( i = 0; i < prior_column_c; i++ )
+	{
+		level[length[i]]++;
+	}
+	printf("max_level = %d\n", max_level);
+
+
     /* file process */
     FILE *file;
     file = fopen(argv[4], "r");
@@ -420,6 +449,7 @@ int main( int argc[], char *argv[])
 					if ( row_ptr_U[offset_U[i+2]-2] != i ) printf(" != 0!\n");
 					// printf("sum_sub = %d ", sum_sub);
 				    flag[i] = 1;
+					// printf("flag = 1: %d %d\n", length[i], length[i+1]);
 				    /*flag[i+1] = 1;
 					flag_computation[i] = i;
 					flag_computation[i+1] = i; */
@@ -428,6 +458,7 @@ int main( int argc[], char *argv[])
 			    else 
 			    {
 				    flag[i] = 2;
+					// printf("flag = 2: %d %d\n", length[i], length[i+1]);
 				    /*flag[i+1] = 2;
 					flag_computation[i] = i;
 					flag_computation[i+1] = i; */
@@ -446,35 +477,7 @@ int main( int argc[], char *argv[])
     }
 	
     printf("sum_sn_in_U = %d\n", sum_sn_in_U);
-	
-	int l, m;
-	int prior_column_c = atoi(argv[7]);
-	int *length = ( int *)malloc( sizeof(int) * n);
-	memset(length, -1, sizeof(int) * n);
-	int length_pack, len1, len2;
-	for ( i = 0; i < prior_column_c; i++ )
-	{
-		if ( offset_U[i+1] - offset_U[i] == 1 ) length[i] = 0;
-		else
-		{
-			length[i] = belong(i, offset_U, row_ptr_U, length);
-		}
-	}
 
-	int max_level = 0;
-	for ( i = 0; i < prior_column_c; i++ )
-	{
-		if ( length[i] > max_level ) max_level = length[i];
-	}
-
-	int *level = ( int *)malloc( sizeof(int) *( max_level+1 ) );
-	memset(level, 0, sizeof(int) *(  max_level+1 ));
-	for ( i = 0; i < prior_column_c; i++ )
-	{
-		level[length[i]]++;
-	}
-	printf("max_level = %d\n", max_level);
-	
 	// int sum_level = 0;
 	// int sum_level_index;
 	// for ( i = 0; i < max_level+1; i++ )
@@ -506,7 +509,10 @@ int main( int argc[], char *argv[])
 	for ( i = 0; i < prior_column_c; i++ )
 	{
 		asub_U_level[ xa[length[i]]++ ] = i;
+		// asub_U_level[ xa[length[i]] ] = i;
+		// xa[length[i]]++;
 	}
+	printf("asub_U_level[32309] = %d asub_U_level[32310] = %d\n", asub_U_level[32309], asub_U_level[32310]);
 	int num_thread = atoi(argv[9]);
 	int sum_level = max_level;
 	int sum_more_than_16_columns = 0;
@@ -532,41 +538,98 @@ int main( int argc[], char *argv[])
 	// printf("There are %d columns in all levels which are more than 16\n", sum_more_than_16_columns);
 	printf("xa_trans[%d] = %d\n", sum_level, xa_trans[sum_level]);
 
+	/*for ( i = sum_level+1; i < max_level+1; i++ )
+	{
+		printf("\n*************levle %d*************\n", i);
+		for ( j = xa_trans[i]; j < xa_trans[i+1]; j++ )
+		{
+			printf("%d\n", asub_U_level[j]);
+		}
+	}*/
+
 	char *no_wait = (char *)malloc(sizeof(char) * n);
 	memset(no_wait, 0, sizeof(char) * n);
-	int sum_no_wait = 0;
+	int sum_wait = 0;
 	int sum_whe_wait = 0;
 	int j1, j2, j3, j4;
+	int *wait_col_index = (int *)malloc(sizeof(int) * n);
+	memset(wait_col_index, -1, sizeof(int) * n);
+	char *wait_index = (char *)malloc(sizeof(char) * unz);
+	memset(wait_index, 0, sizeof(char) * unz);
 
 	for ( i = 0; i < xa_trans[sum_level+1]; i++ )
 	{
 		no_wait[asub_U_level[i]] = 1;
 	}
+	/*for ( i = 0; i < n; i++ )
+	{
+		if ( no_wait[i] )
+			printf("main: no_wait[%d] = %d\n", i, no_wait[i]);
+	}*/
+	printf("BEFORE WAIT FUNC: num_thread = %d\n", num_thread);
+	printf("no_wait[95273] = %d\n", no_wait[95273]);
 	for ( i = xa_trans[sum_level+1]; i < xa_trans[max_level+1]; i+=num_thread )
 	{
 		if ( i+num_thread < xa_trans[max_level+1] )
 		{
-		for ( j1 = i; j1 < i+num_thread; j1++ )
-		{
-			j2 = asub_U_level[j1];
-			// printf("j2 = %d\n", j2);
-			for ( l = offset_U[j2]; l < offset_U[j2+1]; l++ )
+			for ( j1 = i; j1 < i+num_thread; j1++ )
 			{
-				if ( !no_wait[row_ptr_U[l]] )
+				// printf("main-0: i = %d j1 = %d\n", i, j1);
+				j2 = asub_U_level[j1];
+				wait_col_index[j2] = offset_U[j2+1] - offset_U[j2] - 1;
+				for ( l = offset_U[j2+1]-2; l >= offset_U[j2]; l-- )
 				{
-					sum_no_wait++;
+					if ( no_wait[row_ptr_U[l]] == 0 )
+					{
+						sum_wait++;
+						wait_col_index[j2] = l - offset_U[j2];
+						wait_index[l] = 1;
+						// if ( row_ptr_U[l] == 95273 )
+							// printf("main-1: %d kk = %d k = %d l = %d\n", row_ptr_U[l], j1, j2, l); 
+						// if ( sn_num_record[row_ptr_U[l]] != -1 )
+							// printf("warning!: this is a sn!\n");
+						// printf("depend col in U = %d\n", l-offset_U[j2]);
+						// printf("depend col in U = %d\n", offset_U[j2+1] -1 - l);
+					}
+					// if ( row_ptr_U[l] == 95273 )
+							// printf("main-2: %d kk = %d k = %d\n", row_ptr_U[l], j1, j2); 
+					sum_whe_wait++;
 				}
-				sum_whe_wait++;
+				// if (wait_col_index[j2] != offset_U[j2+1] - offset_U[j2] - 2 )
+					//  printf("wait_col_index[%d] = %d\n", j2, wait_col_index[j2]);
+				// printf("*************************: %d u_col = %d\n", offset_U[j2+1] - offset_U[j2] - 1, j2);
 			}
+			for ( j1 = i; j1 < i+num_thread; j1++ )
+			{
+				if ( asub_U_level[j1] == 95273 )
+					printf("main-3: %d kk = %d k = %d i = %d\n", row_ptr_U[l], j1, asub_U_level[j1], i); 
+				no_wait[asub_U_level[j1]] = 1;
+			}
+			// printf("i+num_th = %d\n", i+num_thread);
 		}
-		for ( j1 = i; j1 < i+num_thread; j1++ )
+		else
 		{
-			no_wait[asub_U_level[j1]] = 1;
-		}
+			break;
 		}
 		// printf("asub_U_level[%d] = %d\n", i, asub_U_level[i]);
 	}
-	printf("sum_wait = %d all = %d\n", sum_no_wait, sum_whe_wait);
+	// i = i+1;
+	printf("i = %d xa_trans[max_level+1] = %d xa_trans[sum_level+1] = %d\n", i, xa_trans[max_level+1], xa_trans[sum_level+1]);
+	for ( ; i < xa_trans[max_level+1]; i++ )
+	{
+		j2 = asub_U_level[i];
+			for ( l = offset_U[j2+1]-2; l >= offset_U[j2]; l-- )
+			{
+				if ( no_wait[row_ptr_U[l]] == 0 )
+				{
+					sum_wait++;
+					wait_col_index[j2] = l - offset_U[j2];
+					wait_index[l] = 1;
+				}
+				sum_whe_wait++;
+			}
+	}
+	printf("sum_wait = %d all = %d i = %d\n", sum_wait, sum_whe_wait, i);
 	/*for ( i = max_level - 5; i < max_level+1; i++ )
 	{
 		for ( j = xa_trans[i]; j < xa_trans[i+1]; j++ )
@@ -715,7 +778,8 @@ int main( int argc[], char *argv[])
 		printf("start[%d] = %d end[%d] = %d\n", i, start[i], i, end[i]);
 	}*/
 	//printf("xa_trans[sum_level_index] = %d\n", xa_trans[sum_level_index]);
-	printf("xa_trans[max_level+1] - 1 = %d\n", xa_trans[max_level+1] - 1);
+	printf("xa_trans[sum_level+1] = %d\n", xa_trans[sum_level+1]);
+	printf("xa_trans[max_level+1] = %d\n", xa_trans[max_level+1]);
 	printf("start[0] = %d end[0] = %d\n", start[0], end[0]);
 
 	//seperator_in_column[prior_column] = offset_U[prior_column+1] - offset_U[prior_column] - 1;
@@ -1375,21 +1439,21 @@ int main( int argc[], char *argv[])
 	printf("thread_number = %d thread_number_prior_level = %d\n", thread_number, thread_number_prior_level);
 	printf("loop = %d\n", loop);
 	int thresold = atoi(argv[3]);
-	bitInt *tag = (bitInt *)_mm_malloc(sizeof(bitInt) * (n/4 + 1),64);
-		// bitInt *tag = (bitInt *)malloc(sizeof(bitInt) * (n/4 + 1));
+	// bitInt *tag = (bitInt *)_mm_malloc(sizeof(bitInt) * (n/4 + 1),64);
+		char *tag = (char *)malloc(sizeof(char) * n);
 
 // MyUnion *tag = (bitInt *)_mm_malloc(sizeof(bitInt) * (n/4 + 1),64);
-//	memset(tag, 0, sizeof(int) * n);
+	// memset(tag, 0, sizeof(char) * n);
  
     printf("print: %d %d sizeof(bitInt) = %d n/4+1 = %d\n", prior_column_c, next_column, sizeof(bitInt), n/4+1);
-	int xa_trans_2[2];
-	xa_trans_2[0] = 0;
-	xa_trans_2[1] = next_column - prior_column_c;
-	int *asub_U_level_2 = (int *)malloc(sizeof(int) * (next_column-prior_column_c));
-	for ( i = 0; i < next_column-prior_column_c; i++ )
-	{
-		asub_U_level_2[i] = prior_column_c + i;
-	}
+	// int xa_trans_2[2];
+	// xa_trans_2[0] = 0;
+	// xa_trans_2[1] = next_column - prior_column_c;
+	// int *asub_U_level_2 = (int *)malloc(sizeof(int) * (next_column-prior_column_c));
+	// for ( i = 0; i < next_column-prior_column_c; i++ )
+	// {
+	// 	asub_U_level_2[i] = prior_column_c + i;
+	// }
 
 	/*double *y, *x_me;
 	y = ( double *)_mm_malloc( sizeof( double ) * n, 64 );
@@ -1405,21 +1469,29 @@ int main( int argc[], char *argv[])
 		}*/
 
 		// for (i = 0; i < nnz; ++i) ax[i] *= (double)rand() / RAND_MAX * 2.;
+	/*	memset(U, 0, sizeof(double) * unz);
+		memset(L, 0, sizeof(double) * lnz);
+		for ( i = 0; i < n; i++ )
+		{
+			L[offset_L[i]] = 1.0;
+		}
+
+		#pragma omp parallel for
+ for(int i=0; i<num_thread; i++){
+	memset(xx1[i], 0, sizeof(double) * 2*n);
+	xx2[i] = xx1[i] + n;
+    memset(dv1[i], 0, sizeof(double) * 4096);
+    memset(dv2[i], 0, sizeof(double) * 4096);
+}*/
 
 		t_s = microtime();
-		/*memset(U, 0, sizeof(double) * unz);
-		memset(L, 0, sizeof(double) * lnz);
-		  for ( i = 0; i < n; i++ )
-		{
-			//xx[i] = 0;
-			L[offset_L[i]] = 1.0;
-		}*/
-		#pragma omp parallel for
-		for(i=0; i<(n/4+1); i++)
-		{
-		    tag[i].bit32 = 0;
-		}
-		// memset(tag, 0, sizeof(int) * n);
+
+		// #pragma omp parallel for
+		// for(i=0; i<(n/4+1); i++)
+		// {
+		//     tag[i].bit32 = 0;
+		// }
+		memset(tag, 0, sizeof(char) * n);
 
         // if ( jj == 5 )
 		// for ( i = 0; i < (n/4+1); i++ )
@@ -1433,11 +1505,22 @@ int main( int argc[], char *argv[])
 		{
 			x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, ux, lx, tag, 0, 0, xa_trans);
 		}
-//		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, sum_level+1, max_level+1, xa_trans);
 
-		//  x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level_2, seperator_in_column_2, ux, lx, tag, 0, 1, xa_trans_2);
+		/*for ( i = xa_trans[sum_level+1]; i < xa_trans[max_level+1]; i+=num_thread )
+		{
+			if ( i+num_thread < xa_trans[max_level+1] )
+				x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next_barrier(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, i, i+num_thread, xa_trans, wait_col_index, wait_index, no_wait);
+			else
+			{
+				break;
+			}
+			
+		}
+		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next_barrier(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, i, xa_trans[max_level+1], xa_trans, wait_col_index, wait_index, no_wait);*/
 
-		 x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, prior_column_c, next_column, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, (thread_number-thread_number_prior_level-1)/num_thread, asub_U_level, seperator_in_column_2, sign, ux, lx, thread_number_prior_level, thread_number, tag, assign);
+		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, sum_level+1, max_level+1, xa_trans, wait_col_index, wait_index, no_wait);
+
+		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, prior_column_c, next_column, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, (thread_number-thread_number_prior_level-1)/num_thread, asub_U_level, seperator_in_column_2, sign, ux, lx, thread_number_prior_level, thread_number, tag, assign);
 
 		t_e = microtime() - t_s;
 		sum_time += t_e;
@@ -1487,7 +1570,7 @@ int main( int argc[], char *argv[])
 		}
     	printf("error of x results are: %d\n", error_nic);*/
 
-	     printf("Time of All columns: %lf\n", t_e);
+	    //  printf("Time of All columns: %lf\n", t_e);
 		
 		/*for(int i=0; i<num_thread; i++){
        xx2[i] = xx1[i] + n;
@@ -1526,21 +1609,17 @@ int main( int argc[], char *argv[])
   int error_lu_gp = 0;
   int error_nic = 0;
 
- /* double *y, *x_me;
+  double *y, *x_me;
 //   y = ( double *)_mm_malloc( sizeof( double ) * n, 64 );
 //   x_me = ( double *)_mm_malloc( sizeof( double ) * n, 64 );
 
     y = ( double *)malloc( sizeof( double ) * n);
     x_me = ( double *)malloc( sizeof( double ) * n);
 
-	 printf("solve: 11111111111111111111111111111111111111111111111\n");
-
   for ( i = 0; i < n; i++ )
   {
 	  y[i] = 1.0;
   }
-
-   
 
   for ( i = 0; i < n; i++ )
   {
@@ -1549,8 +1628,6 @@ int main( int argc[], char *argv[])
 		  y[row_ptr_L[j]] -= y[i] * L[j];
 	  }
   }
-
-  printf("solve: 2222222222222222222222222222222222222222222222\n");
 
   //x[n-1] = y[n-1];
   for ( i = 0; i < n; i++ )
@@ -1585,16 +1662,16 @@ int main( int argc[], char *argv[])
 		  //printf("lu_gp[%d] = %lf me[%d] = %lf\n", i, lu_gp_x[i], i, x_real[i]);
 	  // }	
   }
-    printf("error of x results are: %d\n", error_nic);*/
+    printf("error of x results are: %d\n", error_nic);
 
     error_nic = 0;
 	for ( i = 0; i < unz; i++ )
 	{
-	//   printf("nicslu[%d] = %lf me[%d] = %lf\n", i, lx[i], i, U[i]);
+	//   printf("nicslu_U[%d] = %lf me_U[%d] = %lf\n", i, lx[i], i, U[i]);
 	  if ( fabs(lx[i]-U[i]) > 0.1 )
 	  {
 		  error_nic++;
-		//   printf("nicslu[%d] = %lf me_U[%d] = %lf\n", i, lx[i], i, U[i]);
+		//   printf("nicslu_U[%d] = %lf me_U[%d] = %lf\n", i, lx[i], i, U[i]);
 	  }	
 	}
 	printf("error of U results are: %d\n", error_nic); 
@@ -1602,7 +1679,7 @@ int main( int argc[], char *argv[])
 	error_lu_gp = 0;
 	for ( i = 0; i < lnz; i++ )
 	{
-	//   printf("nicslu[%d] = %lf me[%d] = %lf\n", i, lx[i], i, U[i]);
+	//   printf("nicslu_L[%d] = %lf me_L[%d] = %lf\n", i, ux[i], i, L[i]);
 	  if ( fabs(ux[i]-L[i]) > 0.1 )
 	  {
 		  error_lu_gp++;
@@ -1610,6 +1687,10 @@ int main( int argc[], char *argv[])
 	  }
 	}
 	printf("error of L results are: %d\n", error_lu_gp); 
+	for ( i = 0; i < lnz; i++ )
+	{
+	//   printf("nicslu_L[%d] = %lf me_L[%d] = %lf\n", i, ux[i], i, L[i]);
+	}
 
     // for ( i = 0; i < loop; i++ )
     // {
