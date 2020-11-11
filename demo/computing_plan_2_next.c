@@ -74,20 +74,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 	int wait_col;
 	int val2;
 
-<<<<<<< HEAD
-	int min = n;
-
-	for ( kk = xa_trans[sum_level]; kk < xa_trans[max_level]; kk++ )
-	{
-		k = asub_U_level[kk];
-		if(k<min)
-			min = k;
-	}
-
-	#pragma omp for schedule(static, 1) 
-=======
 	#pragma omp for schedule(static, 1)
->>>>>>> 6804d53199727868120b73609105aa23add3050c
 	for ( kk = xa_trans[sum_level]; kk < xa_trans[max_level]; kk++ )
 	// for ( kk = xa_trans[sum_level]+thread_number; kk < xa_trans[sum_level]+thread_number+num_thread; kk++ )
 	//   for ( kk = 0; kk < 3400000; kk++ )
