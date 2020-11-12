@@ -1,0 +1,937 @@
+***********/home/username/exper_dataset1/ASIC_100k.mtx: row 99340, col 99340, nnz 954163
+1111111111111111111111111
+sn_sum_final = 838
+max_level = 1684
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 1171
+xa[max_level+1] = 99340
+xa[max_level+2] = 121169
+asub_U_level[32309] = 99336 asub_U_level[32310] = 99338
+parallel part has 96255 columns paralle+wait has 99340 columns!
+max_level = 1684 sum_level = 56
+xa_trans[56] = 96255
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 0
+main-3: 94554 kk = 96294 k = 95273 i = 96285
+i = 99325 xa_trans[max_level+1] = 99340 xa_trans[sum_level+1] = 96285
+sum_wait = 24400 all = 1206779 i = 99340
+xa_trans[sum_level+1] = 96285
+xa_trans[max_level+1] = 99340
+start[0] = 0 end[0] = 1516
+prior_column = 99340 prior_column_c = 99340 next_column = 99340
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1824
+99340 ~ 99340 has 0.000000 computations in square ratio = -nan%
+99340 ~ 99340 has 0.000000 computations in tri ratio = -nan%
+99340 ~ 99340 has 0.000000 computations in all
+all the columns in square are divided into 1888 part
+thread_number = 1888 thread_number_prior_level = 1824
+loop = 100
+print: 99340 99340 sizeof(bitInt) = 4 n/4+1 = 24836
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.017997
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/ASIC_100ks.mtx: row 99190, col 99190, nnz 578890
+1111111111111111111111111
+sn_sum_final = 832
+max_level = 1733
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 1165
+xa[max_level+1] = 99190
+xa[max_level+2] = 0
+asub_U_level[32309] = 43661 asub_U_level[32310] = 43662
+parallel part has 96011 columns paralle+wait has 99190 columns!
+max_level = 1733 sum_level = 53
+xa_trans[53] = 96011
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 99178 xa_trans[max_level+1] = 99190 xa_trans[sum_level+1] = 96042
+sum_wait = 25117 all = 1030829 i = 99190
+xa_trans[sum_level+1] = 96042
+xa_trans[max_level+1] = 99190
+start[0] = 0 end[0] = 1168
+prior_column = 99190 prior_column_c = 99190 next_column = 99190
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1728
+99190 ~ 99190 has 0.000000 computations in square ratio = -nan%
+99190 ~ 99190 has 0.000000 computations in tri ratio = -nan%
+99190 ~ 99190 has 0.000000 computations in all
+all the columns in square are divided into 1792 part
+thread_number = 1792 thread_number_prior_level = 1728
+loop = 100
+print: 99190 99190 sizeof(bitInt) = 4 n/4+1 = 24798
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.016444
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/ASIC_320k.mtx: row 321821, col 321821, nnz 2635364
+1111111111111111111111111
+sn_sum_final = 931
+max_level = 1590
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 1144
+xa[max_level+1] = 321821
+xa[max_level+2] = 0
+asub_U_level[32309] = 35255 asub_U_level[32310] = 35256
+parallel part has 318635 columns paralle+wait has 321821 columns!
+max_level = 1590 sum_level = 49
+xa_trans[49] = 318635
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 321802 xa_trans[max_level+1] = 321821 xa_trans[sum_level+1] = 318666
+sum_wait = 22971 all = 1502419 i = 321821
+xa_trans[sum_level+1] = 318666
+xa_trans[max_level+1] = 321821
+start[0] = 0 end[0] = 7795
+prior_column = 321821 prior_column_c = 321821 next_column = 321821
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1600
+321821 ~ 321821 has 0.000000 computations in square ratio = -nan%
+321821 ~ 321821 has 0.000000 computations in tri ratio = -nan%
+321821 ~ 321821 has 0.000000 computations in all
+all the columns in square are divided into 1664 part
+thread_number = 1664 thread_number_prior_level = 1600
+loop = 100
+print: 321821 321821 sizeof(bitInt) = 4 n/4+1 = 80456
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.029955
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/ASIC_320ks.mtx: row 321671, col 321671, nnz 1827807
+1111111111111111111111111
+sn_sum_final = 836
+max_level = 1726
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 1126
+xa[max_level+1] = 321671
+xa[max_level+2] = 0
+asub_U_level[32309] = 34191 asub_U_level[32310] = 34192
+parallel part has 318663 columns paralle+wait has 321671 columns!
+max_level = 1726 sum_level = 56
+xa_trans[56] = 318663
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 321668 xa_trans[max_level+1] = 321671 xa_trans[sum_level+1] = 318692
+sum_wait = 25149 all = 1057913 i = 321671
+xa_trans[sum_level+1] = 318692
+xa_trans[max_level+1] = 321671
+start[0] = 0 end[0] = 8269
+prior_column = 321671 prior_column_c = 321671 next_column = 321671
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1824
+321671 ~ 321671 has 0.000000 computations in square ratio = -nan%
+321671 ~ 321671 has 0.000000 computations in tri ratio = -nan%
+321671 ~ 321671 has 0.000000 computations in all
+all the columns in square are divided into 1888 part
+thread_number = 1888 thread_number_prior_level = 1824
+loop = 100
+print: 321671 321671 sizeof(bitInt) = 4 n/4+1 = 80418
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.023834
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/Freescale1.mtx: row 3428755, col 3428755, nnz 18920347
+1111111111111111111111111
+sn_sum_final = 19598
+max_level = 4333
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 25410
+xa[max_level+1] = 3428755
+xa[max_level+2] = 0
+asub_U_level[32309] = 115050 asub_U_level[32310] = 115054
+parallel part has 3403859 columns paralle+wait has 3428755 columns!
+max_level = 4333 sum_level = 507
+xa_trans[507] = 3403859
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 3428754 xa_trans[max_level+1] = 3428755 xa_trans[sum_level+1] = 3403890
+sum_wait = 49499 all = 13312244 i = 3428755
+xa_trans[sum_level+1] = 3403890
+xa_trans[max_level+1] = 3428755
+start[0] = 0 end[0] = 27713
+prior_column = 3428755 prior_column_c = 3428755 next_column = 3428755
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 16256
+3428755 ~ 3428755 has 0.000000 computations in square ratio = -nan%
+3428755 ~ 3428755 has 0.000000 computations in tri ratio = -nan%
+3428755 ~ 3428755 has 0.000000 computations in all
+all the columns in square are divided into 16320 part
+thread_number = 16320 thread_number_prior_level = 16256
+loop = 100
+print: 3428755 3428755 sizeof(bitInt) = 4 n/4+1 = 857189
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.498139
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/G2_circuit.mtx: row 150102, col 150102, nnz 438388
+1111111111111111111111111
+sn_sum_final = 8
+max_level = 62
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 0
+xa[max_level+1] = 150102
+xa[max_level+2] = 0
+asub_U_level[32309] = 39135 asub_U_level[32310] = 39136
+parallel part has 150098 columns paralle+wait has 150102 columns!
+max_level = 62 sum_level = 62
+xa_trans[62] = 150098
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 150102 xa_trans[max_level+1] = 150102 xa_trans[sum_level+1] = 150102
+sum_wait = 0 all = 0 i = 150102
+xa_trans[sum_level+1] = 150102
+xa_trans[max_level+1] = 150102
+start[0] = 0 end[0] = 2715
+prior_column = 150102 prior_column_c = 150102 next_column = 150102
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 2016
+150102 ~ 150102 has 0.000000 computations in square ratio = -nan%
+150102 ~ 150102 has 0.000000 computations in tri ratio = -nan%
+150102 ~ 150102 has 0.000000 computations in all
+all the columns in square are divided into 2080 part
+thread_number = 2080 thread_number_prior_level = 2016
+loop = 100
+print: 150102 150102 sizeof(bitInt) = 4 n/4+1 = 37526
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.006919
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/G3_circuit.mtx: row 1585478, col 1585478, nnz 4623152
+1111111111111111111111111
+sn_sum_final = 19
+max_level = 66
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 0
+xa[max_level+1] = 1585478
+xa[max_level+2] = 0
+asub_U_level[32309] = 52785 asub_U_level[32310] = 52786
+parallel part has 1585453 columns paralle+wait has 1585478 columns!
+max_level = 66 sum_level = 66
+xa_trans[66] = 1585453
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 1585478 xa_trans[max_level+1] = 1585478 xa_trans[sum_level+1] = 1585478
+sum_wait = 0 all = 0 i = 1585478
+xa_trans[sum_level+1] = 1585478
+xa_trans[max_level+1] = 1585478
+start[0] = 0 end[0] = 28622
+prior_column = 1585478 prior_column_c = 1585478 next_column = 1585478
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 2144
+1585478 ~ 1585478 has 0.000000 computations in square ratio = -nan%
+1585478 ~ 1585478 has 0.000000 computations in tri ratio = -nan%
+1585478 ~ 1585478 has 0.000000 computations in all
+all the columns in square are divided into 2208 part
+thread_number = 2208 thread_number_prior_level = 2144
+loop = 100
+print: 1585478 1585478 sizeof(bitInt) = 4 n/4+1 = 396370
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.126388
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/Raj1.mtx: row 263743, col 263743, nnz 1302464
+1111111111111111111111111
+sn_sum_final = 3725
+max_level = 1528
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 3773
+xa[max_level+1] = 263743
+xa[max_level+2] = 123569
+asub_U_level[32309] = 35147 asub_U_level[32310] = 35148
+parallel part has 259514 columns paralle+wait has 263743 columns!
+max_level = 1528 sum_level = 217
+xa_trans[217] = 259514
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 263737 xa_trans[max_level+1] = 263743 xa_trans[sum_level+1] = 259545
+sum_wait = 18835 all = 1462430 i = 263743
+xa_trans[sum_level+1] = 259545
+xa_trans[max_level+1] = 263743
+start[0] = 0 end[0] = 3032
+prior_column = 263743 prior_column_c = 263743 next_column = 263743
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 6976
+263743 ~ 263743 has 0.000000 computations in square ratio = -nan%
+263743 ~ 263743 has 0.000000 computations in tri ratio = -nan%
+263743 ~ 263743 has 0.000000 computations in all
+all the columns in square are divided into 7040 part
+thread_number = 7040 thread_number_prior_level = 6976
+loop = 100
+print: 263743 263743 sizeof(bitInt) = 4 n/4+1 = 65936
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.024650
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/circuit5M.mtx: row 5558326, col 5558326, nnz 59524291
+1111111111111111111111111
+sn_sum_final = 6669
+max_level = 813
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 711
+xa[max_level+1] = 5558326
+xa[max_level+2] = 0
+asub_U_level[32309] = 34500 asub_U_level[32310] = 34501
+parallel part has 5556337 columns paralle+wait has 5558326 columns!
+max_level = 813 sum_level = 35
+xa_trans[35] = 5556337
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 5558307 xa_trans[max_level+1] = 5558326 xa_trans[sum_level+1] = 5556355
+sum_wait = 11316 all = 12340109 i = 5558326
+xa_trans[sum_level+1] = 5556355
+xa_trans[max_level+1] = 5558326
+start[0] = 0 end[0] = 168519
+prior_column = 5558326 prior_column_c = 5558326 next_column = 5558326
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1152
+5558326 ~ 5558326 has 0.000000 computations in square ratio = -nan%
+5558326 ~ 5558326 has 0.000000 computations in tri ratio = -nan%
+5558326 ~ 5558326 has 0.000000 computations in all
+all the columns in square are divided into 1216 part
+thread_number = 1216 thread_number_prior_level = 1152
+loop = 100
+print: 5558326 5558326 sizeof(bitInt) = 4 n/4+1 = 1389582
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.379442
+solve: 000000000000000000000000000000000000000
+error of x results are: 5505403
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/circuit5M_dc.mtx: row 3523317, col 3523317, nnz 19194193
+1111111111111111111111111
+sn_sum_final = 19596
+max_level = 4561
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 25810
+xa[max_level+1] = 3523317
+xa[max_level+2] = 0
+asub_U_level[32309] = 106933 asub_U_level[32310] = 106937
+parallel part has 3496412 columns paralle+wait has 3523317 columns!
+max_level = 4561 sum_level = 476
+xa_trans[476] = 3496412
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 3523291 xa_trans[max_level+1] = 3523317 xa_trans[sum_level+1] = 3496443
+sum_wait = 52700 all = 14359826 i = 3523317
+xa_trans[sum_level+1] = 3496443
+xa_trans[max_level+1] = 3523317
+start[0] = 0 end[0] = 30521
+prior_column = 3523317 prior_column_c = 3523317 next_column = 3523317
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 15264
+3523317 ~ 3523317 has 0.000000 computations in square ratio = -nan%
+3523317 ~ 3523317 has 0.000000 computations in tri ratio = -nan%
+3523317 ~ 3523317 has 0.000000 computations in all
+all the columns in square are divided into 15328 part
+thread_number = 15328 thread_number_prior_level = 15264
+loop = 100
+print: 3523317 3523317 sizeof(bitInt) = 4 n/4+1 = 880830
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.612315
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/ckt11752_dc_1.mtx: row 49702, col 49702, nnz 333029
+1111111111111111111111111
+sn_sum_final = 1001
+max_level = 1807
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 1171
+xa[max_level+1] = 49702
+xa[max_level+2] = 1026572420
+asub_U_level[32309] = 19747 asub_U_level[32310] = 19883
+parallel part has 43704 columns paralle+wait has 49702 columns!
+max_level = 1807 sum_level = 47
+xa_trans[47] = 43704
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = -1
+i = 49687 xa_trans[max_level+1] = 49702 xa_trans[sum_level+1] = 43735
+sum_wait = 25033 all = 654028 i = 49702
+xa_trans[sum_level+1] = 43735
+xa_trans[max_level+1] = 49702
+start[0] = 0 end[0] = 521
+prior_column = 49702 prior_column_c = 49702 next_column = 49702
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1536
+49702 ~ 49702 has 0.000000 computations in square ratio = -nan%
+49702 ~ 49702 has 0.000000 computations in tri ratio = -nan%
+49702 ~ 49702 has 0.000000 computations in all
+all the columns in square are divided into 1600 part
+thread_number = 1600 thread_number_prior_level = 1536
+loop = 100
+print: 49702 49702 sizeof(bitInt) = 4 n/4+1 = 12426
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.007384
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 46
+error of L results are: 7
+***********/home/username/exper_dataset1/onetone1.mtx: row 36057, col 36057, nnz 341088
+1111111111111111111111111
+sn_sum_final = 694
+max_level = 3105
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 1103
+xa[max_level+1] = 36057
+xa[max_level+2] = -1079612084
+asub_U_level[32309] = 25856 asub_U_level[32310] = 27011
+parallel part has 31742 columns paralle+wait has 36057 columns!
+max_level = 3105 sum_level = 31
+xa_trans[31] = 31742
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = -1
+i = 36029 xa_trans[max_level+1] = 36057 xa_trans[sum_level+1] = 31773
+sum_wait = 45189 all = 1721660 i = 36057
+xa_trans[sum_level+1] = 31773
+xa_trans[max_level+1] = 36057
+start[0] = 0 end[0] = 585
+prior_column = 36057 prior_column_c = 36057 next_column = 36057
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1024
+36057 ~ 36057 has -0.078650 computations in square ratio = -inf%
+36057 ~ 36057 has 0.078650 computations in tri ratio = inf%
+36057 ~ 36057 has 0.000000 computations in all
+all the columns in square are divided into 1088 part
+thread_number = 1088 thread_number_prior_level = 1024
+loop = 100
+print: 36057 36057 sizeof(bitInt) = 4 n/4+1 = 9015
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.033017
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/rajat15.mtx: row 37261, col 37261, nnz 443573
+1111111111111111111111111
+sn_sum_final = 1134
+max_level = 1170
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 965
+xa[max_level+1] = 37261
+xa[max_level+2] = 1497110129
+asub_U_level[32309] = 28147 asub_U_level[32310] = 28282
+parallel part has 34561 columns paralle+wait has 37261 columns!
+max_level = 1170 sum_level = 103
+xa_trans[103] = 34561
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = -1
+i = 37248 xa_trans[max_level+1] = 37261 xa_trans[sum_level+1] = 34592
+sum_wait = 15563 all = 448979 i = 37261
+xa_trans[sum_level+1] = 34592
+xa_trans[max_level+1] = 37261
+start[0] = 0 end[0] = 745
+prior_column = 37261 prior_column_c = 37261 next_column = 37261
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 3328
+37261 ~ 37261 has 0.000000 computations in square ratio = -nan%
+37261 ~ 37261 has 0.000000 computations in tri ratio = -nan%
+37261 ~ 37261 has 0.000000 computations in all
+all the columns in square are divided into 3392 part
+thread_number = 3392 thread_number_prior_level = 3328
+loop = 100
+print: 37261 37261 sizeof(bitInt) = 4 n/4+1 = 9316
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.006186
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/rajat16.mtx: row 94294, col 94294, nnz 641159
+1111111111111111111111111
+sn_sum_final = 522
+max_level = 1163
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 705
+xa[max_level+1] = 94294
+xa[max_level+2] = 0
+asub_U_level[32309] = 48022 asub_U_level[32310] = 48024
+parallel part has 91319 columns paralle+wait has 94294 columns!
+max_level = 1163 sum_level = 40
+xa_trans[40] = 91319
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = -1
+i = 94262 xa_trans[max_level+1] = 94294 xa_trans[sum_level+1] = 91350
+sum_wait = 16470 all = 791177 i = 94294
+xa_trans[sum_level+1] = 91350
+xa_trans[max_level+1] = 94294
+start[0] = 0 end[0] = 2826
+prior_column = 94294 prior_column_c = 94294 next_column = 94294
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1312
+94294 ~ 94294 has 0.000000 computations in square ratio = -nan%
+94294 ~ 94294 has 0.000000 computations in tri ratio = -nan%
+94294 ~ 94294 has 0.000000 computations in all
+all the columns in square are divided into 1376 part
+thread_number = 1376 thread_number_prior_level = 1312
+loop = 100
+print: 94294 94294 sizeof(bitInt) = 4 n/4+1 = 23574
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.013187
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/rajat17.mtx: row 94294, col 94294, nnz 641159
+1111111111111111111111111
+sn_sum_final = 522
+max_level = 1163
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 705
+xa[max_level+1] = 94294
+xa[max_level+2] = 0
+asub_U_level[32309] = 47998 asub_U_level[32310] = 48000
+parallel part has 91319 columns paralle+wait has 94294 columns!
+max_level = 1163 sum_level = 40
+xa_trans[40] = 91319
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = -1
+i = 94262 xa_trans[max_level+1] = 94294 xa_trans[sum_level+1] = 91350
+sum_wait = 16470 all = 791177 i = 94294
+xa_trans[sum_level+1] = 91350
+xa_trans[max_level+1] = 94294
+start[0] = 0 end[0] = 2850
+prior_column = 94294 prior_column_c = 94294 next_column = 94294
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1312
+94294 ~ 94294 has 0.000000 computations in square ratio = -nan%
+94294 ~ 94294 has 0.000000 computations in tri ratio = -nan%
+94294 ~ 94294 has 0.000000 computations in all
+all the columns in square are divided into 1376 part
+thread_number = 1376 thread_number_prior_level = 1312
+loop = 100
+print: 94294 94294 sizeof(bitInt) = 4 n/4+1 = 23574
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.014093
+solve: 000000000000000000000000000000000000000
+error of x results are: 318
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/rajat20.mtx: row 86916, col 86916, nnz 605045
+1111111111111111111111111
+sn_sum_final = 488
+max_level = 1168
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 626
+xa[max_level+1] = 86916
+xa[max_level+2] = 6193
+asub_U_level[32309] = 66375 asub_U_level[32310] = 66376
+parallel part has 84647 columns paralle+wait has 86916 columns!
+max_level = 1168 sum_level = 42
+xa_trans[42] = 84647
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = -1
+i = 86886 xa_trans[max_level+1] = 86916 xa_trans[sum_level+1] = 84678
+sum_wait = 16889 all = 720400 i = 86916
+xa_trans[sum_level+1] = 84678
+xa_trans[max_level+1] = 86916
+start[0] = 0 end[0] = 2425
+prior_column = 86916 prior_column_c = 86916 next_column = 86916
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1376
+86916 ~ 86916 has 0.000000 computations in square ratio = -nan%
+86916 ~ 86916 has 0.000000 computations in tri ratio = -nan%
+86916 ~ 86916 has 0.000000 computations in all
+all the columns in square are divided into 1440 part
+thread_number = 1440 thread_number_prior_level = 1376
+loop = 100
+print: 86916 86916 sizeof(bitInt) = 4 n/4+1 = 21730
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.012452
+solve: 000000000000000000000000000000000000000
+error of x results are: 57
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/rajat21.mtx: row 411676, col 411676, nnz 1893370
+1111111111111111111111111
+sn_sum_final = 7
+max_level = 111
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 1
+xa[max_level+1] = 411676
+xa[max_level+2] = 0
+asub_U_level[32309] = 67914 asub_U_level[32310] = 67916
+parallel part has 410892 columns paralle+wait has 411676 columns!
+max_level = 111 sum_level = 31
+xa_trans[31] = 410892
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 411653 xa_trans[max_level+1] = 411676 xa_trans[sum_level+1] = 410917
+sum_wait = 863 all = 326591 i = 411676
+xa_trans[sum_level+1] = 410917
+xa_trans[max_level+1] = 411676
+start[0] = 0 end[0] = 10301
+prior_column = 411676 prior_column_c = 411676 next_column = 411676
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1024
+411676 ~ 411676 has 0.000000 computations in square ratio = -nan%
+411676 ~ 411676 has 0.000000 computations in tri ratio = -nan%
+411676 ~ 411676 has 0.000000 computations in all
+all the columns in square are divided into 1088 part
+thread_number = 1088 thread_number_prior_level = 1024
+loop = 100
+print: 411676 411676 sizeof(bitInt) = 4 n/4+1 = 102920
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.013720
+solve: 000000000000000000000000000000000000000
+error of x results are: 50923
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/rajat24.mtx: row 358172, col 358172, nnz 1948235
+1111111111111111111111111
+sn_sum_final = 526
+max_level = 1437
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 679
+xa[max_level+1] = 358172
+xa[max_level+2] = 0
+asub_U_level[32309] = 62677 asub_U_level[32310] = 62680
+parallel part has 355537 columns paralle+wait has 358172 columns!
+max_level = 1437 sum_level = 44
+xa_trans[44] = 355537
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 358160 xa_trans[max_level+1] = 358172 xa_trans[sum_level+1] = 355568
+sum_wait = 20744 all = 978460 i = 358172
+xa_trans[sum_level+1] = 355568
+xa_trans[max_level+1] = 358172
+start[0] = 0 end[0] = 7919
+prior_column = 358172 prior_column_c = 358172 next_column = 358172
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1440
+358172 ~ 358172 has 0.000000 computations in square ratio = -nan%
+358172 ~ 358172 has 0.000000 computations in tri ratio = -nan%
+358172 ~ 358172 has 0.000000 computations in all
+all the columns in square are divided into 1504 part
+thread_number = 1504 thread_number_prior_level = 1440
+loop = 100
+print: 358172 358172 sizeof(bitInt) = 4 n/4+1 = 89544
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.022855
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/rajat25.mtx: row 87190, col 87190, nnz 607235
+1111111111111111111111111
+sn_sum_final = 502
+max_level = 1168
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 651
+xa[max_level+1] = 87190
+xa[max_level+2] = 6193
+asub_U_level[32309] = 66601 asub_U_level[32310] = 66602
+parallel part has 84869 columns paralle+wait has 87190 columns!
+max_level = 1168 sum_level = 43
+xa_trans[43] = 84869
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = -1
+i = 87172 xa_trans[max_level+1] = 87190 xa_trans[sum_level+1] = 84900
+sum_wait = 16679 all = 725946 i = 87190
+xa_trans[sum_level+1] = 84900
+xa_trans[max_level+1] = 87190
+start[0] = 0 end[0] = 2244
+prior_column = 87190 prior_column_c = 87190 next_column = 87190
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1408
+87190 ~ 87190 has 0.000000 computations in square ratio = -nan%
+87190 ~ 87190 has 0.000000 computations in tri ratio = -nan%
+87190 ~ 87190 has 0.000000 computations in all
+all the columns in square are divided into 1472 part
+thread_number = 1472 thread_number_prior_level = 1408
+loop = 100
+print: 87190 87190 sizeof(bitInt) = 4 n/4+1 = 21798
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.011052
+solve: 000000000000000000000000000000000000000
+error of x results are: 57
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/rajat28.mtx: row 87190, col 87190, nnz 607235
+1111111111111111111111111
+sn_sum_final = 514
+max_level = 1490
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 648
+xa[max_level+1] = 87190
+xa[max_level+2] = 0
+asub_U_level[32309] = 44865 asub_U_level[32310] = 44866
+parallel part has 84633 columns paralle+wait has 87190 columns!
+max_level = 1490 sum_level = 42
+xa_trans[42] = 84633
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = -1
+i = 87160 xa_trans[max_level+1] = 87190 xa_trans[sum_level+1] = 84664
+sum_wait = 21689 all = 778507 i = 87190
+xa_trans[sum_level+1] = 84664
+xa_trans[max_level+1] = 87190
+start[0] = 0 end[0] = 3205
+prior_column = 87190 prior_column_c = 87190 next_column = 87190
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1376
+87190 ~ 87190 has 0.000000 computations in square ratio = -nan%
+87190 ~ 87190 has 0.000000 computations in tri ratio = -nan%
+87190 ~ 87190 has 0.000000 computations in all
+all the columns in square are divided into 1440 part
+thread_number = 1440 thread_number_prior_level = 1376
+loop = 100
+print: 87190 87190 sizeof(bitInt) = 4 n/4+1 = 21798
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.012517
+solve: 000000000000000000000000000000000000000
+error of x results are: 57
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/rajat30.mtx: row 643994, col 643994, nnz 6175377
+1111111111111111111111111
+sn_sum_final = 5249
+max_level = 2759
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 6218
+xa[max_level+1] = 643994
+xa[max_level+2] = 0
+asub_U_level[32309] = 49387 asub_U_level[32310] = 49389
+parallel part has 636980 columns paralle+wait has 643994 columns!
+max_level = 2759 sum_level = 204
+xa_trans[204] = 636980
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 643987 xa_trans[max_level+1] = 643994 xa_trans[sum_level+1] = 637011
+sum_wait = 37326 all = 4805564 i = 643994
+xa_trans[sum_level+1] = 637011
+xa_trans[max_level+1] = 643994
+start[0] = 0 end[0] = 21569
+prior_column = 643994 prior_column_c = 643994 next_column = 643994
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 6560
+643994 ~ 643994 has 0.000000 computations in square ratio = -nan%
+643994 ~ 643994 has 0.000000 computations in tri ratio = -nan%
+643994 ~ 643994 has 0.000000 computations in all
+all the columns in square are divided into 6624 part
+thread_number = 6624 thread_number_prior_level = 6560
+loop = 100
+print: 643994 643994 sizeof(bitInt) = 4 n/4+1 = 160999
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.112007
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/scircuit.mtx: row 170998, col 170998, nnz 958936
+1111111111111111111111111
+sn_sum_final = 1770
+max_level = 894
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 1097
+xa[max_level+1] = 170998
+xa[max_level+2] = 0
+asub_U_level[32309] = 98151 asub_U_level[32310] = 98152
+parallel part has 167573 columns paralle+wait has 170998 columns!
+max_level = 894 sum_level = 120
+xa_trans[120] = 167573
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 170996 xa_trans[max_level+1] = 170998 xa_trans[sum_level+1] = 167604
+sum_wait = 10444 all = 317592 i = 170998
+xa_trans[sum_level+1] = 167604
+xa_trans[max_level+1] = 170998
+start[0] = 0 end[0] = 1864
+prior_column = 170998 prior_column_c = 170998 next_column = 170998
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 3872
+170998 ~ 170998 has 0.000000 computations in square ratio = -nan%
+170998 ~ 170998 has 0.000000 computations in tri ratio = -nan%
+170998 ~ 170998 has 0.000000 computations in all
+all the columns in square are divided into 3936 part
+thread_number = 3936 thread_number_prior_level = 3872
+loop = 100
+print: 170998 170998 sizeof(bitInt) = 4 n/4+1 = 42750
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.008403
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/transient.mtx: row 178866, col 178866, nnz 961790
+1111111111111111111111111
+sn_sum_final = 317
+max_level = 975
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 429
+xa[max_level+1] = 178866
+xa[max_level+2] = 0
+asub_U_level[32309] = 65798 asub_U_level[32310] = 65799
+parallel part has 177099 columns paralle+wait has 178866 columns!
+max_level = 975 sum_level = 33
+xa_trans[33] = 177099
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 178858 xa_trans[max_level+1] = 178866 xa_trans[sum_level+1] = 177130
+sum_wait = 13912 all = 474478 i = 178866
+xa_trans[sum_level+1] = 177130
+xa_trans[max_level+1] = 178866
+start[0] = 0 end[0] = 3197
+prior_column = 178866 prior_column_c = 178866 next_column = 178866
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 1088
+178866 ~ 178866 has 0.000000 computations in square ratio = -nan%
+178866 ~ 178866 has 0.000000 computations in tri ratio = -nan%
+178866 ~ 178866 has 0.000000 computations in all
+all the columns in square are divided into 1152 part
+thread_number = 1152 thread_number_prior_level = 1088
+loop = 100
+print: 178866 178866 sizeof(bitInt) = 4 n/4+1 = 44717
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.011163
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset1/twotone.mtx: row 120750, col 120750, nnz 1224224
+1111111111111111111111111
+sn_sum_final = 1552
+max_level = 2267
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 1254
+xa[max_level+1] = 120750
+xa[max_level+2] = 0
+asub_U_level[32309] = 84667 asub_U_level[32310] = 84668
+parallel part has 115995 columns paralle+wait has 120750 columns!
+max_level = 2267 sum_level = 100
+xa_trans[100] = 115995
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 120728 xa_trans[max_level+1] = 120750 xa_trans[sum_level+1] = 116024
+sum_wait = 32552 all = 3265272 i = 120750
+xa_trans[sum_level+1] = 116024
+xa_trans[max_level+1] = 120750
+start[0] = 0 end[0] = 2917
+prior_column = 120750 prior_column_c = 120750 next_column = 120750
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 3232
+120750 ~ 120750 has 0.000000 computations in square ratio = -nan%
+120750 ~ 120750 has 0.000000 computations in tri ratio = -nan%
+120750 ~ 120750 has 0.000000 computations in all
+all the columns in square are divided into 3296 part
+thread_number = 3296 thread_number_prior_level = 3232
+loop = 100
+print: 120750 120750 sizeof(bitInt) = 4 n/4+1 = 30188
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 0.104640
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset0/memchip.mtx: row 2707524, col 2707524, nnz 14810202
+1111111111111111111111111
+sn_sum_final = 19972
+max_level = 14139
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 27517
+xa[max_level+1] = 2707524
+xa[max_level+2] = 0
+asub_U_level[32309] = 121575 asub_U_level[32310] = 121580
+parallel part has 2679268 columns paralle+wait has 2707524 columns!
+max_level = 14139 sum_level = 382
+xa_trans[382] = 2679268
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 2707523 xa_trans[max_level+1] = 2707524 xa_trans[sum_level+1] = 2679299
+sum_wait = 206287 all = 46256697 i = 2707524
+xa_trans[sum_level+1] = 2679299
+xa_trans[max_level+1] = 2707524
+start[0] = 0 end[0] = 22133
+prior_column = 2707524 prior_column_c = 2707524 next_column = 2707524
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 12256
+2707524 ~ 2707524 has 0.000000 computations in square ratio = -nan%
+2707524 ~ 2707524 has 0.000000 computations in tri ratio = -nan%
+2707524 ~ 2707524 has 0.000000 computations in all
+all the columns in square are divided into 12320 part
+thread_number = 12320 thread_number_prior_level = 12256
+loop = 100
+print: 2707524 2707524 sizeof(bitInt) = 4 n/4+1 = 676882
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 2.604775
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********/home/username/exper_dataset0/rajat31.mtx: row 4690002, col 4690002, nnz 20316253
+1111111111111111111111111
+sn_sum_final = 139331
+max_level = 12220
+33333333333333333333333333333333
+444444444444444444444444444444444444
+sum_sn_in_U = 136215
+xa[max_level+1] = 4690002
+xa[max_level+2] = 82033
+asub_U_level[32309] = 38612 asub_U_level[32310] = 38613
+parallel part has 4664449 columns paralle+wait has 4690002 columns!
+max_level = 12220 sum_level = 546
+xa_trans[546] = 4664449
+BEFORE WAIT FUNC: num_thread = 32
+no_wait[95273] = 1
+i = 4689980 xa_trans[max_level+1] = 4690002 xa_trans[sum_level+1] = 4664476
+sum_wait = 174370 all = 56411384 i = 4690002
+xa_trans[sum_level+1] = 4664476
+xa_trans[max_level+1] = 4690002
+start[0] = 0 end[0] = 48857
+prior_column = 4690002 prior_column_c = 4690002 next_column = 4690002
+sum_square_computation_start_index[-1] = 0 sum_square_computation_end_index[-1] = 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!sum_tri = 0.000000
+thread_number = 17504
+4690002 ~ 4690002 has 0.000000 computations in square ratio = -nan%
+4690002 ~ 4690002 has 0.000000 computations in tri ratio = -nan%
+4690002 ~ 4690002 has 0.000000 computations in all
+all the columns in square are divided into 17568 part
+thread_number = 17568 thread_number_prior_level = 17504
+loop = 100
+print: 4690002 4690002 sizeof(bitInt) = 4 n/4+1 = 1172501
+Average Time of LU_GP_ssn_column_storage_multi_row_computing: 4.587980
+solve: 000000000000000000000000000000000000000
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
