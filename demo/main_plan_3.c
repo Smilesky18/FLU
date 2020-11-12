@@ -274,22 +274,65 @@ int main( int argc[], char *argv[])
     memset(sn_column_end, 0, sizeof(int) * sn_sum);
     int *sn_num_record = (int *)malloc(sizeof(int) * n);
     memset(sn_num_record, -1, sizeof(int) * n); 
+	int *sn_number_cou = (int *)malloc(sizeof(int) * n);
+	memset(sn_number_cou, 0, sizeof(int) * n);
+	double sum = 0; 
 
-    double sum = 0; 
+    /*for ( i = 0; i <= sn_sum; i++ )
+    {
+		if ( sn_end[i] - sn_start[i] >= col_thresold ) 
+		{
+			for ( j = sn_start[i]; j <= sn_end[i]; j++ )
+			{
+				sn_record[j] = sn_end[i] - j;
+				sn_num_record[j] = sn_sum_final;
+				sn_number_cou[j] = sn_end[i] - sn_start[i] + 1;
+			}
+			sn_column_start[sn_sum_final] = sn_start[i];
+			sn_column_end[sn_sum_final] = sn_end[i];
+			sn_sum_final++;
+		}
+    }*/
+
+	int sn_div;
+	int thre_1 = atoi(argv[12]);
+	int thre_2 = atoi(argv[13]);
+	int sn_j;
+
     for ( i = 0; i <= sn_sum; i++ )
     {
-	if ( sn_end[i] - sn_start[i] >= col_thresold ) 
-	{
-		for ( j = sn_start[i]; j <= sn_end[i]; j++ )
-            	{
-                	sn_record[j] = sn_end[i] - j;
+		if ( sn_end[i] - sn_start[i] >= col_thresold ) 
+		{
+			if ( sn_end[i] - sn_start[i] + 1 > thre_1 )
+			{
+				for ( j = sn_start[i]; j <= sn_end[i]; j+=thre_2 )
+				{
+					if ( j+thre_2 <= sn_end[i] )
+					{
+						for ( sn_j = 0; sn_j < thre_2; sn_j++ )
+						{
+							sn_record[j+sn_j] = thre_2 - 1 - sn_j;
+						}
+					}
+					sn_column_start[sn_sum_final] = j;
+					sn_column_end[sn_sum_final] = j+3;
+					sn_sum_final++;
+					sum += 4;
+				}
+			}
+			else
+			{
+				for ( j = sn_start[i]; j <= sn_end[i]; j++ )
+				{
+					sn_record[j] = sn_end[i] - j;
 					sn_num_record[j] = sn_sum_final;
-            	}
-		sn_column_start[sn_sum_final] = sn_start[i];
-		sn_column_end[sn_sum_final] = sn_end[i];
-        sn_sum_final++;
-		sum += sn_end[i] - sn_start[i] + 1;
-	}
+					sn_number_cou[j] = sn_end[i] - sn_start[i] + 1;
+				}
+				sn_column_start[sn_sum_final] = sn_start[i];
+				sn_column_end[sn_sum_final] = sn_end[i];
+				sn_sum_final++;
+			}
+		}
     }
 
 	printf("sn_sum_final = %d\n", sn_sum_final);
@@ -1541,7 +1584,7 @@ int main( int argc[], char *argv[])
 		}
 		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next_barrier(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, i, xa_trans[max_level+1], xa_trans, wait_col_index, wait_index, no_wait);*/
 
-		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, sum_level+1, max_level+1, xa_trans, wait_col_index, wait_index, no_wait);
+		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, sum_level+1, max_level+1, xa_trans, wait_col_index, wait_index, no_wait, sn_number_cou);
 
 		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, prior_column_c, next_column, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, (thread_number-thread_number_prior_level-1)/num_thread, asub_U_level, seperator_in_column_2, sign, ux, lx, thread_number_prior_level, thread_number, tag, assign);
 
