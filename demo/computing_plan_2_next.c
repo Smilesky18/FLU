@@ -28,7 +28,7 @@
 
 
 
-double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, int *sn_num_record, int *sn_column_start, int *sn_column_end, int sn_sum, int *flag, double *nic_x, int num_thread, int thread_number, int *start, int *end, int *seperator_in_column, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int thread_number_prior_level, int *asub_U_level, int *seperator_in_column_2, double *lx, double *ux, char *tag, int sum_level, int max_level, int *xa_trans, int *wait_col_index, char *wait_index, char *no_wait)
+double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, int *sn_num_record, int *sn_column_start, int *sn_column_end, int sn_sum, int *flag, double *nic_x, int num_thread, int thread_number, int *start, int *end, int *seperator_in_column, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int thread_number_prior_level, int *asub_U_level, int *seperator_in_column_2, double *lx, double *ux, char *tag, int sum_level, int max_level, int *xa_trans, int *wait_col_index, char *wait_index, char *no_wait, int *sn_number)
 {
    omp_set_num_threads(num_thread);
 //    for ( int i = 0; i < nzu; i++ )
@@ -62,7 +62,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 
 	#pragma omp for schedule(static, 1)	
 	for ( kk = xa_trans[0]; kk < xa_trans[max_level]; kk++ )
-	// for ( kk = xa_trans[sum_level]+thread_number; kk < xa_trans[sum_level]+thread_number+num_thread; kk++ )
+	// for ( k = 0; k < n; k++ )
 	  {
 		  {
 			//   for ( kk = start[m]; kk <= end[m]; kk++ )
@@ -207,13 +207,13 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 				  column_next = row_ptr_U[val+column_number_sn-1];
 				//   wait = (volatile char *)&(tag[column_start/4].boolvec[column_start%4]);
 				//   wait = (volatile char*)&(tag[column_next/4].boolvec[column_next%4]);
-				if(column_number_sn > 8)
+				/*if(column_number_sn > 8)
 				  wait = (volatile char*)&(tag[column_next -column_number_sn + 4]);
 				  else
 				  {
 					  wait = (volatile char*)&(tag[column_next]);
-				  }
-				  
+				  }*/
+				  wait = (volatile char*)&(tag[column_next]);
 				  while ( !(*wait) ) 
 				  { 
 					// printf("func: %d no_wait[%d] = %d tag[%d] = %d\n", val2, column_next, no_wait[column_next], column_next, tag[column_next]);
@@ -236,6 +236,13 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 				  
 				  else
 				  {
+					//   if ( column_number_sn != sn_number[column_start] )
+					//   {
+					// 	  if ( column_start != sn_column_start[sn_num_record[column_start]] )
+					// 	  	printf("%d %d\n", column_start, sn_column_start[sn_num_record[column_start]]);
+					//   }
+							// printf("%d %d\n", column_start, sn_column_start[sn_num_record[column_start]]);
+						//   printf("%d %d\n", column_number_sn, sn_number[column_start]);
 					  column_sn_end = row_ptr_U[val+column_number_sn-1];
 					  row_num = offset_L[column_sn_end+1] - offset_L[column_sn_end] - 1;
 					  row_count = offset_L[column_start + 1] - offset_L[column_start] - 1;
