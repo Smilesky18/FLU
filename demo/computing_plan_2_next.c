@@ -209,7 +209,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 				//   wait = (volatile char*)&(tag[column_next/4].boolvec[column_next%4]);
 
 				  wait = (volatile char*)&(tag[column_next]);
-
+					
 				  while ( !(*wait) ) 
 				  { 
 					// printf("func: %d no_wait[%d] = %d tag[%d] = %d\n", val2, column_next, no_wait[column_next], column_next, tag[column_next]);
