@@ -1638,7 +1638,7 @@ int main( int argc[], char *argv[])
 		}
     	printf("error of x results are: %d\n", error_nic);*/
 
-	    //  printf("Time of All columns: %lf\n", t_e);
+	      printf("Time of All columns: %lf\n", t_e);
 		
 		/*for(int i=0; i<num_thread; i++){
        xx2[i] = xx1[i] + n;

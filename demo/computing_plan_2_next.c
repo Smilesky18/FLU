@@ -207,12 +207,9 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 				  column_next = row_ptr_U[val+column_number_sn-1];
 				//   wait = (volatile char *)&(tag[column_start/4].boolvec[column_start%4]);
 				//   wait = (volatile char*)&(tag[column_next/4].boolvec[column_next%4]);
-				if(column_number_sn > 8)
-				  wait = (volatile char*)&(tag[column_next -column_number_sn + 4]);
-				  else
-				  {
-					  wait = (volatile char*)&(tag[column_next]);
-				  }
+
+				wait = (volatile char*)&(tag[column_next]);
+
 				  
 				  while ( !(*wait) ) 
 				  { 
