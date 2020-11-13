@@ -72,7 +72,7 @@ int main( int argc[], char *argv[])
         goto EXIT;
     }
     cfg[0] = 1.; /*enable timer*/
-//    cfg[3] = 4;
+   // cfg[3] = 4;
     /*pre-ordering (do only once)*/
     NicsLU_Analyze(solver, n, ax, ai, ap, MATRIX_COLUMN_REAL, NULL, NULL, NULL, NULL);
 

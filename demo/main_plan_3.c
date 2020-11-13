@@ -10,6 +10,10 @@
 #include <immintrin.h>
 #include <omp.h>
 # include <math.h>
+
+#include "mkl_pardiso.h"
+#include "mkl_types.h"
+#include "mkl_spblas.h"
 #define MICRO_IN_SEC 1000000.00
 
 typedef union{
@@ -178,8 +182,20 @@ int main( int argc[], char *argv[])
     lp = (_size_t *)malloc(sizeof(_size_t)*(1+n));
     up = (_size_t *)malloc(sizeof(_size_t)*(1+n));
 	
-    ReadMatrixMarketFile(argv[1], &row, &col, &nz, ax, ai, ap, NULL, NULL, NULL);
+    ReadMatrixMarketFile(argv[1], &row, &col, &nz, ax, ai, ap, NULL, NULL, NULL); // CSC Read
     printf("***********%s: row %d, col %d, nnz %d\n", argv[1], n, n, nnz);
+	// SparseTranspose(n, ax, ai, ap, 0); //Matrix transpose, CSR Read
+
+	/*for ( int i = 0; i < n; i++ )
+    {
+        printf("column %d: ", i);
+        for ( int j = ap[i]; j < ap[i+1]; j++ )
+        {
+            printf("%d ", ai[j]);
+        }
+        printf("\n");
+    }*/
+
 
     /*read RHS B*/
     b = (_double_t *)malloc(sizeof(_double_t)*n);
@@ -196,6 +212,7 @@ int main( int argc[], char *argv[])
         goto EXIT;
     }
     cfg[0] = 1.; /*enable timer*/
+	// cfg[3] = 4;
 
     /*pre-ordering (do only once)*/
     NicsLU_Analyze(solver, n, ax, ai, ap, MATRIX_COLUMN_REAL, NULL, NULL, NULL, NULL);
@@ -522,6 +539,7 @@ int main( int argc[], char *argv[])
 	double sum_tt = 0;
 
 	printf("loop = %d\n", loop);
+	printf("Number of nonzeros in factors = %d\n", lnz+unz);
 	// int thresold = atoi(argv[3]);
 	int thresold = 4;
 	// bitInt *tag = (bitInt *)_mm_malloc(sizeof(bitInt) * (n/4 + 1),64);
