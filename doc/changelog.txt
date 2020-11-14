@@ -1,8 +1,9 @@
-v202003
-* Add NicsLU_Analyze2 and NicsLU_Analyze3 to support constraint ordering
-* Function of NicsLU_SetThreadSchedule changed
+v202006
+* Performance improvement in factorization (2%-10%) and solving (3%-25%)
+* Ordering methods reconstructed (average ~10% improvement in flops)
+* Functionality of NicsLU_SetThreadSchedule changed
 * Updated utility routines
-* Minor updates in configuration
+* Minor updates in configurations & statistics
 
 v201905B
 * Memory optimization for ordering algorithms

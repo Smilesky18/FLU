@@ -21,6 +21,12 @@ size_t         4            8           4          8
 #ifndef __NICS_COMMON__
 #define __NICS_COMMON__
 
+#ifdef _WIN32
+/*to avoid some STUPID errors on visual studio 2017*/
+#define _CRT_SECURE_NO_WARNINGS		1
+#define _CRT_NONSTDC_NO_WARNINGS	1
+#endif
+
 #include <stddef.h>
 
 /*check system*/

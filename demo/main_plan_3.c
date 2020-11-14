@@ -11,9 +11,6 @@
 #include <omp.h>
 # include <math.h>
 
-#include "mkl_pardiso.h"
-#include "mkl_types.h"
-#include "mkl_spblas.h"
 #define MICRO_IN_SEC 1000000.00
 
 typedef union{
@@ -148,7 +145,9 @@ const char *const ORDERING_METHODS[] = { "AMD", "mAMD", "AMF","mAMF1","mAMF2","m
 int main( int argc[], char *argv[])
 {
     _double_t *ax = NULL, *b = NULL, *x = NULL, *x_lu_gp = NULL;
+	_double_t *ax_csr = NULL;
     _uint_t *ai = NULL, *ap = NULL;
+	_uint_t *ai_csr = NULL, *ap_csr = NULL;
     _uint_t n, row, col, nz, nnz, i, j;
     _handle_t solver = NULL;
     _double_t res[4], cond, det1, det2, fflop, sflop;
@@ -172,6 +171,9 @@ int main( int argc[], char *argv[])
     ax = (_double_t *)malloc(sizeof(_double_t)*nnz);
     ai = (_uint_t *)malloc(sizeof(_uint_t)*nnz);
     ap = (_uint_t *)malloc(sizeof(_uint_t)*(1 + n));
+	ax_csr = (_double_t *)malloc(sizeof(_double_t)*nnz);
+	ai_csr = (_uint_t *)malloc(sizeof(_uint_t)*nnz);
+    ap_csr = (_uint_t *)malloc(sizeof(_uint_t)*(1 + n));
     
     row_perm = (_uint_t *)malloc(sizeof(_uint_t)*n);
     col_perm = (_uint_t *)malloc(sizeof(_uint_t)*n);
@@ -183,12 +185,21 @@ int main( int argc[], char *argv[])
     up = (_size_t *)malloc(sizeof(_size_t)*(1+n));
 	
     ReadMatrixMarketFile(argv[1], &row, &col, &nz, ax, ai, ap, NULL, NULL, NULL); // CSC Read
+	/*for ( int i = 0; i < nz; i++ ) 
+	{
+		ax[i] = ax_csr[i];
+		ai[i] = ai_csr[i];
+	}
+	for ( int i = 0; i < n+1; i++ )
+	{
+		ap[i] = ap_csr[i];
+	}*/
     printf("***********%s: row %d, col %d, nnz %d\n", argv[1], n, n, nnz);
-	// SparseTranspose(n, ax, ai, ap, 0); //Matrix transpose, CSR Read
+	// SparseTranspose(n, ax_csr, ai_csr, ap_csr, 0); //Matrix transpose, CSR Read
 
 	/*for ( int i = 0; i < n; i++ )
     {
-        printf("column %d: ", i);
+        printf("CSC column %d: ", i);
         for ( int j = ap[i]; j < ap[i+1]; j++ )
         {
             printf("%d ", ai[j]);
@@ -196,6 +207,15 @@ int main( int argc[], char *argv[])
         printf("\n");
     }*/
 
+	// for ( int i = 0; i < n; i++ )
+    // {
+    //     printf("CSR column %d ap_csr[%d] = %d: ", i, i, ap_csr[i]);
+    //     for ( int j = ap_csr[i]; j < ap_csr[i+1]; j++ )
+    //     {
+    //         printf("%d ", ai_csr[j]);
+    //     }
+    //     printf("\n");
+    // }
 
     /*read RHS B*/
     b = (_double_t *)malloc(sizeof(_double_t)*n);
@@ -211,8 +231,52 @@ int main( int argc[], char *argv[])
         printf("Failed to initialize\n");
         goto EXIT;
     }
+
+	// idx_t n_csr = (idx_t) n;
+	// idx_t *perm = (idx_t *)malloc(sizeof(idx_t) * n);
+	// idx_t *iperm = (idx_t *)malloc(sizeof(idx_t) * n);
+	// idx_t *my_xadj = (idx_t *)malloc(sizeof(idx_t) * n+1);
+	// idx_t *my_adjncy = (idx_t *)malloc(sizeof(idx_t) * nnz);
+	// idx_t Opt [20];
+	// idx_t *Opt2 = NULL;
+	// idx_t* zero = NULL;
+    // Opt [0] = 0 ;	/* use defaults */
+    // Opt [1] = 2 ;	/* matching type */
+    // Opt [2] = 1 ;	/* init. partitioning algo*/
+    // Opt [3] = 2 ;	/* refinement algorithm */
+    // Opt [4] = 2 ;	/* no debug */
+    // Opt [5] = 1 ;	/* initial compression */
+    // Opt [6] = 10 ;	/* no dense node removal */
+    // Opt [7] = 1 ;	/* number of separators @ each step */
+	// Opt [12] = 1;
+	// Opt [13] = 1;
+	// Opt [15] = 1;
+	// Opt [16] = 2;
+	// Opt [17] = 0;
+
+	// for ( int i = 0; i < n+1; i++ )
+	// {
+	// 	my_xadj[i] = (idx_t)ap_csr[i];
+	// 	printf("my_xadj[%d] = %d\n", i, my_xadj[i]);
+	// }
+	// for ( int i = 0; i < nnz; i++ )
+	// {
+	// 	my_adjncy[i] = (idx_t)ai_csr[i];
+	// 	printf("my_adjncy[%d] = %d\n", i, my_adjncy[i]);
+	// }
+
+	// // int *perm = (int *)malloc(sizeof(int) * n);
+	// // int *iperm = (int *)malloc(sizeof(int) * n);
+
+	// METIS_NodeND(&n_csr, my_xadj, my_adjncy, NULL, Opt, perm, iperm);
+
+	// for ( int i = 0; i < n; i++ )
+	// {
+	// 	printf("perm[%d] = %d\n", i, perm[i]);
+	// }
+
     cfg[0] = 1.; /*enable timer*/
-	// cfg[3] = 4;
+	// cfg[3] = 1;
 
     /*pre-ordering (do only once)*/
     NicsLU_Analyze(solver, n, ax, ai, ap, MATRIX_COLUMN_REAL, NULL, NULL, NULL, NULL);
@@ -693,7 +757,7 @@ int main( int argc[], char *argv[])
 	  if ( fabs(x[i]-x_real[i]) > 0.1 )
 	  {
 		  error_nic++;
-		//   printf("nicslu[%d] = %lf me[%d] = %lf\n", i, x[i], i, x_real[i]);
+		  printf("nicslu[%d] = %lf me[%d] = %lf\n", i, x[i], i, x_real[i]);
 	  }	
 	  // if ( fabs(lu_gp_x[i]-x_real[i]) > 0.1 )
 	  // {
