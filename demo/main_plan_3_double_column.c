@@ -10,11 +10,6 @@
 #include <immintrin.h>
 #include <omp.h>
 # include <math.h>
-#include "metis.h"
-
-// #include "mkl_pardiso.h"
-// #include "mkl_types.h"
-// #include "mkl_spblas.h"
 #define MICRO_IN_SEC 1000000.00
 
 typedef union{
@@ -29,7 +24,7 @@ typedef __attribute__((aligned(64))) union
     double ptr_vec[8];
   }v2df_t;
 
-typedef union
+  typedef union
   {
     __m256i vec;
     int ptr_vec[8];
@@ -133,40 +128,6 @@ int detect_U ( int *asub, int *xa, int lower_col, int higher_col, int *flag )
     return 0;
 }
  
-int dump( int a, int *arr, int n )
-{
-	for (int i = 0; i < n; i++ )
-	{
-		if ( a != arr[i] )
-		{
-			continue;
-		}
-		else
-		{
-			return 1;
-		}
-	}
-	return 0;
-}
-
-void bubble_sort(int *a, int n)
-{
-    int i, j;
-	int temp;
-    
-    for( i = 0; i < n-1; i++)
-    {
-        for( j = 0; j < n-1-i; j++)
-        {
-            if( a[j] > a[j+1] )
-            {
-                temp = a[j];
-                a[j] = a[j+1];
-                a[j+1] = temp;
-            }
-        }
-    }
-}
 
 /* Time Stamp */
 double microtime()
@@ -222,67 +183,9 @@ int main( int argc[], char *argv[])
     lp = (_size_t *)malloc(sizeof(_size_t)*(1+n));
     up = (_size_t *)malloc(sizeof(_size_t)*(1+n));
 	
-    ReadMatrixMarketFile(argv[1], &row, &col, &nz, ax_csr, ai_csr, ap_csr, NULL, NULL, NULL); // CSC Read
-
-	for ( int i = 0; i < nz; i++ ) 
-	{
-		ax[i] = ax_csr[i];
-		ai[i] = ai_csr[i];
-	}
-	for ( int i = 0; i < n+1; i++ )
-	{
-		ap[i] = ap_csr[i];
-	}
+    ReadMatrixMarketFile(argv[1], &row, &col, &nz, ax, ai, ap, NULL, NULL, NULL); // CSC Read
     printf("***********%s: row %d, col %d, nnz %d\n", argv[1], n, n, nnz);
-	/*SparseTranspose(n, ax_csr, ai_csr, ap_csr, 0); //Matrix transpose, CSR Read
-
-	int *array = (int *)malloc(sizeof(int) * n);
-	memset(array, -1, sizeof(int) * n);
-	int array_index = 0;
-	int array_length;
-	int couter = 0;
-	int *aa_ap = (int *)malloc(sizeof(int) * n+1);
-	int *aa_ai = (int *)malloc(sizeof(int) * 2*nnz);
-	aa_ap[0] = 0;
-
-	for ( i = 0; i < n; i++ )
-	{
-		array_index = 0;
-		for ( j = ap[i]; j < ap[i+1]; j++ )
-		{
-			if ( ai[j] != i )
-				array[array_index++] = ai[j];
-		}
-		array_length = array_index;
-		for ( j = ap_csr[i]; j < ap_csr[i+1]; j++ )
-		{
-			if ( !dump(ai_csr[j], array, array_length) && ai_csr[j] != i )
-				array[array_index++] = ai_csr[j];
-		}
-		bubble_sort(array, array_index);
-		aa_ap[i+1] = aa_ap[i] + array_index;
-		couter = 0;
-		for ( int k = aa_ap[i]; k < aa_ap[i+1]; k++ )
-		{
-			aa_ai[k] = array[couter++];
-		}
-	}*/
-	
-	/*for ( i = 0; i < n; i++ )
-	{
-		array_index = 0;
-		for ( j = ap[i]; j < ap[i+1]; j++ )
-		{
-			if ( ai[j] != i )
-				array[array_index++] = ai[j];
-		}
-		aa_ap[i+1] = aa_ap[i] + array_index;
-		couter = 0;
-		for ( int k = aa_ap[i]; k < aa_ap[i+1]; k++ )
-		{
-			aa_ai[k] = array[couter++];
-		}
-	}*/
+	// SparseTranspose(n, ax_csr, ai_csr, ap_csr, 0); //Matrix transpose, CSR Read
 
     /*read RHS B*/
     b = (_double_t *)malloc(sizeof(_double_t)*n);
@@ -298,116 +201,26 @@ int main( int argc[], char *argv[])
         printf("Failed to initialize\n");
         goto EXIT;
     }
-
-	idx_t n_csr = (idx_t) n;
-	idx_t *perm = (idx_t *)malloc(sizeof(idx_t) * n);
-	idx_t *iperm = (idx_t *)malloc(sizeof(idx_t) * n);
-	idx_t *my_xadj = (idx_t *)malloc(sizeof(idx_t) * n+1);
-	idx_t *my_adjncy = (idx_t *)malloc(sizeof(idx_t) * nnz);
-	idx_t Opt [20];
-	idx_t *Opt2 = NULL;
-	idx_t* zero = NULL;
-
-	/*for ( int i = 0; i < n+1; i++ )
-	{
-		my_xadj[i] = (idx_t)ap_csr[i];
-		printf("my_xadj[%d] = %d\n", i, my_xadj[i]);
-	}
-	for ( int i = 0; i < ap_csr[n]; i++ )
-	{
-		my_adjncy[i] = (idx_t)ai_csr[i];
-		printf("my_adjncy[%d] = %d\n", i, my_adjncy[i]);
-	}*/
-
-	// int *perm = (int *)malloc(sizeof(int) * n);
-	// int *iperm = (int *)malloc(sizeof(int) * n);
-
-	printf("BEFORE METIS!\n");
-	// METIS_NodeND(&n_csr, aa_ap, aa_ai, NULL, NULL, perm, iperm);
-	printf("AFTER METIS!\n");
-	for ( int i = 0; i < n; i++ )
-	{
-		// col_perm[i] = perm[i];
-		// row_perm[i] = perm[i];
-		// printf("perm[%d] = %d col_perm[%d] = %d\n", i, perm[i], i, col_perm[i]);
-	}
-
+ 
     cfg[0] = 1.; /*enable timer*/
 	// cfg[3] = 1;
 
     /*pre-ordering (do only once)*/
-
-	printf("BEFORE Analyze! row_perm[888] = %d col_perm[2000] = %d\n", row_perm[888], col_perm[2000]);
-	// row_perm[888] = 5;
-	// col_perm[2000] = 543;
-    NicsLU_Analyze(solver, n, ax, ai, ap, MATRIX_COLUMN_REAL, row_perm, col_perm, NULL, NULL);
-	printf("AFTER Analyze! row_perm[888] = %d col_perm[2000] = %d\n", row_perm[888], col_perm[2000]);
-
-	/*int *perm_ap = (int *)malloc(sizeof(int) * n+1);
-	int *perm_ai = (int *)malloc(sizeof(int) * nnz);
-	int *perm_col = (int *)malloc(sizeof(int) * n);
-	perm_ap[0] = 0;
-	int col_num, kkk;
-
-	for ( int i = 0; i < n; i++ )
-	{
-		col_num = ap[col_perm[i]+1] - ap[col_perm[i]];
-		perm_ap[i+1] = perm_ap[i] + col_num;
-
-		for ( int j = perm_ap[i], kkk = ap[col_perm[i]]; j < perm_ap[i+1], kkk < ap[col_perm[i]+1]; j++, kkk++ )
-		{
-			perm_ai[j] = row_perm[ai[kkk]];
-		}
-
-		bubble_sort(&perm_ai[perm_ap[i]], col_num);
-	}
-	char fi[20] = "dataset_perm.bmp";
-	SparseDraw(n, perm_ai, perm_ap, fi, 2048);*/
-	// for ( int i = 0; i < n; i++ )
-	// {
-	// 	printf("%d %d\n", row_perm[i], col_perm[i]);
-	// }
+    NicsLU_Analyze(solver, n, ax, ai, ap, MATRIX_COLUMN_REAL, NULL, NULL, NULL, NULL);
 
     /*create threads (do only once)*/
     NicsLU_CreateThreads(solver, 0); /*use all physical cores*/
     /*factor & solve (first-time)*/
     NicsLU_FactorizeMatrix(solver, ax, 0); /*use all created threads*/
-	printf("FACT time: %lf\n", stat[1]);
-
-	// char fi2[20] = "lu.bmp";
-	// NicsLU_DrawFactors(solver, fi2, 2048);
-
-	// double time = 0;
-    // int th2 = atoi(argv[2]);
-    // int loop2 = atoi(argv[3]);
-    // double t1, t2;
-
-    // for (j = 0; j < loop2; ++j) /*do 5 iterations*/
-    // {
-    //     /*matrix and RHS values change*/
-    //     //for (i = 0; i < nnz; ++i) ax[i] *= (_double_t)rand() / RAND_MAX * 2.;
-    //     //for (i = 0; i < n; ++i) b[i] *= (_double_t)rand() / RAND_MAX * 2.;
-
-	// 	t1 = microtime();
-    //     NicsLU_ReFactorize(solver, ax, th2);
-	// 	t2 = microtime() - t1;
-    //     printf("re-factor [%d] time: %g\n", j + 1, t2);
-    //     time += t2;
-    // }
-	// printf("Average time of NicSLU is: %lf\n", time/loop2);
-
 
     /* Get L/U structural information from NicSLU */
     lx = (_double_t *)malloc(sizeof(_double_t) * stat[9]);
     ux = (_double_t *)malloc(sizeof(_double_t) * stat[10]);
     li = (_uint_t *)malloc(sizeof(_uint_t) * stat[9]);
     ui = (_uint_t *)malloc(sizeof(_uint_t) * stat[10]);
-	printf("BEFORE GetFactors!\n");
     NicsLU_GetFactors(solver, lx, li, lp, ux, ui, up, sort, row_perm, col_perm, row_scale, col_scale);
     for (i = 0; i < n; i++) col_perm_inv[col_perm[i]] = i;
     for (i = 0; i < n; i++) row_perm_inv[row_perm[i]] = i;
-	printf("AFTER GetFactors! row_perm[888] = %d col_perm[2000] = %d\n", row_perm[888], col_perm[2000]);
-	printf("AFTER GetFactors! row_perm_inv[888] = %d col_perm_inv[2000] = %d\n", row_perm_inv[888], col_perm_inv[2000]);
     
     int lnz = (int)stat[10]; // Number of non-zeros in L 
     int unz = (int)stat[9];  // Numbe of non-zeros in U
@@ -459,10 +272,10 @@ int main( int argc[], char *argv[])
 	int *sn_number_cou = (int *)malloc(sizeof(int) * n);
 	memset(sn_number_cou, 0, sizeof(int) * n);
 	double sum = 0; 
-	int bad_sn = 0;
+	/*int bad_sn = 0;
 	int divid;
 
-    /*for ( i = 0; i <= sn_sum; i++ )
+    for ( i = 0; i <= sn_sum; i++ )
     {
 		if ( sn_end[i] - sn_start[i] >= col_thresold ) 
 		{
@@ -492,8 +305,8 @@ int main( int argc[], char *argv[])
     }*/
 
 	int sn_div;
-	// int thre_1 = atoi(argv[4]);
-	// int thre_2 = atoi(argv[5]);
+	// int thre_1 = atoi(argv[12]);
+	// int thre_2 = atoi(argv[13]);
 	int thre_1 = 8;
 	int thre_2 = 4;
 	int sn_j;
@@ -595,12 +408,12 @@ int main( int argc[], char *argv[])
 			sum_level = i;
 			break; 
 		}
+		else
+		{
+			sum_more_than_16_columns += level[i];
+		}
 	}
-	for ( i = 0; i < sum_level+1; i++ )
-	{
-		sum_more_than_16_columns += level[i];
-	}
-	printf("max_level = %d sum_level = %d sum_more_than_num_thread_columns = %d\n", max_level, sum_level, sum_more_than_16_columns);
+	printf("max_level = %d sum_level = %d\n", max_level, sum_level);
 
 	char *no_wait = (char *)malloc(sizeof(char) * n);
 	memset(no_wait, 0, sizeof(char) * n);
@@ -677,7 +490,185 @@ int main( int argc[], char *argv[])
 				sum_whe_wait++;
 			}
 	}
+printf("Before file process!\n");
+	/* file process */
+    FILE *file;
+    file = fopen(argv[4], "r");
+    int *flag;
+    flag = (int *)malloc(sizeof(int) * n);
+    memset(flag, 0, sizeof(int) * n);
+	int *flag_computation;
+    flag_computation = (int *)malloc(sizeof(int) * n);
+    memset(flag_computation, 0, sizeof(int) * n);
+    // prior_column = (int *)malloc(sizeof(int) * n);
+    // memset(prior_column, 0, sizeof(int) * n);
+    int *column_counter, *column_pos_start, *column_sn_number, *column_j_number, *sn_column_start_arr, *sn_column_end_arr;
+    column_counter = (int *)malloc(sizeof(int) * n);
+    memset(column_counter, 0, sizeof(int) * n);
+    column_pos_start = (int *)malloc(sizeof(int) * n);
+    memset(column_pos_start, 0, sizeof(int) * n);
+    column_sn_number = (int *)malloc(sizeof(int) * 2*n);
+    memset(column_sn_number, 0, sizeof(int) * 2*n);
+    column_j_number = (int *)malloc(sizeof(int) * 2*n);
+    memset(column_j_number, 0, sizeof(int) * 2*n);
+    sn_column_start_arr = (int *)malloc(sizeof(int) * 2*n);
+    memset(sn_column_start_arr, 0, sizeof(int) * 2*n);
+    sn_column_end_arr = (int *)malloc(sizeof(int) * 2*n);
+    memset(sn_column_end_arr, 0, sizeof(int) * 2*n);
 
+    int column, sn_number, j_number, columns_number, sn_column_start_file, sn_column_end_file;
+    int p_file = 0;
+    int sum_p_file = 0;
+    int thre = atoi(argv[5]);
+
+    while( fscanf(file, "%d %d %d %d %d %d\n", &column, &sn_number, &j_number, &columns_number, &sn_column_start_file, &sn_column_end_file) == 6 )
+    {
+	    if ( !column_counter[column] )
+	    {
+		    column_pos_start[column] = p_file;
+		    column_sn_number[p_file] = sn_number;
+		    column_j_number[p_file] = j_number;
+		    sn_column_start_arr[p_file] = sn_column_start_file;
+		    sn_column_end_arr[p_file] = sn_column_end_file;
+		    column_counter[column]++;
+		    p_file++;
+	    }
+	    else
+	    {
+		    column_counter[column]++;
+		    column_sn_number[p_file] = sn_number;
+		    column_j_number[p_file] = j_number;
+		    sn_column_start_arr[p_file] = sn_column_start_file;
+		    sn_column_end_arr[p_file] = sn_column_end_file;
+		    p_file++;
+	    }
+    }
+
+    int min_counter, start_pos, end_pos, sum_equal, pack, sum_sn_in_U, pack1, pack2, k, sum_sub, j_record, k_record, sum_sub_start;
+    sum_equal = 0;
+    sum_sn_in_U = 0;
+    pack1 = 0;
+    pack2 = 0;
+	int sum_sn_in_double_col = 0;
+
+    for ( i = 0; i < n-1; i+=pack )
+    {
+	    if ( !column_counter[i] & !column_counter[i+1] ) 
+	    {
+		    pack = 2; 
+		    continue;
+	    }
+	    else if ( !column_counter[i] & column_counter[i+1] ) 
+	    {
+		    pack = 1; 
+		    continue;
+	    }
+	    else if ( column_counter[i] & !column_counter[i+1] ) 
+	    {
+		    pack = 2; 
+		    continue;
+	    }
+	    else
+	    {
+		    start_pos = column_pos_start[i];
+		    end_pos = column_pos_start[i+1];
+		    sum_equal = 0;
+		    sum_sub = 0;
+		    sum_sub_start = 0;
+		    for ( j = start_pos, k = end_pos; j < start_pos+column_counter[i] && k < end_pos+column_counter[i+1]; j+=pack1, k+=pack2 )
+		    {
+			    if ( column_sn_number[j] == column_sn_number[k] )
+			    {
+				    pack1 = 1;
+				    pack2 = 1;
+				    sum_equal++;
+				    if ( sn_column_start_arr[j] != sn_column_start_arr[k] ) sum_sub_start ++;
+				    if ( sn_column_end_arr[j] != sn_column_end_arr[k] ) 
+				    {
+					    sum_sub ++;
+					    j_record = j;
+					    k_record = k;
+				    }
+			    }
+			    else if ( column_sn_number[j] < column_sn_number[k] )
+			    {
+				    pack1 = 1;
+				    pack2 = 0;
+			    }
+			    else
+			    {
+				    pack1 = 0; 
+				    pack2 = 1;
+			    }
+		    }
+		    if ( sum_equal >= thre ) 
+		    {
+			    if ( sum_sub > 0 || row_ptr_U[offset_U[i+2]-2] == i )
+			    {
+					// if ( row_ptr_U[offset_U[i+2]-2] != i ) printf(" != 0!\n");
+					// printf("sum_sub = %d ", sum_sub);
+				    // flag[i] = 1;
+				    /*flag[i+1] = 1;
+					flag_computation[i] = i;
+					flag_computation[i+1] = i; */
+					if ( length[i+1] - length[i] == 1 ) 
+					{
+						flag[i] = 1;
+						flag[i+1] = 2;
+						sum_sn_in_double_col++;
+					}
+					// printf("%d %d\n", length[i], length[i+1]);
+			    }
+			    else 
+			    {
+				    // flag[i] = 2;
+				    /*flag[i+1] = 2;
+					flag_computation[i] = i;
+					flag_computation[i+1] = i; */
+					if ( length[i+1] - length[i] == 1 ) 
+					{
+						flag[i] = 1;
+						flag[i+1] = 2;
+						sum_sn_in_double_col++;
+					}
+					// printf("%d %d\n", length[i], length[i+1]);
+			    }
+			    sum_sn_in_U++;
+			    pack = 2; 
+			    continue;
+		    }
+		    else 
+		    {
+			    pack = 1;
+			    continue;
+		    }
+	    }
+    }
+	
+    printf("sum_sn_in_U = %d sum_sn_in_double_col = %d\n", sum_sn_in_U, sum_sn_in_double_col);
+
+	int n_after_double_column = n - sum_sn_in_double_col;
+	int *row_ptr_U_after_double_column = (int *)malloc(sizeof(int) * n_after_double_column);
+	int row_start = 0;
+	int i_pack;
+
+	for ( i = 0; i < n; i += i_pack )
+	{
+		k = asub_U_level[i];
+		if ( flag[k] == 2 )
+		{
+			i_pack = 1;
+			continue;
+			// row_ptr_U_after_double_column[row_start++] = k;
+		}
+		else
+		{
+			printf("n_after = %d row_start = %d\n", n_after_double_column, row_start);
+			row_ptr_U_after_double_column[row_start++] = k;
+			i_pack = 1;
+		}
+	}
+	printf("n = %d n_after_double_column = %d row_start = %d\n", n, n_after_double_column, row_start);
 
 	// double thresold_2 = atof(argv[10]);
 	int sum_flag = 0;
@@ -737,7 +728,7 @@ int main( int argc[], char *argv[])
 	int thresold = 4;
 	// bitInt *tag = (bitInt *)_mm_malloc(sizeof(bitInt) * (n/4 + 1),64);
 		char *tag = (char *)malloc(sizeof(char) * n);
-		int *flag = (int *)malloc(sizeof(int) * 5);
+		// int *flag = (int *)malloc(sizeof(int) * 5);
 		int *start = (int *)malloc(sizeof(int) * 5);
 		int *end = (int *)malloc(sizeof(int) * 5);
 		int *seperator_in_column = (int *)malloc(sizeof(int) * 5);
@@ -780,7 +771,7 @@ int main( int argc[], char *argv[])
 		// }
 		memset(tag, 0, sizeof(char) * n);
 
-		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, sum_level+1, max_level+1, xa_trans, wait_col_index, wait_index, no_wait, sn_number_cou);
+		x_result = lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, sn_num_record, sn_column_start, sn_column_end, sn_sum_final, flag, x, num_thread, i+num_thread, start, end, seperator_in_column, L, U, xx1, xx2, dv1, dv2, i, asub_U_level, seperator_in_column_2, ux, lx, tag, sum_level+1, max_level+1, xa_trans, wait_col_index, wait_index, no_wait, sn_number_cou, n_after_double_column, row_ptr_U_after_double_column);
 
 		t_e = microtime() - t_s;
 		sum_time += t_e;
@@ -837,7 +828,6 @@ int main( int argc[], char *argv[])
 	}
 
 	printf("Average Time of LU_GP_ssn_column_storage_multi_row_computing: %lf\n", sum_time/loop);
-	printf("nnz(factors): %.0lf\n", stat[8]);
 
   int error_lu_gp = 0;
   int error_nic = 0;
@@ -916,7 +906,7 @@ int main( int argc[], char *argv[])
 	  if ( fabs(ux[i]-L[i]) > 0.1 )
 	  {
 		  error_lu_gp++;
-		//   printf("nicslu[%d] = %lf me_L[%d] = %lf\n", i, ux[i], i, L[i]);
+//		   printf("nicslu[%d] = %lf me_L[%d] = %lf\n", i, ux[i], i, L[i]);
 	  }
 	}
 	printf("error of L results are: %d\n", error_lu_gp); 

@@ -80,99 +80,6 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 			  }
 			  columns = offset_U[k+1] - offset_U[k] - 1;
 			  column_end = row_ptr_U[offset_U[k+1] - 2];
-		//	  wait_col = wait_col_index[k];
-
-			//   for ( j = 0; j < wait_col; j+=pack_j )
-			//   {
-				/*  val = j+offset_U[k];
-				  column_start = row_ptr_U[val];
-				
-				  temp = xx_next_column[column_start];
-				  if ( column_end-column_start > sn_record[column_start] ) column_number_sn = sn_record[column_start]+1;
-				  else column_number_sn = column_end-column_start+1;
-
-				//   if ( column_number_sn < thresold )
-				  {
-						  for ( i = offset_L[column_start]+1; i < offset_L[column_start+1]; i++ )
-						  {
-							  xx_next_column[row_ptr_L[i]] -=  temp*L[i];
-                          }
-					  pack_j = 1;
-				  }*/
-				  
-				/*  else
-				  {
-					  column_sn_end = row_ptr_U[val+column_number_sn-1];
-					  row_num = offset_L[column_sn_end+1] - offset_L[column_sn_end] - 1;
-					  row_count = offset_L[column_start + 1] - offset_L[column_start] - 1;
-					  column_divid = row_num % 16;
-					  divid = row_num / 16;
-					  row_sn_start = offset_L[column_sn_end] + column_divid + 1;
-					  div = column_number_sn % 4;
-
-				      for ( qqq = 0; qqq < column_number_sn-1; qqq++ )
-					  {
-						  row_else1 = row_ptr_U[val+qqq];
-						  row_else2 = row_ptr_U[val+qqq+1];
-						  temp = xx_next_column[row_else1];
-						  dense_vec_counter = qqq;
-						  for ( sss = offset_L[row_else1]+1; sss < offset_L[row_else1+1]-divid*16; sss++ )
-						  {
-							  dense_vec_2[dense_vec_counter++] += temp*L[sss];
-						  }
-						  xx_next_column[row_else2] -= dense_vec_2[row_else2-column_start-1];
-						  dense_vec_2[row_else2-column_start-1] = 0;
-					  }
-					  temp = xx_next_column[column_sn_end];
-					  dense_vec_counter = column_number_sn - 1;
-					  for ( i = offset_L[column_sn_end]+1; i < offset_L[column_sn_end+1]-divid*16; i++ )
-					  {
-						  dense_vec_2[dense_vec_counter++] += temp*L[i];
-					  }
-					  dense_vec_counter = column_number_sn - 1;
-					  for ( sss = offset_L[column_start+1]-row_num; sss < offset_L[column_start+1]-divid*16; sss++ )
-					  {
-						  xx_next_column[row_ptr_L[sss]] -= dense_vec_2[dense_vec_counter];
-						  dense_vec_2[dense_vec_counter] = 0;
-						  dense_vec_counter++;
-					  }
-					  
-					  dividd = divid;
-					  for ( qqq = 0; qqq < divid; qqq++ )
-					  {
-						  add_sum.vec = zero.vec; 
-						  add_sum_2.vec = zero.vec;
-				
-						  for ( sss = 0; sss < column_number_sn; sss++ )
-						  {
-							  row_else1 = row_ptr_U[val+sss];
-							  row_record = offset_L[row_else1+1] - dividd*16;
-							  
-							  v_row.vec = _mm512_set1_pd(xx_next_column[row_else1]);
-							  v_l.vec = _mm512_load_pd(&L[row_record]);
-							  v_l_2.vec = _mm512_load_pd(&L[row_record + 8]);
-
-							  add_sum.vec = _mm512_fmadd_pd(v_row.vec, v_l.vec, add_sum.vec);	
-							  add_sum_2.vec = _mm512_fmadd_pd(v_row.vec, v_l_2.vec, add_sum_2.vec);	
-						  }
-						   
-						  vi.vec = _mm256_load_si256((__m256i const *)&row_ptr_L[row_sn_start+qqq*16]);
-						  v.vec = _mm512_i32gather_pd(vi.vec, &xx_next_column[0], 8);
-						  v_sub.vec = _mm512_sub_pd(v.vec, add_sum.vec);
-						  _mm512_i32scatter_pd(&xx_next_column[0], vi.vec, v_sub.vec, 8);
-
-						  vi_2.vec = _mm256_load_si256((__m256i const *)&row_ptr_L[row_sn_start+qqq*16+8]);
-						  v_2.vec = _mm512_i32gather_pd(vi_2.vec, &xx_next_column[0], 8);
-						  v_sub_2.vec = _mm512_sub_pd(v_2.vec, add_sum_2.vec);
-						  _mm512_i32scatter_pd(&xx_next_column[0], vi_2.vec, v_sub_2.vec, 8); 
-						  
-						  dividd--;
-					  }
-					  
-					  pack_j = column_number_sn;
-				  }    
-			  */
-			//   }
 
 			  for ( j = 0; j < columns; j+=pack_j )
 			  {
@@ -183,46 +90,26 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 				  if ( column_end-column_start > sn_record[column_start] ) column_number_sn = sn_record[column_start]+1;
 				  else column_number_sn = column_end-column_start+1;
 
-				//   printf("column_number_sn = %d thresold = %d\n", column_number_sn, thresold);
-
-				  /*for ( i = 0; i < column_number_sn; i++ )
-				  {
-					//   if ( wait_index[val+i] )
-					  {
-						//   printf("wait_index[%d] = %d\n", val+i, wait_index[val+i]);
-						column_next = row_ptr_U[val+i];
-						wait = (volatile char*)&(tag[column_next]);
-						while ( !(*wait) ) 
-						{ 
-							;
-						}
-					  }
-				  }*/
-			//	  val2 = j+offset_U[k]+column_number_sn-1;
-
-				// if ( wait_index[val2] )
-
 				{
 					
-				  column_next = row_ptr_U[val+column_number_sn-1];
-				//   wait = (volatile char *)&(tag[column_start/4].boolvec[column_start%4]);
-				//   wait = (volatile char*)&(tag[column_next/4].boolvec[column_next%4]);
-
+				  /*column_next = row_ptr_U[val+column_number_sn-1];
 				  wait = (volatile char*)&(tag[column_next]);
 				
 				  while ( !(*wait) ) 
 				  { 
-					// printf("func: %d no_wait[%d] = %d tag[%d] = %d\n", val2, column_next, no_wait[column_next], column_next, tag[column_next]);
-					// printf("func: %d\n", column_next);
-					// if ( column_next == 95273 ) printf("func: kk = %d k = %d l = %d\n", kk, k, val+column_number_sn-1);
 					;
-				  }
+				  }*/
 				}
-//				int tnn = omp_get_thread_num();
-//				if(tnn == 16 && column_number_sn != 1)
-//					printf(" column_number_sn = %d\n",column_number_sn);
+
 				  if ( column_number_sn < thresold)
 				  {
+					  		column_next = row_ptr_U[val];
+							wait = (volatile char*)&(tag[column_next]);
+							
+							while ( !(*wait) ) 
+							{ 
+								;
+							}
 						  for ( i = offset_L[column_start]+1; i < offset_L[column_start+1]; i++ )
 						  {
 							  xx_next_column[row_ptr_L[i]] -=  temp*L[i];
@@ -232,13 +119,14 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 				  
 				  else
 				  {
-					//   if ( column_number_sn != sn_number[column_start] )
-					//   {
-					// 	  if ( column_start != sn_column_start[sn_num_record[column_start]] )
-					// 	  	printf("%d %d\n", column_start, sn_column_start[sn_num_record[column_start]]);
-					//   }
-							// printf("%d %d\n", column_start, sn_column_start[sn_num_record[column_start]]);
-						//   printf("%d %d\n", column_number_sn, sn_number[column_start]);
+					  		column_next = row_ptr_U[val+column_number_sn-1];
+							wait = (volatile char*)&(tag[column_next]);
+							
+							while ( !(*wait) ) 
+							{ 
+								;
+							}
+							// printf("sn!\n");
 					  column_sn_end = row_ptr_U[val+column_number_sn-1];
 					  row_num = offset_L[column_sn_end+1] - offset_L[column_sn_end] - 1;
 					  row_count = offset_L[column_start + 1] - offset_L[column_start] - 1;
@@ -305,9 +193,9 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 						  
 						  dividd--;
 					  }
-					  
+					 
 					  pack_j = column_number_sn;
-				  }    
+				  }   
 			  
 			  }
 			  

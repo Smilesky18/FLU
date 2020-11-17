@@ -73,7 +73,7 @@ int main(int argc[], char *argv[])
     /*pre-ordering (do only once)*/
     NicsLU_Analyze(solver, n, ax, ai, ap, MATRIX_ROW_REAL, NULL, NULL, NULL, NULL);
     //printf("analysis time: %g\n", stat[0]);
-    //printf("best ordering method: %s\n", ORDERING_METHODS[(int)stat[16]]);
+    printf("best ordering method: %s\n", ORDERING_METHODS[(int)stat[16]]);
 
     /*create threads (do only once)*/
     NicsLU_CreateThreads(solver, 0); /*use all physical cores*/
@@ -91,7 +91,8 @@ int main(int argc[], char *argv[])
     In many applications like circuit simulation, 
     we need to solve the linear system many times with different values (but the symbolic pattern keeps unchanged).
     The following code simulates such a case.*/
-
+    
+    printf("sn of NICSLU is: %lf\n", stat[12]);
     double time = 0;
     int th = atoi(argv[2]);
     int loop = atoi(argv[3]);
@@ -105,12 +106,12 @@ int main(int argc[], char *argv[])
 
         /*factor & solve again based on the changed matrix & RHS*/
         //NicsLU_FactorizeMatrix(solver, ax, 0); /*use all created threads*/
-//	t1 = microtime();
+	t1 = microtime();
 	NicsLU_ReFactorize(solver, ax, th);
-//	t2 = microtime() - t1;
-        printf("re-factor [%d] time: %g\n", j + 1, stat[1]);
+	t2 = microtime() - t1;
+//        printf("re-factor [%d] time: %g\n", j + 1, stat[1]);
 //        printf("re-factor [%d] time by me: %g\n", j + 1, t2);
-	time += stat[1];
+	time += t2;
         //NicsLU_Solve(solver, b, x);
         //printf("solve [%d] time: %g\n", j + 1, stat[2]);
 
@@ -126,7 +127,8 @@ int main(int argc[], char *argv[])
     printf("Average time of refact is: %g\n", time/loop);
 
     /*finally, print some statistical information*/
-    //printf("nnz(factors): %.0lf\n", stat[8]); //# of factors
+    printf("nnz(factors): %.0lf\n", stat[8]); //# of factors
+    printf("nnz of LU = %lf\n", stat[9]+stat[10]);
 
     //NicsLU_Flops(solver, 1, &fflop, &sflop);
     //printf("factor flops: %e, solving flops: %e\n", fflop, sflop); /*# of flops*/

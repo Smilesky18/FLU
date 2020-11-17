@@ -4,5 +4,5 @@ files=$(ls $path)
 for filename in $files
 do
 	#perf stat -e LLC-stores -o LLC-stores-nicslu --append ./demo $path/$filename 
-	./demo $path/$filename 1 30
+	./flu $path/$filename 32 100 8 4
 done

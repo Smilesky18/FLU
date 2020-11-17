@@ -162,7 +162,9 @@ MKL_INT main (int argc[], char *argv[])
     iparm[1] = 2;         /* Fill-in reordering from METIS */ // 0 - AMD; 2 - METIS
     iparm[3] = 0;         /* No iterative-direct algorithm */
     iparm[4] = 0;         /* No user fill-in reducing permutation */
+    // iparm[4] = 2;
     iparm[5] = 0;         /* Write solution into x */
+    // iparm[5] = 2;
     iparm[6] = 0;         /* Not in use */
     iparm[7] = 2;         /* Max numbers of iterative refinement steps */
     iparm[8] = 0;         /* Not in use */
@@ -194,14 +196,20 @@ MKL_INT main (int argc[], char *argv[])
 /* all memory that is necessary for the factorization. */
 /* -------------------------------------------------------------------- */
     phase = 11;
-    // printf("Before PARDISO n = %d\n", n);
+    int *perm = (int *)malloc(sizeof(int) * n);
+    // for ( int i = 0; i < n; i++ ) perm[i] = i;
+    printf("Before PARDISO n = %d\n", n);
     PARDISO (pt, &maxfct, &mnum, &mtype, &phase,
-             &n, a, ia, ja, &idum, &nrhs, iparm, &msglvl, &ddum, &ddum, &error);
+             &n, a, ia, ja, perm, &nrhs, iparm, &msglvl, &ddum, &ddum, &error);
     if ( error != 0 )
     {
         printf ("\nERROR during symbolic factorization: %d", error);
         exit (1);
     }
+    // for ( int i = 0; i < n; i++ )
+    // {
+    //     printf("perm[%d] = %d\n", i, perm[i]);
+    // }
     printf ("\nReordering completed ... ");
     printf ("\nNumber of nonzeros in factors = %d", iparm[17]);
     printf ("\nNumber of factorization MFLOPS = %d\n", iparm[18]);
@@ -216,7 +224,7 @@ MKL_INT main (int argc[], char *argv[])
     {
         t1 = microtime();
         PARDISO (pt, &maxfct, &mnum, &mtype, &phase,
-                &n, a, ia, ja, &idum, &nrhs, iparm, &msglvl, &ddum, &ddum, &error);
+                &n, a, ia, ja, perm, &nrhs, iparm, &msglvl, &ddum, &ddum, &error);
         t2 = microtime() - t1;
         t += t2;
         // printf("FACT Time = %lf\n", t2);
@@ -249,12 +257,17 @@ MKL_INT main (int argc[], char *argv[])
 
     printf ("\n\nSolving the system in CSC format...\n");
     PARDISO (pt, &maxfct, &mnum, &mtype, &phase,
-             &n, a, ia, ja, &idum, &nrhs, iparm, &msglvl, b, x, &error);
+             &n, a, ia, ja, perm, &nrhs, iparm, &msglvl, b, x, &error);
     if ( error != 0 )
     {
         printf ("\nERROR during solution: %d", error);
         exit (3);
     }
+
+    // for ( int i = 0; i < n; i++ )
+    // {
+    //     printf("x[%d] = %lf\n", i, x[i]);
+    // }
 
  
     // Compute residual
@@ -282,7 +295,7 @@ MKL_INT main (int argc[], char *argv[])
 /* -------------------------------------------------------------------- */
     phase = -1;           /* Release internal memory. */
     PARDISO (pt, &maxfct, &mnum, &mtype, &phase,
-             &n, &ddum, ia, ja, &idum, &nrhs,
+             &n, &ddum, ia, ja, perm, &nrhs,
              iparm, &msglvl, &ddum, &ddum, &error);
     return 0;
 }
