@@ -28,14 +28,9 @@
 
 
 
-double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, int *sn_num_record, int *sn_column_start, int *sn_column_end, int sn_sum, int *flag, double *nic_x, int num_thread, int thread_number, int *start, int *end, int *seperator_in_column, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int thread_number_prior_level, int *asub_U_level, int *seperator_in_column_2, double *lx, double *ux, char *tag, int sum_level, int max_level, int *xa_trans, int *wait_col_index, char *wait_index, char *no_wait, int *sn_number)
+double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int *asub_U_level, double *lx, double *ux, char *tag, int max_level, int *xa_trans, int num_thread)
 {
    omp_set_num_threads(num_thread);
-//    for ( int i = 0; i < nzu; i++ )
-//    {
-// 	   if ( wait_index[i] )
-// 	   	printf("wait_index[%d] = %d nzu = %d\n", i, wait_index[i], nzu);
-//    }
 
   #pragma omp parallel
 {
@@ -89,17 +84,6 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 				  temp = xx_next_column[column_start];
 				  if ( column_end-column_start > sn_record[column_start] ) column_number_sn = sn_record[column_start]+1;
 				  else column_number_sn = column_end-column_start+1;
-
-				{
-					
-				  /*column_next = row_ptr_U[val+column_number_sn-1];
-				  wait = (volatile char*)&(tag[column_next]);
-				
-				  while ( !(*wait) ) 
-				  { 
-					;
-				  }*/
-				}
 
 				  if ( column_number_sn < thresold)
 				  {
@@ -223,78 +207,6 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 		  
 	 }
 }
-
-
-	// t2 = microtime() - t1;
-	// printf("t2 = %lf\n", t2);
-	//printf("sum_t = %.16lf\n", sum_t);
-	//printf("row_record_counter = %d\n", row_record_counter);
-	//printf("sum_flag_0 = %d sum_flag_1 = %d sum_flag_2 = %d\n", sum_flag_0, sum_flag_1, sum_flag_2);
-  /* solve for Ly = b and Ux = y */
-//    double *y, *x;
-//    int ij, ji;
-/*   printf("nzl = %d\n", nzl);
-for ( ij = 0; ij < nzl; ij++ )
-{
-	//printf("nicslu_L[%d] = %lf\n", ij, lx[ij]);
-	printf("nicslu_L[%d] = %lf me_L[%d] = %lf\n", ij, lx[ij], ij, L[ij]);
-	//printf("nicslu_L[%d] = %lf me_L[%d] = %lf\n", ij, lx[ij], ij, L[ij]);
-}*/
-
- /* y = ( double *)_mm_malloc( sizeof( double ) * n, 64 );
-  x = ( double *)_mm_malloc( sizeof( double ) * n, 64 );
-
-  for ( ij = 0; ij < n; ij++ )
-  {
-	  y[ij] = 1.0;
-  }
-
-  for ( ij = 0; ij < n; ij++ )
-  {
-	  for ( ji = offset_L[ij]+1; ji < offset_L[ij+1]; ji++ )
-	  {
-		  y[row_ptr_L[ji]] -= y[ij] * L[ji];
-	  }
-  }
-
-  //x[n-1] = y[n-1];
-  for ( ij = 0; ij < n; ij++ )
-  {
-	  x[ij] = y[ij];
-  }
-
-  x[n-1] = y[n-1]/U[nzu-1];
-  for ( ij = n-1; ij > 0; ij-- )
-  {
-	  for ( ji = offset_U[ij]; ji < offset_U[ij+1]-1; ji++ )
-	  {
-		  x[row_ptr_U[ji]] -= x[ij] *U[ji];
-	  }
-	  x[ij-1] = x[ij-1]/U[offset_U[ij]-1];
-  }   
-  
-  double *x_real = (double *)malloc(sizeof(double) * n);
-  int error_lu_gp = 0;
-  int error_nic = 0;
-  for ( ij = 0; ij < n; ij++ ) x_real[perm_c[ij]] = x[ij];
-  for ( ij = 0; ij < n; ij++ )
-  {
-	  //printf("nic_x[%d] = %lf x[%d] = %lf\n", ij, nic_x[ij], ij, x_real[ij]);
-	  if ( fabs(nic_x[ij]-x_real[ij]) > 0.1 )
-	  {
-		  error_nic++;
-		  //printf("nicslu[%d] = %lf me[%d] = %lf\n", ij, nic_x[ij], ij, x_real[ij]);
-	  }	
-  }
-  printf("error of Nic results are: %d\n", error_nic); 
-  for ( ij = 0; ij < offset_L[prior_column]; ij++ )
-  {
-	  if ( fabs(lx[ij]-L[ij]) > 0.1 )
-	  {
-		  error_nic++;
-		  printf("prior-nicslu_L[%d] = %lf me_L[%d] = %lf\n", ij, lx[ij], ij, L[ij]);
-	  }	
-  }*/
 
   return U;
 }

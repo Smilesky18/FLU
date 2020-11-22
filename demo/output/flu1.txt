@@ -1,0 +1,513 @@
+***********../../exper_dataset1/ASIC_100k.mtx: row 99340, col 99340, nnz 954163
+FACT time: 0.378379
+loop = 100
+Number of nonzeros in factors = 3533961
+Average Time of FLU is: 0.018065
+nnz(factors): 3434621
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/ASIC_100ks.mtx: row 99190, col 99190, nnz 578890
+FACT time: 0.276505
+loop = 100
+Number of nonzeros in factors = 2911552
+Average Time of FLU is: 0.014432
+nnz(factors): 2812362
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/ASIC_320k.mtx: row 321821, col 321821, nnz 2635364
+FACT time: 0.747130
+loop = 100
+Number of nonzeros in factors = 5378701
+Average Time of FLU is: 0.029400
+nnz(factors): 5056880
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/ASIC_320ks.mtx: row 321671, col 321671, nnz 1827807
+FACT time: 0.556584
+loop = 100
+Number of nonzeros in factors = 4350604
+Average Time of FLU is: 0.020706
+nnz(factors): 4028933
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/ASIC_680k.mtx: row 682862, col 682862, nnz 3871773
+FACT time: 1.595772
+loop = 100
+Number of nonzeros in factors = 6806937
+Average Time of FLU is: 0.040708
+nnz(factors): 6124075
+error of x results are: 4
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/ASIC_680ks/ASIC_680ks.mtx: row 682712, col 682712, nnz 2329176
+FACT time: 0.451635
+loop = 100
+Number of nonzeros in factors = 5262390
+Average Time of FLU is: 0.029472
+nnz(factors): 4579678
+error of x results are: 34
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/Raj1.mtx: row 263743, col 263743, nnz 1302464
+FACT time: 0.617328
+loop = 100
+Number of nonzeros in factors = 6853536
+Average Time of FLU is: 0.024106
+nnz(factors): 6589793
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/circuit5M_dc.mtx: row 3523317, col 3523317, nnz 19194193
+FACT time: 6.379182
+loop = 100
+Number of nonzeros in factors = 61802512
+Average Time of FLU is: 0.528620
+nnz(factors): 58279195
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/circuit5M.mtx: row 5558326, col 5558326, nnz 59524291
+FACT time: 2.416963
+loop = 100
+Number of nonzeros in factors = 67435713
+Average Time of FLU is: 0.391822
+nnz(factors): 61877387
+error of x results are: 5505403
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/ckt11752_dc_1.mtx: row 49702, col 49702, nnz 333029
+FACT time: 0.089355
+loop = 100
+Number of nonzeros in factors = 1374196
+Average Time of FLU is: 0.006784
+nnz(factors): 1324494
+error of x results are: 0
+error of U results are: 39
+error of L results are: 0
+***********../../exper_dataset1/Freescale1.mtx: row 3428755, col 3428755, nnz 18920347
+FACT time: 5.593285
+loop = 100
+Number of nonzeros in factors = 57374454
+Average Time of FLU is: 0.453158
+nnz(factors): 53945699
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/G2_circuit.mtx: row 150102, col 150102, nnz 438388
+FACT time: 0.170157
+loop = 100
+Number of nonzeros in factors = 2495454
+Average Time of FLU is: 0.005835
+nnz(factors): 2345352
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/G3_circuit.mtx: row 1585478, col 1585478, nnz 4623152
+FACT time: 3.121455
+loop = 100
+Number of nonzeros in factors = 33836393
+Average Time of FLU is: 0.126642
+nnz(factors): 32250915
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/onetone1.mtx: row 36057, col 36057, nnz 341088
+FACT time: 0.218563
+loop = 100
+Number of nonzeros in factors = 3088821
+Average Time of FLU is: 0.018572
+nnz(factors): 3052764
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat15.mtx: row 37261, col 37261, nnz 443573
+FACT time: 0.156121
+loop = 100
+Number of nonzeros in factors = 1586769
+Average Time of FLU is: 0.005521
+nnz(factors): 1549508
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat16.mtx: row 94294, col 94294, nnz 641159
+FACT time: 0.228760
+loop = 100
+Number of nonzeros in factors = 2131689
+Average Time of FLU is: 0.010244
+nnz(factors): 2037395
+error of x results are: 33
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat17.mtx: row 94294, col 94294, nnz 641159
+FACT time: 0.226389
+loop = 100
+Number of nonzeros in factors = 2131538
+Average Time of FLU is: 0.010233
+nnz(factors): 2037244
+error of x results are: 411
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat20.mtx: row 86916, col 86916, nnz 605045
+FACT time: 0.214539
+loop = 100
+Number of nonzeros in factors = 2003444
+Average Time of FLU is: 0.010790
+nnz(factors): 1916528
+error of x results are: 57
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat21.mtx: row 411676, col 411676, nnz 1893370
+FACT time: 0.123144
+loop = 100
+Number of nonzeros in factors = 2854883
+Average Time of FLU is: 0.015727
+nnz(factors): 2443207
+error of x results are: 51155
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat24.mtx: row 358172, col 358172, nnz 1948235
+FACT time: 0.599959
+loop = 100
+Number of nonzeros in factors = 4197969
+Average Time of FLU is: 0.022752
+nnz(factors): 3839797
+error of x results are: 57
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat25.mtx: row 87190, col 87190, nnz 607235
+FACT time: 0.207946
+loop = 100
+Number of nonzeros in factors = 2025816
+Average Time of FLU is: 0.010929
+nnz(factors): 1938626
+error of x results are: 57
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat28.mtx: row 87190, col 87190, nnz 607235
+FACT time: 0.229937
+loop = 100
+Number of nonzeros in factors = 2108800
+Average Time of FLU is: 0.011034
+nnz(factors): 2021610
+error of x results are: 57
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat30.mtx: row 643994, col 643994, nnz 6175377
+FACT time: 2.148904
+loop = 100
+Number of nonzeros in factors = 17429987
+Average Time of FLU is: 0.098916
+nnz(factors): 16785993
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/scircuit.mtx: row 170998, col 170998, nnz 958936
+FACT time: 0.117047
+loop = 100
+Number of nonzeros in factors = 2429136
+Average Time of FLU is: 0.008438
+nnz(factors): 2258138
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/transient.mtx: row 178866, col 178866, nnz 961790
+FACT time: 0.292472
+loop = 100
+Number of nonzeros in factors = 2075001
+Average Time of FLU is: 0.009926
+nnz(factors): 1896135
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/twotone.mtx: row 120750, col 120750, nnz 1224224
+FACT time: 0.803739
+loop = 100
+Number of nonzeros in factors = 10103712
+Average Time of FLU is: 0.104472
+nnz(factors): 9982962
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/memchip.mtx: row 2707524, col 2707524, nnz 14810202
+FACT time: 16.944699
+loop = 100
+Number of nonzeros in factors = 150814412
+Average Time of FLU is: 3.356232
+nnz(factors): 148106888
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat31.mtx: row 4690002, col 4690002, nnz 20316253
+FACT time: 25.104184
+loop = 100
+Number of nonzeros in factors = 239023767
+Average Time of FLU is: 4.483635
+nnz(factors): 234333765
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/Hamrle2/Hamrle2.mtx: row 5952, col 5952, nnz 22162
+FACT time: 0.002834
+loop = 100
+Number of nonzeros in factors = 63465
+Average Time of FLU is: 0.001401
+nnz(factors): 57513
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat29/rajat29.mtx: row 643994, col 643994, nnz 4866270
+FACT time: 0.581546
+loop = 100
+Number of nonzeros in factors = 8485449
+Average Time of FLU is: 0.047272
+nnz(factors): 7841455
+error of x results are: 223
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/nxp1/nxp1.mtx: row 414604, col 414604, nnz 2656177
+FACT time: 2.169581
+loop = 100
+Number of nonzeros in factors = 25985034
+Average Time of FLU is: 0.127086
+nnz(factors): 25570430
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat23/rajat23.mtx: row 110355, col 110355, nnz 556938
+FACT time: 0.034530
+loop = 100
+Number of nonzeros in factors = 901393
+Average Time of FLU is: 0.002729
+nnz(factors): 791038
+error of x results are: 57
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat22/rajat22.mtx: row 39899, col 39899, nnz 197264
+FACT time: 0.011113
+loop = 100
+Number of nonzeros in factors = 298935
+Average Time of FLU is: 0.000896
+nnz(factors): 259036
+error of x results are: 57
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/hcircuit/hcircuit.mtx: row 105676, col 105676, nnz 513072
+FACT time: 0.022557
+loop = 100
+Number of nonzeros in factors = 732722
+Average Time of FLU is: 0.002190
+nnz(factors): 627046
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat18/rajat18.mtx: row 94294, col 94294, nnz 485143
+FACT time: 0.038363
+loop = 100
+Number of nonzeros in factors = 777573
+Average Time of FLU is: 0.002820
+nnz(factors): 683279
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/circuit_4/circuit_4.mtx: row 80209, col 80209, nnz 307604
+FACT time: 0.018453
+loop = 100
+Number of nonzeros in factors = 509317
+Average Time of FLU is: 0.002183
+nnz(factors): 429108
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/bcircuit/bcircuit.mtx: row 68902, col 68902, nnz 375558
+FACT time: 0.047214
+loop = 100
+Number of nonzeros in factors = 1005050
+Average Time of FLU is: 0.002401
+nnz(factors): 936148
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat26/rajat26.mtx: row 51032, col 51032, nnz 249302
+FACT time: 0.014920
+loop = 100
+Number of nonzeros in factors = 394816
+Average Time of FLU is: 0.001249
+nnz(factors): 343784
+error of x results are: 57
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat27/rajat27.mtx: row 20640, col 20640, nnz 99777
+FACT time: 0.006789
+loop = 100
+Number of nonzeros in factors = 164701
+Average Time of FLU is: 0.000550
+nnz(factors): 144061
+error of x results are: 57
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/ckt11752_tr_0/ckt11752_tr_0.mtx: row 49702, col 49702, nnz 333029
+FACT time: 0.050382
+loop = 100
+Number of nonzeros in factors = 1021391
+Average Time of FLU is: 0.005695
+nnz(factors): 971689
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/onetone2/onetone2.mtx: row 36057, col 36057, nnz 227628
+FACT time: 0.109494
+loop = 100
+Number of nonzeros in factors = 1363398
+Average Time of FLU is: 0.007552
+nnz(factors): 1327341
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/pre2/pre2.mtx: row 659033, col 659033, nnz 5959282
+FACT time: 15.972747
+loop = 100
+Number of nonzeros in factors = 91736525
+Average Time of FLU is: 7.159362
+nnz(factors): 91077492
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/dc3/dc3.mtx: row 116835, col 116835, nnz 766396
+FACT time: 0.054961
+loop = 100
+Number of nonzeros in factors = 1197115
+Average Time of FLU is: 0.005397
+nnz(factors): 1080280
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/dc2/dc2.mtx: row 116835, col 116835, nnz 766396
+FACT time: 0.053386
+loop = 100
+Number of nonzeros in factors = 1197056
+Average Time of FLU is: 0.005408
+nnz(factors): 1080221
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/dc1/dc1.mtx: row 116835, col 116835, nnz 766396
+FACT time: 0.054180
+loop = 100
+Number of nonzeros in factors = 1197050
+Average Time of FLU is: 0.005768
+nnz(factors): 1080215
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/trans5/trans5.mtx: row 116835, col 116835, nnz 766396
+FACT time: 0.053687
+loop = 100
+Number of nonzeros in factors = 1197056
+Average Time of FLU is: 0.005441
+nnz(factors): 1080221
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/trans4/trans4.mtx: row 116835, col 116835, nnz 766396
+FACT time: 0.053716
+loop = 100
+Number of nonzeros in factors = 1197056
+Average Time of FLU is: 0.005433
+nnz(factors): 1080221
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/mult_dcop_03/mult_dcop_03.mtx: row 25187, col 25187, nnz 193216
+FACT time: 0.064601
+loop = 100
+Number of nonzeros in factors = 878307
+Average Time of FLU is: 0.002614
+nnz(factors): 853120
+error of x results are: 100
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/mult_dcop_02/mult_dcop_02.mtx: row 25187, col 25187, nnz 193276
+FACT time: 0.080732
+loop = 100
+Number of nonzeros in factors = 1397393
+Average Time of FLU is: 0.003083
+nnz(factors): 1372206
+error of x results are: 73
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/mult_dcop_01/mult_dcop_01.mtx: row 25187, col 25187, nnz 193276
+FACT time: 0.101402
+loop = 100
+Number of nonzeros in factors = 1680744
+Average Time of FLU is: 0.004847
+nnz(factors): 1655557
+error of x results are: 1187
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/memplus/memplus.mtx: row 17758, col 17758, nnz 126150
+FACT time: 0.004923
+loop = 100
+Number of nonzeros in factors = 143910
+Average Time of FLU is: 0.000675
+nnz(factors): 126152
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/circuit_3/circuit_3.mtx: row 12127, col 12127, nnz 48137
+FACT time: 0.002989
+loop = 100
+Number of nonzeros in factors = 79525
+Average Time of FLU is: 0.000477
+nnz(factors): 67398
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/circuit_2/circuit_2.mtx: row 4510, col 4510, nnz 21199
+FACT time: 0.002012
+loop = 100
+Number of nonzeros in factors = 37211
+Average Time of FLU is: 0.000354
+nnz(factors): 32701
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/coupled/coupled.mtx: row 11341, col 11341, nnz 98523
+FACT time: 0.042975
+loop = 100
+Number of nonzeros in factors = 358382
+Average Time of FLU is: 0.002370
+nnz(factors): 347041
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat03/rajat03.mtx: row 7602, col 7602, nnz 32653
+FACT time: 0.007110
+loop = 100
+Number of nonzeros in factors = 149917
+Average Time of FLU is: 0.000823
+nnz(factors): 142315
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/rajat13/rajat13.mtx: row 7598, col 7598, nnz 48922
+FACT time: 0.002171
+loop = 100
+Number of nonzeros in factors = 65581
+Average Time of FLU is: 0.000299
+nnz(factors): 57983
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0
+***********../../exper_dataset1/add32/add32.mtx: row 4960, col 4960, nnz 23884
+FACT time: 0.001155
+loop = 100
+Number of nonzeros in factors = 28880
+Average Time of FLU is: 0.000169
+nnz(factors): 23920
+error of x results are: 0
+error of U results are: 0
+error of L results are: 0

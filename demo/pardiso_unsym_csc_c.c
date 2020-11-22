@@ -42,91 +42,34 @@ double microtime()
 
 MKL_INT main (int argc[], char *argv[])
 {
-    /* Matrix data in CSC format. */
-    /*MKL_INT n = 5;
-    MKL_INT ia[6] = { 1, 4, 7, 9, 12, 14};
-    MKL_INT ja[13] = 
-    { 1, 2,    4,
-      1, 2,       5,
-            3, 4,
-      1,    3, 4,
-            3,    5
-    };
-    double a[13] = 
-    { 1.0,-2.0,     -4.0,
-     -1.0, 5.0,           8.0,
-                4.0, 2.0,
-               -3.0, 6.0, 7.0,
-      4.0,     -5.0
-    };*/
     int m1, n1, nnz1, ii;
 
-    ReadMatrixMarketFile(argv[1], &m1, &n1, &nnz1, NULL, NULL, NULL, NULL, NULL, NULL);
-
-    // double a[nnz1];
-    // int ia1[n1+1];
-    // int ja1[nnz1];
+    ReadMatrixMarketFile(argv[1], &m1, &n1, &nnz1, NULL, NULL, NULL, NULL, NULL, NULL); 
 
     double *a = (double *)malloc(sizeof(double)*nnz1);
-    int *ja1 = (int *)malloc(sizeof(int)*nnz1);
-    int *ia1 = (int *)malloc(sizeof(int)*(1 + n1));
+    int *row_ptr = (int *)malloc(sizeof(int)*nnz1);
+    int *offset = (int *)malloc(sizeof(int)*(1 + n1));
 
-    ReadMatrixMarketFile(argv[1], &m1, &n1, &nnz1, a, ja1, ia1, NULL, NULL, NULL); // CSC Read
+    ReadMatrixMarketFile(argv[1], &m1, &n1, &nnz1, a, row_ptr, offset, NULL, NULL, NULL); // CSC Read
     printf("***********%s: row %d, col %d, nnz %d\n", argv[1], n1, n1, nnz1);
-	// SparseTranspose(n1, a, ja1, ia1, 0); //Matrix transpose, CSR Read
-    // printf("After transpose!\n");
 
-    for ( ii = 0; ii < nnz1; ii++ ) ja1[ii]+=1;
-    for ( ii = 0; ii < n1+1; ii++ ) ia1[ii]+=1;
-
-    // for ( int ii = 0; ii < n1+1; ii++ ) 
-    // {
-    //     printf("ia1[%d] = %d\n", ii, ia1[ii]);
-    // }
+    for ( ii = 0; ii < nnz1; ii++ ) row_ptr[ii]+=1;
+    for ( ii = 0; ii < n1+1; ii++ ) offset[ii]+=1;
 
     MKL_INT n = (MKL_INT) n1;
-    MKL_INT *ia = (MKL_INT *)malloc(sizeof(MKL_INT)*(1 + n));
-    MKL_INT *ja = (MKL_INT *)malloc(sizeof(MKL_INT)*(nnz1));
-
-    printf("n = %d\n", n);
+    MKL_INT *offset_A = (MKL_INT *)malloc(sizeof(MKL_INT)*(1 + n));
+    MKL_INT *row_ptr_A = (MKL_INT *)malloc(sizeof(MKL_INT)*(nnz1));
 
     for ( int ii = 0; ii < n+1; ii++ ) 
     {
-        ia[ii] = (MKL_INT)ia1[ii];
+        offset_A[ii] = (MKL_INT)offset[ii];
         // printf("ia[%d] = %d\n", ii, ia[ii]);
     }
     for ( int ii = 0; ii < nnz1; ii++ ) 
     {
-        ja[ii] = (MKL_INT)ja1[ii];
+        row_ptr_A[ii] = (MKL_INT)row_ptr[ii];
         // printf("a[%d] = %lf\n", ii, a[ii]);
     }
-
-    /*MKL_INT n = 5;
-    MKL_INT ia[6] = { 1, 4, 7, 9, 12, 14};
-    MKL_INT ja[13] = 
-    { 1, 2,    4,
-      1, 2,       5,
-            3, 4,
-      1,    3, 4,
-            3,    5
-    };
-    double a[13] = 
-    { 1.0,-2.0,     -4.0,
-     -1.0, 5.0,           8.0,
-                4.0, 2.0,
-               -3.0, 6.0, 7.0,
-      4.0,     -5.0
-    };*/
-
-    /*for ( ii = 0; ii < n; ii++ )
-    {
-        printf("\ncolumn %d: ", ii);
-        for ( int j = ia[ii]; j < ia[ii+1]; j++ )
-        {
-            printf("%d ", ja[j]);
-        }
-        // printf("ia[%d] = %d\n", ii, ia[ii]);
-    }*/
 
     MKL_INT mtype = 11;       /* Real unsymmetric matrix */
   // Descriptor of main sparse matrix properties
@@ -196,23 +139,16 @@ MKL_INT main (int argc[], char *argv[])
 /* all memory that is necessary for the factorization. */
 /* -------------------------------------------------------------------- */
     phase = 11;
-    int *perm = (int *)malloc(sizeof(int) * n);
-    // for ( int i = 0; i < n; i++ ) perm[i] = i;
-    printf("Before PARDISO n = %d\n", n);
     PARDISO (pt, &maxfct, &mnum, &mtype, &phase,
-             &n, a, ia, ja, perm, &nrhs, iparm, &msglvl, &ddum, &ddum, &error);
+             &n, a, offset_A, row_ptr_A, &ddum, &nrhs, iparm, &msglvl, &ddum, &ddum, &error);
     if ( error != 0 )
     {
-        printf ("\nERROR during symbolic factorization: %d", error);
+        printf ("ERROR during symbolic factorization: %d\n", error);
         exit (1);
     }
-    // for ( int i = 0; i < n; i++ )
-    // {
-    //     printf("perm[%d] = %d\n", i, perm[i]);
-    // }
-    printf ("\nReordering completed ... ");
-    printf ("\nNumber of nonzeros in factors = %d", iparm[17]);
-    printf ("\nNumber of factorization MFLOPS = %d\n", iparm[18]);
+    // printf ("\nReordering completed ... ");
+    printf ("Number of nonzeros in factors = %d\n", iparm[17]);
+    // printf ("\nNumber of factorization MFLOPS = %d\n", iparm[18]);
 /* -------------------------------------------------------------------- */
 /* .. Numerical factorization. */
 /* -------------------------------------------------------------------- */
@@ -224,18 +160,18 @@ MKL_INT main (int argc[], char *argv[])
     {
         t1 = microtime();
         PARDISO (pt, &maxfct, &mnum, &mtype, &phase,
-                &n, a, ia, ja, perm, &nrhs, iparm, &msglvl, &ddum, &ddum, &error);
+                &n, a, offset_A, row_ptr_A, &ddum, &nrhs, iparm, &msglvl, &ddum, &ddum, &error);
         t2 = microtime() - t1;
         t += t2;
-        // printf("FACT Time = %lf\n", t2);
+        // printf("Time of pardiso is: %lf\n", t2);
     }
     printf("Average time = %lf\n", t/loop);
     if ( error != 0 )
     {
-        printf ("\nERROR during numerical factorization: %d", error);
+        printf ("ERROR during numerical factorization: %d\n", error);
         exit (2);
     }
-    printf ("\nFactorization completed ... ");
+    // printf ("\nFactorization completed ... ");
 /* -------------------------------------------------------------------- */
 /* .. Solution phase. */
 /* -------------------------------------------------------------------- */
@@ -244,7 +180,7 @@ MKL_INT main (int argc[], char *argv[])
   descrA.type = SPARSE_MATRIX_TYPE_GENERAL;
   descrA.mode = SPARSE_FILL_MODE_UPPER;
   descrA.diag = SPARSE_DIAG_NON_UNIT;
-  mkl_sparse_d_create_csr ( &csrA, SPARSE_INDEX_BASE_ONE, n, n, ia, ia+1, ja, a );
+  mkl_sparse_d_create_csr ( &csrA, SPARSE_INDEX_BASE_ONE, n, n, offset_A, offset_A+1, row_ptr_A, a );
 
     /* Set right hand side to one. */
     for ( i = 0; i < n; i++ )
@@ -255,12 +191,12 @@ MKL_INT main (int argc[], char *argv[])
 // Transpose solve is used for systems in CSC format
     iparm[11] = 2;
 
-    printf ("\n\nSolving the system in CSC format...\n");
+    // printf ("\n\nSolving the system in CSC format...\n");
     PARDISO (pt, &maxfct, &mnum, &mtype, &phase,
-             &n, a, ia, ja, perm, &nrhs, iparm, &msglvl, b, x, &error);
+             &n, a, offset_A, row_ptr_A, &ddum, &nrhs, iparm, &msglvl, b, x, &error);
     if ( error != 0 )
     {
-        printf ("\nERROR during solution: %d", error);
+        printf ("ERROR during solution: %d\n", error);
         exit (3);
     }
 
@@ -268,7 +204,6 @@ MKL_INT main (int argc[], char *argv[])
     // {
     //     printf("x[%d] = %lf\n", i, x[i]);
     // }
-
  
     // Compute residual
     // the CSC format for A is the CSR format for A transposed
@@ -281,7 +216,7 @@ MKL_INT main (int argc[], char *argv[])
         res0 += b[j - 1] * b[j - 1];
     }
     res = sqrt (res) / sqrt (res0);
-    printf ("\nRelative residual = %e", res);
+    // printf ("\nRelative residual = %e", res);
     // Check residual
     if ( res > 1e-10 )
     {
@@ -295,7 +230,7 @@ MKL_INT main (int argc[], char *argv[])
 /* -------------------------------------------------------------------- */
     phase = -1;           /* Release internal memory. */
     PARDISO (pt, &maxfct, &mnum, &mtype, &phase,
-             &n, &ddum, ia, ja, perm, &nrhs,
+             &n, &ddum, offset_A, row_ptr_A, &ddum, &nrhs,
              iparm, &msglvl, &ddum, &ddum, &error);
     return 0;
 }
