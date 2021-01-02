@@ -226,6 +226,20 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 						  xx_next_column[row_else2] -= dense_vec_2[row_else2-column_start-1];
 						  dense_vec_2[row_else2-column_start-1] = 0;
 					  }*/
+					  for ( qqq = 0; qqq < column_number_sn-1; qqq++ )
+					  {
+						  row_else1 = row_ptr_U[val+qqq];
+						  row_else2 = row_ptr_U[val+qqq+1];
+						  temp = xx_next_column[row_else1];
+						  dense_vec_counter = qqq;
+						  for ( sss = offset_L[row_else1]+1; sss < offset_L[row_else1+1]-row_num; sss++ )
+						  {
+							  dense_vec_2[dense_vec_counter++] += temp*L[sss];
+							  printf("temp = %lf %lf\n", temp, L[sss]);
+						  }
+						  xx_next_column[row_else2] -= dense_vec_2[row_else2-column_start-1];
+						  dense_vec_2[row_else2-column_start-1] = 0;
+					  }
 					  for ( qqq = 0; qqq < column_number_sn; qqq++ )
 					  {
 						  row_else1 = row_ptr_U[val+qqq];

@@ -146,8 +146,8 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 				  
 				  else
 				  {
-					  if ( column_number_sn != 8 )
-					  	printf("column_number_sn = %d\n", column_number_sn);
+					//   if ( column_number_sn != 8 )
+					//   	printf("column_number_sn = %d\n", column_number_sn);
 					//   t1 = microtime_func();
 					  for ( jj = 0; jj < column_number_sn; jj++ )
 					  {
