@@ -118,9 +118,9 @@ void FLU_Detect_SuperNode(int *row_ptr_L, int *offset_L, int *sn_record, int *sn
 	// int thre_1 = atoi(argv[4]);
 	// int thre_2 = atoi(argv[5]);
 	// int thre_1 = 1000000000;
-	col_thresold = 8;
+	// col_thresold = 8;
 	int thre_1 = 8; // 16
-	int thre_2 = 8; // 16
+	int thre_2 = 4; // 16
 	int sn_j;
 
 	int sn_col_num, sn_num;
@@ -212,7 +212,7 @@ void FLU_Detect_SuperNode(int *row_ptr_L, int *offset_L, int *sn_record, int *sn
 			}
 			else
 			{
-				printf("!!!!!!!!!!!!!!!!!!!sn: %d\n", sn_end[i]-sn_start[i]+1);
+				// printf("!!!!!!!!!!!!!!!!!!!sn: %d\n", sn_end[i]-sn_start[i]+1);
 				// if ( (offset_L[sn_end[i]+1] - offset_L[sn_end[i]] - 1) / (sn_end[i] - sn_start[i] + 1) < 1 )
 				// 	printf("row: %d col: %d sn_sum_final = %d\n", offset_L[sn_end[i]+1] - offset_L[sn_end[i]] - 1, (sn_end[i] - sn_start[i] + 1), sn_sum_final );
 				for ( j = sn_start[i]; j <= sn_end[i]; j++ )

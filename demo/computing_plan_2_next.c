@@ -79,8 +79,8 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 	// printf("11111111111111111111111111111111\n");
 
 	#pragma omp for schedule(static, 1)	
-	// for ( kk = xa_trans[pri_level]; kk < xa_trans[max_level]; kk++ )
-	for ( k = 0; k < n; k++ )
+	for ( kk = xa_trans[pri_level]; kk < xa_trans[max_level]; kk++ )
+	// for ( k = 0; k < n; k++ )
 	  {
 		//   printf("tn = %d\n", tn);
 		  {
@@ -88,7 +88,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 			//   for ( kk = xa_trans[m]; kk < xa_trans[m+1]; kk++ )
 			  {
 				//   t1 = microtime_func();
-			//   k = asub_U_level[kk];
+			  k = asub_U_level[kk];
 			//   if ( tn == 0 ) 
 			  	// printf("k = %d kk = %d tn = %d start = %d end = %d\n", k, kk, tn, xa_trans[sum_level], xa_trans[max_level]-1);
 			// if ( k == 95273 || k == 95274 ) printf("func: k = %d tn = %d\n", k, tn);
