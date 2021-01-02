@@ -103,7 +103,7 @@ MKL_INT main (int argc[], char *argv[])
     }
     iparm[0] = 1;         /* No solver default */
     iparm[1] = 2;         /* Fill-in reordering from METIS */ // 0 - AMD; 2 - METIS
-    iparm[3] = 0;         /* No iterative-direct algorithm */
+    iparm[3] = 31;         /* No iterative-direct algorithm */
     iparm[4] = 0;         /* No user fill-in reducing permutation */
     // iparm[4] = 2;
     iparm[5] = 0;         /* Write solution into x */
@@ -122,7 +122,7 @@ MKL_INT main (int argc[], char *argv[])
     iparm[17] = -1;       /* Output: Number of nonzeros in the factor LU */
     iparm[18] = -1;       /* Output: Mflops for LU factorization */
     iparm[19] = 0;        /* Output: Numbers of CG Iterations */
-    maxfct = 1;           /* Maximum number of numerical factorizations. */
+    maxfct = 10;           /* Maximum number of numerical factorizations. */
     mnum = 1;         /* Which factorization to use. */
     msglvl = 0;           /* Print statistical information  */
     error = 0;            /* Initialize error flag */
@@ -139,8 +139,11 @@ MKL_INT main (int argc[], char *argv[])
 /* all memory that is necessary for the factorization. */
 /* -------------------------------------------------------------------- */
     phase = 11;
+    double t1, t2;
+    t1 = microtime();
     PARDISO (pt, &maxfct, &mnum, &mtype, &phase,
              &n, a, offset_A, row_ptr_A, &ddum, &nrhs, iparm, &msglvl, &ddum, &ddum, &error);
+    t2 = microtime() - t1;
     if ( error != 0 )
     {
         printf ("ERROR during symbolic factorization: %d\n", error);
@@ -148,22 +151,26 @@ MKL_INT main (int argc[], char *argv[])
     }
     // printf ("\nReordering completed ... ");
     printf ("Number of nonzeros in factors = %d\n", iparm[17]);
+    printf ("Analysis time is: %lf\n", t2);
     // printf ("\nNumber of factorization MFLOPS = %d\n", iparm[18]);
 /* -------------------------------------------------------------------- */
 /* .. Numerical factorization. */
 /* -------------------------------------------------------------------- */
     phase = 22;
-    double t1, t2;
+    // phase = 12;
     double t = 0;
     int loop = atoi(argv[2]);
     for ( int k = 0; k < loop; k++ )
     {
+        // for (int j = 0; j < nnz1; ++j) a[j] *= (_double_t)rand() / RAND_MAX * 2.;
         t1 = microtime();
         PARDISO (pt, &maxfct, &mnum, &mtype, &phase,
                 &n, a, offset_A, row_ptr_A, &ddum, &nrhs, iparm, &msglvl, &ddum, &ddum, &error);
         t2 = microtime() - t1;
         t += t2;
-        // printf("Time of pardiso is: %lf\n", t2);
+        printf("Time of pardiso is: %lf\n", t2);
+        printf ("CG/CGS diagnostics = %d\n", iparm[19]);
+        printf ("iparm[3] = %d\n", iparm[3]);
     }
     printf("Average time = %lf\n", t/loop);
     if ( error != 0 )

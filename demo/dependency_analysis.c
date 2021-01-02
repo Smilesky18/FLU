@@ -18,7 +18,7 @@ int belong( int column, int *xa_belong, int *asub_belong, int *length_belong)
 	return temp+1;
 }
 
-void FLU_Dependency_Analysis(int *row_ptr_U, int *offset_U, int *asub_U_level, int *xa_trans, int prior_column_c, int num_thread, int *gp_level)
+void FLU_Dependency_Analysis(int *row_ptr_U, int *offset_U, int *asub_U_level, int *xa_trans, int prior_column_c, int num_thread, int *gp_level, int *prior_level)
 {
     int *length = ( int *)malloc( sizeof(int) * prior_column_c);
 	memset(length, -1, sizeof(int) * prior_column_c);
@@ -72,16 +72,23 @@ void FLU_Dependency_Analysis(int *row_ptr_U, int *offset_U, int *asub_U_level, i
 	int sum_more_than_16_columns = 0;
 	for ( i = 0; i < max_level+1; i++ )
 	{
-		if ( level[i] < num_thread )
+		if ( level[i]  == 1 )
 		{
 			sum_level = i;
 			break; 
 		}
 	}
-	for ( i = 0; i < sum_level+1; i++ )
-	{
-		sum_more_than_16_columns += level[i];
-	}
+	*prior_level = sum_level;
+	printf("sum_level = %d max_level = %d\n", sum_level, max_level);
+	printf("xa_trans[sum_level] = %d xa_trans[max_level] = %d\n", xa_trans[sum_level], xa_trans[max_level]);
+	
+	// for ( i = xa_trans[sum_level]; i < xa_trans[max_level+1]; i++ )
+	// {
+	// 	if ( asub_U_level[i+1] - asub_U_level[i] != 1 )
+	// 	{
+	// 		printf("No continuous columns!\n");
+	// 	}
+	// }
 
     // return xa_trans;
 }

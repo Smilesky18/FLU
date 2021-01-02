@@ -35,7 +35,7 @@ double microtime_func()
         return tv.tv_sec+tv.tv_usec/MICRO_IN_SEC;
 }
 
-double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int *asub_U_level, double *lx, double *ux, char *tag, int max_level, int pri_level, int *xa_trans, int num_thread, int *sn_number, int *sn_column_start, int *sn_column_end)
+double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next_sn_row_computing(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int *asub_U_level, double *lx, double *ux, char *tag, int max_level, int pri_level, int *xa_trans, int num_thread, int *sn_number, int *sn_column_start, int *sn_column_end, int *sn_offset, double *sn_value, int *counter)
 {
    omp_set_num_threads(num_thread);
 
@@ -75,6 +75,11 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 	int sum;
 	int ssss;
 	double t1, t2;
+	int sn_num, sn_num_2;
+	int start;
+	int sn_s, sn_e;
+	double sum_sn = 0;
+	int f;
 
 	// printf("11111111111111111111111111111111\n");
 
@@ -144,10 +149,118 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 					  pack_j = 1;
 				  }
 				  
+				  else if ( column_number_sn == 8 )
+				  {
+					  for ( jj = 0; jj < column_number_sn; jj++ )
+					  {
+						  	column_next = row_ptr_U[val+jj];
+							wait = (volatile char*)&(tag[column_next]);
+							
+							while ( !(*wait) ) 
+							{ 
+								;
+							}
+					  }
+					  /*for ( qqq = 0; qqq < 8; qqq++ )
+					  {
+						  column_next = column_start + qqq;
+						  temp = xx_next_column[column_next];
+						  for ( i = offset_L[column_next]+1; i < offset_L[column_next+1]; i++ )
+						  {
+							  xx_next_column[row_ptr_L[i]] -=  temp*L[i];
+                          }
+					  }*/
+	
+					  column_sn_end = row_ptr_U[val+column_number_sn-1];
+					  row_num = offset_L[column_sn_end+1] - offset_L[column_sn_end] - 1;
+					  row_count = offset_L[column_start + 1] - offset_L[column_start] - 1;
+					  column_divid = row_num % 16;
+					  divid = row_num / 16;
+					  row_sn_start = offset_L[column_sn_end] + 1;
+					  sn_num_2 = sn_number[column_start];
+					  sn_s = sn_offset[sn_num_2]; 
+					  sn_e = sn_offset[sn_num_2];
+
+					//   printf("sn_s = %d sn_e = %d sn = %d k = %d\n", sn_s, sn_e, sn_num_2, k);
+
+					  /*for ( qqq = 0; qqq < column_number_sn-1; qqq++ )
+					  {
+						  row_else1 = row_ptr_U[val+qqq];
+						  row_else2 = row_ptr_U[val+qqq+1];
+						  temp = xx_next_column[row_else1];
+						  dense_vec_counter = qqq;
+						  for ( sss = offset_L[row_else1]+1; sss < offset_L[row_else1+1]-row_num; sss++ )
+						  {
+							  dense_vec_2[dense_vec_counter++] += temp*L[sss];
+						  }
+						  xx_next_column[row_else2] -= dense_vec_2[row_else2-column_start-1];
+						  dense_vec_2[row_else2-column_start-1] = 0;
+					  }
+					  for ( qqq = 0; qqq < column_number_sn; qqq++ )
+					  {
+						  row_else1 = row_ptr_U[val+qqq];
+						  temp = xx_next_column[row_else1];
+
+						  for ( sss = offset_L[row_else1+1]-row_num; sss < offset_L[row_else1+1]; sss++ )
+						  {
+							  xx_next_column[row_ptr_L[sss]] -=  temp*L[sss];
+						  }
+					  }*/
+
+				      /*for ( qqq = 0; qqq < column_number_sn-1; qqq++ )
+					  {
+						  row_else1 = row_ptr_U[val+qqq];
+						  row_else2 = row_ptr_U[val+qqq+1];
+						  temp = xx_next_column[row_else1];
+						  dense_vec_counter = qqq;
+						  sn_s = sn_e;
+						  sn_e = sn_s + 7 - qqq; 
+
+						//   printf("sn_s = %d sn_e = %d k = %d\n", sn_s, sn_e, k);
+			
+						  for ( sss = sn_s; sss < sn_e; sss++ )
+						  {
+							  dense_vec_2[dense_vec_counter++] += temp*sn_value[sss];
+							  printf("temp = %lf %lf\n", temp, sn_value[sss]);
+						  }
+						  xx_next_column[row_else2] -= dense_vec_2[row_else2-column_start-1];
+						  dense_vec_2[row_else2-column_start-1] = 0;
+					  }*/
+					  for ( qqq = 0; qqq < column_number_sn; qqq++ )
+					  {
+						  row_else1 = row_ptr_U[val+qqq];
+						  temp = xx_next_column[row_else1];
+
+						  for ( sss = offset_L[row_else1+1]-row_num; sss < offset_L[row_else1+1]; sss++ )
+						  {
+							  xx_next_column[row_ptr_L[sss]] -=  temp*L[sss];
+						  }
+					  }
+					
+					/*  v_row.vec = _mm512_load_pd(&xx_next_column[column_start]);
+					  sum_sn = 0;
+					  sn_s = sn_offset[sn_num_2] + 28;
+					  for ( qqq = 0; qqq < row_num; qqq++ )
+					  {
+						  add_sum.vec = zero.vec; 
+						  v_l.vec = _mm512_load_pd(&sn_value[sn_s]);
+						  add_sum.vec = _mm512_fmadd_pd(v_row.vec, v_l.vec, add_sum.vec);
+						  for ( sss = 0; sss < 8; sss++ )
+						  {
+							  sum_sn += add_sum.ptr_vec[sss];
+						  }
+						  xx_next_column[row_ptr_L[row_sn_start+qqq]] = sum_sn;
+						  sum_sn = 0;
+						  sn_s += 8;
+					  }*/
+					  
+					  pack_j = column_number_sn;
+				  }
+
 				  else
 				  {
-					  if ( column_number_sn != 8 )
-					  	printf("column_number_sn = %d\n", column_number_sn);
+					//   if ( column_number_sn != 8 )
+					//   	printf("column_number_sn = %d\n", column_number_sn);
 					//   t1 = microtime_func();
 					  for ( jj = 0; jj < column_number_sn; jj++ )
 					  {
@@ -274,6 +387,43 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 				  L[i] = xx_next_column[row_ptr_L[i]] / U_diag;
 				  xx_next_column[row_ptr_L[i]] = 0;
 			  }
+			  sn_num = sn_number[k];
+              if ( sn_num >= 0 )
+			  {
+				  /*start = sn_offset[sn_num];
+
+				  for ( jj = k - 7; jj <= k; jj++ )
+				  {
+					  j = sn_record[jj];
+					  for ( i = offset_L[jj]+1; i < offset_L[jj]+1+j; i++ )
+					  {
+						  sn_value[start] = L[i];
+					  	  start++;
+					  }
+					  start = 28 + 7 - j;
+					  for ( ; i < offset_L[k+1]; i++ )
+					  {
+							sn_value[start] = L[i];
+							start += 8;
+					  }
+				  }*/
+				 
+				  j = sn_record[k];
+				  start = sn_offset[sn_num] + counter[j];
+				//   f = 8 - j;
+				  for ( i = offset_L[k]+1; i < offset_L[k]+1+j; i++ )
+				  {
+					  sn_value[start] = L[i];
+					  start++;
+				  }
+				  start = 28 + 7 - j;
+				  for ( i = offset_L[k]+1+j; i < offset_L[k+1]; i++ )
+				  {
+					  sn_value[start] = L[i];
+					  start += 8;
+				  }		  
+			  }
+
 			//   tag[k/4].boolvec[k%4] = 1;
 			tag[k] = 1;
 			// if ( tn == 0 ) 
@@ -286,6 +436,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 		  }
 		
 	 }
+	//  printf("start = %d\n", start);
 	//    #pragma omp barrier 
 }
 
@@ -302,6 +453,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 // }
 
 // printf("single columns computing time is: %lf\n", t_sum);
+
 
   return U;
 }
