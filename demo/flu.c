@@ -10,6 +10,17 @@
 #include <omp.h>
 # include <math.h>
 
+#define MICRO_IN_SEC 1000000.00
+/* Time Stamp */
+double microtime()
+{
+        struct timeval tv;
+        struct timezone tz;
+        gettimeofday(&tv,&tz);
+
+        return tv.tv_sec+tv.tv_usec/MICRO_IN_SEC;
+}
+
 const char *const ORDERING_METHODS[] = { "AMD", "mAMD", "AMF","mAMF1","mAMF2","mAMF3" };
 
 int main( int argc[], char *argv[])
