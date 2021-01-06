@@ -118,9 +118,9 @@ void FLU_Detect_SuperNode(int *row_ptr_L, int *offset_L, int *sn_record, int *sn
 	// int thre_1 = atoi(argv[4]);
 	// int thre_2 = atoi(argv[5]);
 	// int thre_1 = 1000000000;
-	// col_thresold = 8;
+	col_thresold = 8;
 	int thre_1 = 8; // 16
-	int thre_2 = 4; // 16
+	int thre_2 = 8; // 16
 	int sn_j;
 
 	int sn_col_num, sn_num;
@@ -205,12 +205,12 @@ void FLU_Detect_SuperNode(int *row_ptr_L, int *offset_L, int *sn_record, int *sn
 					// if ( sn_sum_final == 2731 ) printf("sn start = %d sn end = %d\n", j, j+thre_2-1);
 					sn_column_start[sn_sum_final] = j;
 					sn_column_end[sn_sum_final] = j+7;
-					// printf("sn start = %d sn end = %d\n", j, j+thre_2-1);
+					// printf("1-sn start = %d sn end = %d\n", j, j+thre_2-1);
 					// sn_sum_final++;
 					// sum += 8;
 				}
 			}
-			else
+			/*else
 			{
 				// printf("!!!!!!!!!!!!!!!!!!!sn: %d\n", sn_end[i]-sn_start[i]+1);
 				// if ( (offset_L[sn_end[i]+1] - offset_L[sn_end[i]] - 1) / (sn_end[i] - sn_start[i] + 1) < 1 )
@@ -227,9 +227,9 @@ void FLU_Detect_SuperNode(int *row_ptr_L, int *offset_L, int *sn_record, int *sn
 				sn_column_start[sn_sum_final] = sn_start[i];
 				sn_column_end[sn_sum_final] = sn_end[i];
 				sn_sum_final++;
-				// printf("sn start = %d sn end = %d\n", sn_start[i], sn_end[i]);
+				// printf("2-sn start = %d sn end = %d\n", sn_start[i], sn_end[i]);
 				// continue;
-			}
+			}*/
 		
 		}
     }

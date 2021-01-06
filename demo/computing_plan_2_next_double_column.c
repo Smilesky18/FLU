@@ -28,11 +28,11 @@
 
 
 
-double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next_double_computing(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int *asub_U_level, double *lx, double *ux, char *tag, int max_level, int *xa_trans, int num_thread, int *flag, int n_after_double_column, int *row_ptr_U_after_double_column)
+double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next_double_computing(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm_c, int *perm_r, int *row_ptr_L, int *offset_L, int *row_ptr_U, int *offset_U, int *sn_record, int thresold, double *L, double *U, double **xx1, double **xx2, double **dv1, double **dv2, int *asub_U_level, double *lx, double *ux, char *tag, int max_level, int *xa_trans, int num_thread, char *flag, int sum_fl, int *n_new)
 {
-//    omp_set_num_threads(num_thread);
+   omp_set_num_threads(num_thread);
 
-//   #pragma omp parallel
+  #pragma omp parallel
 {
 	double *xx_next_column, *xx;
 	double U_diag;
@@ -46,8 +46,8 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
     zero.vec = _mm512_setzero_pd();
 	int kk, m, columns_1, columns_next_column_1;
 	
-	// int tn = omp_get_thread_num();
-	int tn = 0;
+	int tn = omp_get_thread_num();
+	// int tn = 0;
 	xx = xx1[tn];
 	xx_next_column = xx2[tn];
 	dense_vec = dv1[tn];
@@ -59,20 +59,18 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 	int wait_col;
 	int val2;
 
-	// #pragma omp for schedule(static, 1)	
-	// for ( kk = 0; kk < n_after_double_column; kk++ )
-	for ( k = 0; k < n; k+=pack_k )
+	#pragma omp for schedule(static, 1)	
+	for ( kk = 0; kk < sum_fl; kk++ )
+	// for ( k = 0; k < n; k++ )
 	  {
 		  {
 			//   for ( kk = start[m]; kk <= end[m]; kk++ )
 			//   for ( kk = xa_trans[m]; kk < xa_trans[m+1]; kk++ )
 			  {
-			//   k = row_ptr_U_after_double_column[kk];
+			  k = n_new[kk];
 
-			//   printf("k = %d pack_k = %d n = %d\n", k, pack_k, n);
 			  if ( !flag[k] )
 			  {
-				    //  printf("k = %d n = %d\n", k, n);
 				current_column = perm_c[k];
 				for ( j = offset[current_column]; j < offset[current_column+1]; j++ )
 				{
@@ -122,18 +120,6 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 						column_divid = row_num % 16;
 						divid = row_num / 16;
 						row_sn_start = offset_L[column_sn_end] + column_divid + 1;
-
-						/*for ( qqq = 0; qqq < column_number_sn; qqq++ )
-					  	{
-						  row_else1 = row_ptr_U[val+qqq];
-						  row_else2 = row_ptr_U[val+qqq+1];
-						  temp = xx_next_column[row_else1];
-						//   dense_vec_counter = qqq;
-						  for ( sss = offset_L[row_else1]+1; sss < offset_L[row_else1+1]-divid*16; sss++ )
-						  {
-							  xx_next_column[row_ptr_L[sss]] -= temp*L[sss];
-						  }
-					  	}*/
 
 						for ( qqq = 0; qqq < column_number_sn-1; qqq++ )
 						{
@@ -195,7 +181,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 						pack_j = column_number_sn;
 					}    
 				}
-
+ 
 				for ( i = offset_U[k]; i < offset_U[k+1]; i++ )
 				{
 					U[i] = xx_next_column[row_ptr_U[i]];
@@ -213,10 +199,8 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 				pack_k = 1;
 			  }
 			  
-			//   else if ( flag[k] == 1 )
 			  else 
 			  {
-				
 				  	  current_column = perm_c[k];
 					  current_next_column = perm_c[k+1];
 					  for ( j = offset[current_column]; j < offset[current_column+1]; j++ )
@@ -233,8 +217,8 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 
 					  columns_next_column = offset_U[k+2] - offset_U[k+1] - 2;
 					  column_end_next_column = row_ptr_U[offset_U[k+2] - 3];
-					  
-					  for ( j = 0, j_next_column = 0; j < columns || j_next_column < columns_next_column; j+=pack, j_next_column+=pack_next_column )
+		  
+					  for ( j = 0, j_next_column = 0; j < columns && j_next_column < columns_next_column; j+=pack, j_next_column+=pack_next_column )
 					  {
 						  val = j+offset_U[k];
 						  val_next_column = j_next_column+offset_U[k+1];
@@ -585,43 +569,286 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 					    
 					  } 
 					  
-					  
-					  for ( i = offset_U[k]; i < offset_U[k+1]; i++ )
+					  for ( ; j < columns; j+=pack_j )
 					  {
-						  U[i] = xx[row_ptr_U[i]];
-						  xx[row_ptr_U[i]] = 0;
+							val = j+offset_U[k];
+							column_start = row_ptr_U[val];
+							temp = xx[column_start];
+							if ( column_end-column_start > sn_record[column_start] ) column_number_sn = sn_record[column_start]+1;
+							else column_number_sn = column_end-column_start+1;
+
+							if ( column_number_sn < thresold )
+							{
+								column_next = row_ptr_U[val];
+								wait = (volatile char*)&(tag[column_next]);
+								
+								while ( !(*wait) ) 
+								{ 
+									;
+								}
+
+									for ( i = offset_L[column_start]+1; i < offset_L[column_start+1]; i++ )
+									{
+										xx[row_ptr_L[i]] -=  temp*L[i];
+									}
+								pack_j = 1;
+							}
+							else
+							{
+								for ( jj = 0; jj < column_number_sn; jj++ )
+									{
+											column_next = row_ptr_U[val+jj];
+											wait = (volatile char*)&(tag[column_next]);
+											
+											while ( !(*wait) ) 
+											{ 
+												;
+											}
+									}
+
+								column_sn_end = row_ptr_U[val+column_number_sn-1];
+								row_num = offset_L[column_sn_end+1] - offset_L[column_sn_end] - 1;
+								row_count = offset_L[column_start + 1] - offset_L[column_start] - 1;
+								column_divid = row_num % 16;
+								divid = row_num / 16;
+								row_sn_start = offset_L[column_sn_end] + column_divid + 1;
+
+								for ( qqq = 0; qqq < column_number_sn-1; qqq++ )
+								{
+									row_else1 = row_ptr_U[val+qqq];
+									row_else2 = row_ptr_U[val+qqq+1];
+									temp = xx[row_else1];
+									dense_vec_counter = qqq;
+									for ( sss = offset_L[row_else1]+1; sss < offset_L[row_else1+1]-divid*16; sss++ )
+									{
+										dense_vec_2[dense_vec_counter++] += temp*L[sss];
+									}
+									xx[row_else2] -= dense_vec_2[row_else2-column_start-1];
+									dense_vec_2[row_else2-column_start-1] = 0;
+								}
+								temp = xx[column_sn_end];
+								dense_vec_counter = column_number_sn - 1;
+								for ( i = offset_L[column_sn_end]+1; i < offset_L[column_sn_end+1]-divid*16; i++ )
+								{
+									dense_vec_2[dense_vec_counter++] += temp*L[i];
+								}
+								dense_vec_counter = column_number_sn - 1;
+								for ( sss = offset_L[column_start+1]-row_num; sss < offset_L[column_start+1]-divid*16; sss++ )
+								{
+									xx[row_ptr_L[sss]] -= dense_vec_2[dense_vec_counter];
+									dense_vec_2[dense_vec_counter] = 0;
+									dense_vec_counter++;
+								}
+								dividd = divid;
+								for ( qqq = 0; qqq < divid; qqq++ )
+								{
+									add_sum.vec = zero.vec; 
+									add_sum_2.vec = zero.vec;
+							
+									for ( sss = 0; sss < column_number_sn; sss++ )
+									{
+										row_else1 = row_ptr_U[val+sss];
+										row_record = offset_L[row_else1+1] - dividd*16;
+										
+										v_row.vec = _mm512_set1_pd(xx[row_else1]);
+										v_l.vec = _mm512_load_pd(&L[row_record]);
+										v_l_2.vec = _mm512_load_pd(&L[row_record + 8]);
+
+										add_sum.vec = _mm512_fmadd_pd(v_row.vec, v_l.vec, add_sum.vec);	
+										add_sum_2.vec = _mm512_fmadd_pd(v_row.vec, v_l_2.vec, add_sum_2.vec);	
+									}
+									
+									vi.vec = _mm256_load_si256((__m256i const *)&row_ptr_L[row_sn_start+qqq*16]);
+									v.vec = _mm512_i32gather_pd(vi.vec, &xx[0], 8);
+									v_sub.vec = _mm512_sub_pd(v.vec, add_sum.vec);
+									_mm512_i32scatter_pd(&xx[0], vi.vec, v_sub.vec, 8);
+
+									vi_2.vec = _mm256_load_si256((__m256i const *)&row_ptr_L[row_sn_start+qqq*16+8]);
+									v_2.vec = _mm512_i32gather_pd(vi_2.vec, &xx[0], 8);
+									v_sub_2.vec = _mm512_sub_pd(v_2.vec, add_sum_2.vec);
+									_mm512_i32scatter_pd(&xx[0], vi_2.vec, v_sub_2.vec, 8); 
+									
+									dividd--;
+								}
+								pack_j = column_number_sn;
+							}    
 					  }
-					  
-					  temp_next_column = xx_next_column[row_ptr_U[offset_U[k+2]-2]];
-					  //temp_next_column = xx_next_column[k];
-					  U_diag = U[i-1];
-					  for ( i = offset_L[k]+1; i < offset_L[k+1]; i++ )
+ 
+					  for ( ; j_next_column < columns_next_column; j_next_column+=pack_j )
 					  {
-						  L[i] = xx[row_ptr_L[i]] / U_diag;
-						  xx[row_ptr_L[i]] = 0;
-						  xx_next_column[row_ptr_L[i]] -=  temp_next_column*L[i];
+							val = j_next_column+offset_U[k+1];
+							column_start = row_ptr_U[val];
+							temp = xx_next_column[column_start];
+							if ( column_end_next_column-column_start > sn_record[column_start] ) column_number_sn = sn_record[column_start]+1;
+							else column_number_sn = column_end_next_column-column_start+1;
+
+							if ( column_number_sn < thresold )
+							{
+								column_next = row_ptr_U[val];
+									wait = (volatile char*)&(tag[column_next]);
+									while ( !(*wait) ) 
+									{ 
+										;
+									}
+
+									for ( i = offset_L[column_start]+1; i < offset_L[column_start+1]; i++ )
+									{
+										xx_next_column[row_ptr_L[i]] -=  temp*L[i];
+									}
+								pack_j = 1;
+							}
+							else
+							{
+								for ( jj = 0; jj < column_number_sn; jj++ )
+									{
+											column_next = row_ptr_U[val+jj];
+											wait = (volatile char*)&(tag[column_next]);
+											
+											while ( !(*wait) ) 
+											{ 
+												;
+											}
+									}
+								column_sn_end = row_ptr_U[val+column_number_sn-1];
+								row_num = offset_L[column_sn_end+1] - offset_L[column_sn_end] - 1;
+								row_count = offset_L[column_start + 1] - offset_L[column_start] - 1;
+								column_divid = row_num % 16;
+								divid = row_num / 16;
+								row_sn_start = offset_L[column_sn_end] + column_divid + 1;
+
+								for ( qqq = 0; qqq < column_number_sn-1; qqq++ )
+								{
+									row_else1 = row_ptr_U[val+qqq];
+									row_else2 = row_ptr_U[val+qqq+1];
+									temp = xx_next_column[row_else1];
+									dense_vec_counter = qqq;
+									for ( sss = offset_L[row_else1]+1; sss < offset_L[row_else1+1]-divid*16; sss++ )
+									{
+										dense_vec_2[dense_vec_counter++] += temp*L[sss];
+									}
+									xx_next_column[row_else2] -= dense_vec_2[row_else2-column_start-1];
+									dense_vec_2[row_else2-column_start-1] = 0;
+								}
+								temp = xx_next_column[column_sn_end];
+								dense_vec_counter = column_number_sn - 1;
+								for ( i = offset_L[column_sn_end]+1; i < offset_L[column_sn_end+1]-divid*16; i++ )
+								{
+									dense_vec_2[dense_vec_counter++] += temp*L[i];
+								}
+								dense_vec_counter = column_number_sn - 1;
+								for ( sss = offset_L[column_start+1]-row_num; sss < offset_L[column_start+1]-divid*16; sss++ )
+								{
+									xx_next_column[row_ptr_L[sss]] -= dense_vec_2[dense_vec_counter];
+									dense_vec_2[dense_vec_counter] = 0;
+									dense_vec_counter++;
+								}
+								dividd = divid;
+								for ( qqq = 0; qqq < divid; qqq++ )
+								{
+									add_sum.vec = zero.vec; 
+									add_sum_2.vec = zero.vec;
+							
+									for ( sss = 0; sss < column_number_sn; sss++ )
+									{
+										row_else1 = row_ptr_U[val+sss];
+										row_record = offset_L[row_else1+1] - dividd*16;
+										
+										v_row.vec = _mm512_set1_pd(xx_next_column[row_else1]);
+										v_l.vec = _mm512_load_pd(&L[row_record]);
+										v_l_2.vec = _mm512_load_pd(&L[row_record + 8]);
+
+										add_sum.vec = _mm512_fmadd_pd(v_row.vec, v_l.vec, add_sum.vec);	
+										add_sum_2.vec = _mm512_fmadd_pd(v_row.vec, v_l_2.vec, add_sum_2.vec);	
+									}
+									
+									vi.vec = _mm256_load_si256((__m256i const *)&row_ptr_L[row_sn_start+qqq*16]);
+									v.vec = _mm512_i32gather_pd(vi.vec, &xx_next_column[0], 8);
+									v_sub.vec = _mm512_sub_pd(v.vec, add_sum.vec);
+									_mm512_i32scatter_pd(&xx_next_column[0], vi.vec, v_sub.vec, 8);
+
+									vi_2.vec = _mm256_load_si256((__m256i const *)&row_ptr_L[row_sn_start+qqq*16+8]);
+									v_2.vec = _mm512_i32gather_pd(vi_2.vec, &xx_next_column[0], 8);
+									v_sub_2.vec = _mm512_sub_pd(v_2.vec, add_sum_2.vec);
+									_mm512_i32scatter_pd(&xx_next_column[0], vi_2.vec, v_sub_2.vec, 8); 
+									
+									dividd--;
+								}
+								pack_j = column_number_sn;
+							}    
 					  }
-					  
-					  for ( i = offset_U[k+1]; i < offset_U[k+2]; i++ )
+					
+					  if ( row_ptr_U[offset_U[k+2] - 2] != k )
 					  {
-						  U[i] = xx_next_column[row_ptr_U[i]];
-						  xx_next_column[row_ptr_U[i]] = 0;
+						    for ( i = offset_U[k]; i < offset_U[k+1]; i++ )
+							{
+								U[i] = xx[row_ptr_U[i]];
+								xx[row_ptr_U[i]] = 0;
+							}
+							
+							U_diag = U[i-1];
+							for ( i = offset_L[k]+1; i < offset_L[k+1]; i++ )
+							{
+								L[i] = xx[row_ptr_L[i]] / U_diag;
+								xx[row_ptr_L[i]] = 0;
+							}
+							temp_next_column = xx_next_column[row_ptr_U[offset_U[k+2]-2]];
+							column_start = row_ptr_U[offset_U[k+2] - 2];
+							for ( i = offset_L[column_start]+1; i < offset_L[column_start+1]; i++ )
+							{
+								xx_next_column[row_ptr_L[i]] -=  temp_next_column*L[i];
+							}
+							
+							for ( i = offset_U[k+1]; i < offset_U[k+2]; i++ )
+							{
+								U[i] = xx_next_column[row_ptr_U[i]];
+								xx_next_column[row_ptr_U[i]] = 0;
+							}
+							
+							U_diag_next_column = U[i-1];
+							for ( i = offset_L[k+1]+1; i < offset_L[k+2]; i++ )
+							{
+								L[i] = xx_next_column[row_ptr_L[i]] / U_diag_next_column;
+								xx_next_column[row_ptr_L[i]] = 0;
+							}
 					  }
-					  
-					  U_diag_next_column = U[i-1];
-					  for ( i = offset_L[k+1]+1; i < offset_L[k+2]; i++ )
-					  {
-						  L[i] = xx_next_column[row_ptr_L[i]] / U_diag_next_column;
-						  xx_next_column[row_ptr_L[i]] = 0;
-					  } 
+					 
+					  else
+					 {
+						for ( i = offset_U[k]; i < offset_U[k+1]; i++ )
+						{
+							U[i] = xx[row_ptr_U[i]];
+							xx[row_ptr_U[i]] = 0;
+						}
+						
+						// temp_next_column = xx_next_column[row_ptr_U[offset_U[k+2]-2]];
+						  temp_next_column = xx_next_column[k];
+						U_diag = U[i-1];
+						for ( i = offset_L[k]+1; i < offset_L[k+1]; i++ )
+						{
+							L[i] = xx[row_ptr_L[i]] / U_diag;
+							xx[row_ptr_L[i]] = 0;
+							xx_next_column[row_ptr_L[i]] -=  temp_next_column*L[i];
+						}
+						
+						for ( i = offset_U[k+1]; i < offset_U[k+2]; i++ )
+						{
+							U[i] = xx_next_column[row_ptr_U[i]];
+							xx_next_column[row_ptr_U[i]] = 0;
+						}
+						
+						U_diag_next_column = U[i-1];
+						for ( i = offset_L[k+1]+1; i < offset_L[k+2]; i++ )
+						{
+							L[i] = xx_next_column[row_ptr_L[i]] / U_diag_next_column;
+							xx_next_column[row_ptr_L[i]] = 0;
+						} 
+					 }
 					 
 				      tag[k] = 1;
 					  tag[k+1] = 1;
 
 					  pack_k = 2;
 			  }
-	        
-			// printf("k = %d pack_k = %d n = %d\n", k, pack_k, n);
 		  }
 		    
 		  }

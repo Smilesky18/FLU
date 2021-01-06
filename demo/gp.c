@@ -15,14 +15,12 @@ void gp(double *a, int *row_ptr, int *offset, int n, int nzl, int nzu, int *perm
 	double temp, U_diag;
 	for ( k = 0; k < n; k++ )
 	{
-
 			  current_column = perm_c[k];
 			  for ( j = offset[current_column]; j < offset[current_column+1]; j++ )
 			  {
 				  xx[perm_r[row_ptr[j]]] = a[j];
 			  }
 			  columns = offset_U[k+1] - offset_U[k] - 1;
-			  column_end = row_ptr_U[offset_U[k+1] - 2];
 
 			  for ( j = 0; j < columns; j++ )
 			  {

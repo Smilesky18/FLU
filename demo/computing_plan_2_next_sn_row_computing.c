@@ -181,6 +181,17 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 					  sn_s = sn_offset[sn_num_2]; 
 					  sn_e = sn_offset[sn_num_2];
 
+				// if ( sn_num_2 == 7 && k == 99115 )
+				// {
+				// printf("\n&&&&&&&&&&&&&&&sn_value&&&&&&&&&&&&&&\n");
+				// 	for ( qqq = sn_offset[sn_num_2]; qqq < sn_offset[sn_num_2]+28; qqq++ )
+				// 	{
+				// 		printf("%lf ", sn_value[qqq]);
+				// 	}
+			    // printf("\n");
+				// }
+
+
 					//   printf("sn_s = %d sn_e = %d sn = %d k = %d\n", sn_s, sn_e, sn_num_2, k);
 
 					  /*for ( qqq = 0; qqq < column_number_sn-1; qqq++ )
@@ -207,7 +218,8 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 						  }
 					  }*/
 
-				      /*for ( qqq = 0; qqq < column_number_sn-1; qqq++ )
+						//   if ( k == 99115 ) printf("for 1------- xx[16054] = %lf\n", xx_next_column[16054]);
+				      for ( qqq = 0; qqq < column_number_sn-1; qqq++ )
 					  {
 						  row_else1 = row_ptr_U[val+qqq];
 						  row_else2 = row_ptr_U[val+qqq+1];
@@ -215,18 +227,19 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 						  dense_vec_counter = qqq;
 						  sn_s = sn_e;
 						  sn_e = sn_s + 7 - qqq; 
-
-						//   printf("sn_s = %d sn_e = %d k = %d\n", sn_s, sn_e, k);
 			
 						  for ( sss = sn_s; sss < sn_e; sss++ )
 						  {
+							//    if ( dense_vec_counter == 5 && k == 99115 && sn_num_2 == 7 ) printf("********* temp = %lf sn_value = %lf\n", temp, sn_value[sss]);
 							  dense_vec_2[dense_vec_counter++] += temp*sn_value[sss];
-							  printf("temp = %lf %lf\n", temp, sn_value[sss]);
+							//   printf("temp = %lf %lf\n", temp, sn_value[sss]);
 						  }
+						//    if ( k == 99115 && row_else2 == 16054 ) printf("1-------- row_else2 = 16054 xx[16054] = %lf\n", xx_next_column[row_else2]);
 						  xx_next_column[row_else2] -= dense_vec_2[row_else2-column_start-1];
+						//   if ( k == 99115 && row_else2 == 16054 ) printf("1-------- row_else2 = 16054 xx[16054] = %lf row_else2-column_start-1 = %d dense_vec_2[row_else2-column_start-1] = %lf\n", xx_next_column[row_else2], row_else2-column_start-1, dense_vec_2[row_else2-column_start-1]);
 						  dense_vec_2[row_else2-column_start-1] = 0;
-					  }*/
-					  for ( qqq = 0; qqq < column_number_sn-1; qqq++ )
+					  }
+					  /*for ( qqq = 0; qqq < column_number_sn-1; qqq++ )
 					  {
 						  row_else1 = row_ptr_U[val+qqq];
 						  row_else2 = row_ptr_U[val+qqq+1];
@@ -234,24 +247,31 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 						  dense_vec_counter = qqq;
 						  for ( sss = offset_L[row_else1]+1; sss < offset_L[row_else1+1]-row_num; sss++ )
 						  {
+							  if ( dense_vec_counter == 5 && k == 99115 && sn_num_2 == 7 ) printf("********* temp = %lf L = %lf\n", temp, L[sss]);
 							  dense_vec_2[dense_vec_counter++] += temp*L[sss];
-							  printf("temp = %lf %lf\n", temp, L[sss]);
+							//   printf("temp = %lf %lf\n", temp, L[sss]);
 						  }
+						  if ( k == 99115 && row_else2 == 16054 ) printf("1-------- row_else2 = 16054 xx[16054] = %lf sn_num_2 = %d\n", xx_next_column[row_else2], sn_num_2);
 						  xx_next_column[row_else2] -= dense_vec_2[row_else2-column_start-1];
+						  if ( k == 99115 && row_else2 == 16054 ) printf("1-------- row_else2 = 16054 xx[16054] = %lf row_else2-column_start-1 = %d dense_vec_2[row_else2-column_start-1] = %lf\n", xx_next_column[row_else2], row_else2-column_start-1, dense_vec_2[row_else2-column_start-1]);
 						  dense_vec_2[row_else2-column_start-1] = 0;
-					  }
-					  for ( qqq = 0; qqq < column_number_sn; qqq++ )
+					  }*/
+					//    if ( k == 99115 ) printf("for 2------- xx[16054] = %lf\n", xx_next_column[16054]);
+					  /*for ( qqq = 0; qqq < column_number_sn; qqq++ )
 					  {
 						  row_else1 = row_ptr_U[val+qqq];
 						  temp = xx_next_column[row_else1];
+						//   if ( row_else1 == 16054 && k == 99115 ) printf("for------- temp = %lf\n", temp);
 
 						  for ( sss = offset_L[row_else1+1]-row_num; sss < offset_L[row_else1+1]; sss++ )
 						  {
 							  xx_next_column[row_ptr_L[sss]] -=  temp*L[sss];
+							  if ( row_ptr_L[sss] == 99336 && k == 99115 ) printf("2-------- row_ptr_L[sss] = 99336 xx[99336] = %lf temp = %lf L = %lf row_else1= %d\n", xx_next_column[row_ptr_L[sss]], temp, L[sss], row_else1);
 						  }
-					  }
+					  }*/
 					
-					/*  v_row.vec = _mm512_load_pd(&xx_next_column[column_start]);
+					  v_row.vec = _mm512_load_pd(&xx_next_column[column_start]);
+					  if ( sn_num_2 == 7 && k == 99115 ) printf("column_start = %d column_sn_end = %d\n", column_start, column_sn_end);
 					  sum_sn = 0;
 					  sn_s = sn_offset[sn_num_2] + 28;
 					  for ( qqq = 0; qqq < row_num; qqq++ )
@@ -263,10 +283,11 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 						  {
 							  sum_sn += add_sum.ptr_vec[sss];
 						  }
-						  xx_next_column[row_ptr_L[row_sn_start+qqq]] = sum_sn;
+						  xx_next_column[row_ptr_L[row_sn_start+qqq]] -= sum_sn;
+						//   printf("xx = %lf\n", );
 						  sum_sn = 0;
 						  sn_s += 8;
-					  }*/
+					  }
 					  
 					  pack_j = column_number_sn;
 				  }
@@ -399,6 +420,7 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 			  for ( i = offset_L[k]+1; i < offset_L[k+1]; i++ )
 			  {
 				  L[i] = xx_next_column[row_ptr_L[i]] / U_diag;
+				//   if ( i == 1765970 ) printf("xx[%d] = %lf k = %d\n", row_ptr_L[i], xx_next_column[row_ptr_L[i]], k);
 				  xx_next_column[row_ptr_L[i]] = 0;
 			  }
 			  sn_num = sn_number[k];
@@ -430,13 +452,27 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 					  sn_value[start] = L[i];
 					  start++;
 				  }
-				  start = 28 + 7 - j;
+				  start = sn_offset[sn_num] + 28 + 7 - j;
 				  for ( i = offset_L[k]+1+j; i < offset_L[k+1]; i++ )
 				  {
 					  sn_value[start] = L[i];
 					  start += 8;
 				  }		  
 			  }
+			//   if ( sn_num == 7 && sn_record[k] == 0 )
+			//   {
+			// 	//   printf("\n*************L**************\n");
+			// 	//   for ( i = offset_L[k]+1; i < offset_L[k+1]; i++ )
+			// 	//   {
+			// 	// 	  printf("L = %lf ", L[i]);
+			// 	//   }
+			// 	  printf("\n*************sn_value**************\n");
+			// 	  for ( i = sn_offset[7]; i < sn_offset[7]+28; i++ )
+			// 	  {
+			// 		  printf("%lf ", sn_value[i]);
+			// 	  }
+			// 	  printf("\n");
+			//   }
 
 			//   tag[k/4].boolvec[k%4] = 1;
 			tag[k] = 1;

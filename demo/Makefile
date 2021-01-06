@@ -12,5 +12,7 @@ mkl_pardiso:
 	icc -m64  -w -DMKL_ILP64 -I ../include pardiso_unsym_csc_c.c -lmkl_intel_ilp64 -lmkl_intel_thread -lmkl_core -L ../linux/lib_centos6_x64_gcc482_fma/int32/ -liomp5 -lpthread -lm -ldl -lnicslu -o mkl_pardiso -Wl,-rpath=../linux/lib_centos6_x64_gcc482_fma/int32/
 pardiso:
 	icc -O3 pardiso_unsym.c -o pardiso -I ../include -L. -lpardiso600-GNU720-X86-64 -L ~/intel/mkl/lib/intel64 -lmkl_gf_lp64 -L ../linux/lib_centos6_x64_gcc482_fma/int32/ -lnicslu -Wl,-rpath=../linux/lib_centos6_x64_gcc482_fma/int32/ -lmkl_sequential -lmkl_core -lm -lgfortran -fopenmp -I. libhsl_mc64.a libmetis.a
+gp:
+	icc flu.c gp.c -O3 -o gp -I ../include/ -L ../linux/lib_centos6_x64_gcc482_fma/int32/ -lnicslu -Wl,-rpath=../linux/lib_centos6_x64_gcc482_fma/int32/ -fopenmp
 clean:
 	rm -rf flu

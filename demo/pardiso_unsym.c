@@ -537,10 +537,10 @@ int main( int argc[], char *argv[] )
     }
 
     printf("\nSolve completed ... ");
-    // printf("\nThe solution of the system is: ");
-    // for (i = 0; i < n; i++) {
-    //     printf("\n x [%d] = % f", i, x[i] );
-    // }
+    printf("\nThe solution of the system is: ");
+    for (i = 0; i < n; i++) {
+        printf("\n x [%d] = % f", i, x[i] );
+    }
     // printf ("\n");
 
 /* -------------------------------------------------------------------- */    

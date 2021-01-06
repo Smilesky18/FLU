@@ -127,9 +127,14 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 							
 							while ( !(*wait) ) 
 							{ 
+							// #pragma omp atomic	
+								// sum_sn_num[column_next]++;
 								;
 							}
-							// sum_sn_num[k] ++;
+							// t2 = microtime_func() - t1;
+				// #pragma omp atomic
+				// 	  		t_sum += t2;
+							// sum_sn[tn] += t2;
 
 							// if ( sn_number[column_start] == 2731 ) printf("col = %d tn = %d sn_start = %d sn_end = %d\n", k, tn, column_start, column_sn_end);
 
@@ -156,9 +161,15 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 							
 							while ( !(*wait) ) 
 							{ 
+							// #pragma omp atomic	
+							// 	sum_sn_num[column_next]++;
 								;
 							}
 					  }
+					//   t2 = microtime_func() - t1;
+					//   sum_sn[tn] += t2;
+				// #pragma omp atomic
+				// 	  t_sum += t2;
 					//   sum++;
 				    //   printf("sn compute! ");
 					// t1 = microtime_func();
@@ -292,16 +303,16 @@ double* lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_pri
 // for ( int i = 0; i < n; i++ )
 // {
 // 	if ( sum_sn[i] > 0 )
-// 		printf("%d %d %lf\n", i, offset_U[i+1]-offset_U[i], sum_sn[i]);
+// 		printf("%d %d %lf\n", i, offset_U[i+1]-offset_U[i]-1, sum_sn[i]);
 // }
 
 // for ( int i = 0; i < n; i++ )
 // {
 // 	if ( sum_sn_num[i] > 0 )
-// 		printf("%d %d %d\n", i, offset_U[i+1]-offset_U[i], sum_sn_num[i]);
+// 		printf("%d %d\n", i, sum_sn_num[i]);
 // }
 
-// printf("single columns computing time is: %lf\n", t_sum);
+// printf("waiting time is: %lf\n", t_sum);
 
   return U;
 }

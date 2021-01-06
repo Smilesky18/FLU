@@ -19,7 +19,6 @@ typedef union{
 	char boolvec[4];
 } bitInt;
 
-
 typedef __attribute__((aligned(64))) union
   {
     __m512d vec;
@@ -31,8 +30,6 @@ typedef union
     __m256i vec;
     int ptr_vec[8];
   }v2if_t;
-
-
 
 double Abs(double x)
 {
@@ -528,231 +525,91 @@ if ( atoi(argv[5]) )
 	for ( i = 0; i < sn_sum_final; i++ )
 	{
 		sn_offset[i+1] = sn_offset[i] + sn_len[i];
-		// printf("sn_offset[%d] = %d\n", i, sn_offset[i]);
 	}
 	double *sn_value = (double *)malloc(sizeof(double) * sn_offset[sn_sum_final]); 
 	memset(sn_value, 0, sizeof(double) * sn_offset[sn_sum_final]);
 	printf("sn_offset[sn_sum_final] = %d\n", sn_offset[sn_sum_final]);
-	/*char *lflag = (char *)malloc(sizeof(char) * n);
-	memset(lflag, 0, sizeof(char) * n);
-	int initial_sum = 0;
-	int cols_sum = 0;
-	for ( i = 0; i < n; i++ )
-	{
-		for ( j = offset_L[i]+1; j < offset_L[i+1]; j++ )
-		{
-			lflag[row_ptr_L[j]] = 1;
-		}
-		for ( j = offset_U[i]; j < offset_U[i+1]-1; j++ )
-		{
-			for ( int k = offset_L[row_ptr_U[j]]+1; k < offset_L[row_ptr_U[j]+1]; k++ )
-			{
-				if ( lflag[row_ptr_L[k]] )
-				{
-					initial_sum++;
-					break;
-				} 
-			}
-		}
-		if ( initial_sum == offset_U[i+1]-offset_U[i]-1 )
-		{
-			cols_sum++;
-		}
-		initial_sum = 0;
-		memset(lflag, 0, sizeof(char) * n);
-	}
-	printf("cols_sum = %d\n", cols_sum);*/
-	// int n_after_double_column = FLU_double_computing(flag, argv[7], row_ptr_U, offset_U, n, asub_U_level, row_ptr_U_after_double_column);
-	// printf("gp_level = %d\n", gp_level);
-	// printf("xa_trans[0] = %d\n", xa_trans[0]);
-	// for ( j = xa_trans[pri_level]; j < xa_trans[gp_level+1]; j++ )
-	// {
-	// 	printf("col = %d\n", asub_U_level[j]);
-	// }
+
 	char *fl = (char *)malloc(sizeof(char) * n);
 	memset(fl, 0, sizeof(char) * n);
 	int sum_fl = 0;
 	int sum_sn_cols = 0;
-	for ( i = 0; i < n; i++ )
+	int pack_i;
+	char *symbol = (char *)malloc(sizeof(char) * n);
+	memset(symbol, 0, sizeof(char) * n);
+	for ( i = 0; i < n; i+=pack_i )
 	{
 		if ( sn_number[i] >= 0 )
 		{
-			// printf("sn - %d\n", i);
-			sum_sn_cols += offset_U[i+1] - offset_U[i] - 1;
-				// fl[i] = 1;
-		}
-		// printf("\n**************col %d************\n", i);
-		for ( j = offset_U[i]; j < offset_U[i+1]; j++ )
-		{
-			if ( sn_number[row_ptr_U[j]] >= 0 )//&& sn_number[i] == -1 )
+			// sum_sn_cols += offset_U[i+1] - offset_U[i] - 1;
+			for ( j = i; j < i+8; j+=2 )
 			{
-				fl[i] = 1;
-				// sum_fl++;
-				break;
+				for ( int k = offset_U[j]; k < offset_U[j+1]; k++ )
+				{
+					fl[row_ptr_U[k]] = 1;
+				}
+				for ( int k = offset_U[j+1]; k < offset_U[j+2]; k++ )
+				{
+					if ( fl[row_ptr_U[k]] ) 
+					{
+						sum_fl++;
+						fl[row_ptr_U[k]] = 0;
+					}
+				}
+				// printf("Has %d similar cols\n", sum_fl);
+				if ( sum_fl > 100 ) symbol[j] = 1;
+				sum_fl = 0;
 			}
+			pack_i = 8;
+		}
+		else
+		{
+			pack_i = 1;
+		}	
+		// printf("\n**************col %d************\n", i);
+		// for ( j = offset_U[i]; j < offset_U[i+1]; j++ )
+		// {
+		// 	if ( sn_number[row_ptr_U[j]] >= 0 )//&& sn_number[i] == -1 )
+		// 	{
+		// 		fl[i] = 1;
+		// 		// sum_fl++;
+		// 		break;
+		// 	}
+		// }
+	}
+	sum_fl = 0;
+	for ( i = 0; i < n; i+=pack_i )
+	{
+		if ( symbol[i] )
+		{
+			sum_fl++;
+			pack_i = 2;
+		}
+		else
+		{
+			sum_fl++;
+			pack_i = 1;
 		}
 	}
-	/*int *sn_stat = (int *)malloc(sizeof(int) * sn_sum_final);
-	memset(sn_stat, 0, sizeof(int) * sn_sum_final);
-	for ( i = 0; i < n; i++ )
+	printf("n = %d sum_fl = %d\n", n, sum_fl);
+	int *n_new = (int *)malloc(sizeof(int) * sum_fl);
+	int cou = 0;
+	for ( i = 0; i < n; i+=pack_i )
 	{
-		if ( fl[i] )
+		if ( symbol[i] )
 		{
-			for ( j = offset_U[i]; j < offset_U[i+1]; j++ )
-			{
-				if ( sn_number[row_ptr_U[j]] >= 0 )
-				{
-					sn_stat[sn_number[row_ptr_U[j]]]++;
-				}
-			}
-			printf("\n*****************col %d***************\n", i);
-			for ( j = 0; j < sn_sum_final; j++ )
-			{
-				if ( sn_stat[j] > 0 )
-				{
-					printf("%d ", sn_stat[j]);
-					sn_stat[j] = 0;
-				}
-			}
+			n_new[cou++] = i;
+			pack_i = 2;
 		}
-	}*/
-	// int *sn_row = (int *)malloc(sizeof(int) * sn_sum_final+1);
-	// memset(sn_row, 0, sizeof(int) * sn_sum_final+1);
-	// int *xa = (int *)malloc(sizeof(int) * n);
-	// memset(xa, 0, sizeof(int) * n);
-	// int sum_sn_col_in_U = 0;
-	// int *asub = (int *)malloc(sizeof(int) * n);
-	// int *value = (int *)malloc(sizeof(int) * n);
-	// memset(value, 0, sizeof(int) * n);
-	// int *col_ptr = (int *)malloc(sizeof(int) * n);
-	// memset(col_ptr, 0, sizeof(int) * n);
-	// int *col_ptr_U = (int *)malloc(sizeof(int) * n);
-	// memset(col_ptr_U, 0, sizeof(int) * n);
-	// int *offset_U_row = (int *)malloc(sizeof(int) * n);
-	// memset(offset_U_row, 0, sizeof(int) * n);
-	// int *offset_U_row_2 = (int *)malloc(sizeof(int) * n);
-	// memset(offset_U_row_2, 0, sizeof(int) * n);
-	// int pack_k;
-	// for ( int k = 0; k < n; k+=pack_k )
-	// {
-	// 	if ( sn_number[k] >= 0 )
-	// 	{
-	// 		int sum = xa[sn_number[k]];
-	// 		int s = 0;
+		else
+		{
+			n_new[cou++] = i;
+			pack_i = 1;
+		}
+		
+	}
+    // for ( )
 
-	// 		for ( i = k; i < k+8; i++ )
-	// 		{
-	// 			for ( j = offset_U[i]; j < offset_U[i+1]-1; j++ )
-	// 			{
-	// 				value[row_ptr_U[j]]++;
-	// 			}
-	// 		}
-	// 		/*for ( i = 0; i < n; i++ )
-	// 		{
-	// 			offset_U_row[i+1] = offset_U_row[i] + value[i];
-	// 			offset_U_row_2[i+1] = offset_U_row_2[i] + value[i];
-	// 		}
-	// 		for ( i = 0; i < 8; i++ )
-	// 		{
-	// 			for ( j = offset_U[i+k]; j < offset_U[i+k+1]-1; j++ )
-	// 			{
-	// 				col_ptr_U[offset_U_row_2[row_ptr_U[j]]++] = i;
-	// 			}
-	// 		}*/
-	// 		for ( i = 0; i < n; i++ )
-	// 		{
-	// 			if ( value[i] )
-	// 			{
-	// 				asub[sum] = i;
-	// 				// temp[i] = sum;
-	// 				sum++;
-	// 				// col_ptr[sum] = col_ptr[sum-1] + value[i];
-	// 				value[i] = 0;
-	// 				// col_ptr_U[sum] += value[i];
-	// 			}
-	// 		}
-	// 		// sn_row[sn_number[k]] = sum;
-	// 		xa[sn_number[k]+1] = sum;
-	// 		// for ( i = k; i < k+8; i++ )
-	// 		// {
-	// 		// 	for ( j = offset_U[i]; j < offset_U[i+1]-1; j++ )
-	// 		// 	{
-	// 		// 		be[col_ptr_U[temp[row_ptr_U[j]]++] = i; 
-	// 		// 	}
-	// 		// }
-			
-	// 		// sum_sn_col_in_U += offset_U[i+1] - offset_U[i];
-	// 		// for ( j = offset_U[i]; j < offset_U[i+1]; j++ )
-	// 		// {
-	// 		// 	if ( sn_number[row_ptr_U[j]] < 0 )//&& sn_number[i] == -1 )
-	// 		// 	{
-	// 		// 		sum_fl++;
-	// 		// 		// break;
-	// 		// 	}
-	// 		// }
-	// 		// printf("\n%d %d %d %d", i, offset_U[i+1] - offset_U[i], row_ptr_U[offset_U[i+1]-1], row_ptr_L[offset_L[i+1]-1]);
-	// 		// printf("\n***************col %d***************\n", i);
-	// 		// for ( j = offset_U[i]; j < offset_U[i+1]; j++ )
-	// 		// {
-	// 		// 	// printf("%d ", sn_number[row_ptr_U[j]]);
-	// 		// 	printf("%d ", row_ptr_U[j]);
-	// 		// 	// for ( int k = offset_L[row_ptr_U[j]]; k < offset_L[row_ptr_U[j]+1]; k++ )
-	// 		// 	// {
-	// 		// 	// 	printf("%d ", row_ptr_L[k]);
-	// 		// 	// }
-	// 		// }
-	// 		pack_k = 8;
-	// 	}
-	// 	else
-	// 	{
-	// 		pack_k = 1;
-	// 	}
-		
-	// }
-	// for ( int k = 0; k < n; k+=pack_k )
-	// {
-	// 	if ( sn_number[k] >= 0 )
-	// 	{
-	// 		for ( i = k; i < k+8; i++ )
-	// 		{
-	// 			for ( j = offset_U[i]; j < offset_U[i+1]-1; j++ )
-	// 			{
-	// 				value[row_ptr_U[j]]++;
-	// 			}
-	// 		}
-	// 		pack_k = 8;
-	// 	}
-	// 	else
-	// 	{
-	// 		pack_k = 1;
-	// 	}
-		
-	// }
-	// for ( int k = 0; k < n; k+=pack_k )
-	// {
-	// 	if ( sn_number[k] >= 0 )
-	// 	{
-	// 		for ( i = 0; i < n; i++ )
-	// 		{
-	// 			offset_U_row[i+1] = offset_U_row[i] + value[i];
-	// 			offset_U_row_2[i+1] = offset_U_row_2[i] + value[i];
-	// 		}
-	// 		for ( i = 0; i < 8; i++ )
-	// 		{
-	// 			for ( j = offset_U[i+k]; j < offset_U[i+k+1]-1; j++ )
-	// 			{
-	// 				col_ptr_U[offset_U_row_2[row_ptr_U[j]]++] = i;
-	// 			}
-	// 		}
-	// 		pack_k = 8;
-	// 	}
-	// 	else
-	// 	{
-	// 		pack_k = 1;
-	// 	}	
-	// }
-	// printf("unz = %d sum_sn_col_in_U = %d\n", unz, sum_sn_col_in_U);
-	// printf("n = %d sum_fl = %d\n", n, sum_fl);
     /* Run NicSLU code */
 	double time = 0;
     int th2 = atoi(argv[2]);
@@ -832,13 +689,13 @@ if ( atoi(argv[5]) )
 
 		// lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_dense_sn(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, L, U, xx1, xx2, dv1, dv2, asub_U_level, ux, lx, tag, gp_level+1, 0, xa_trans, num_thread, sn_number, sn_column_start, sn_column_end);
 
-		lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, L, U, xx1, xx2, dv1, dv2, asub_U_level, ux, lx, tag, gp_level+1, 0, xa_trans, num_thread, sn_number, sn_column_start, sn_column_end);
+		// lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, L, U, xx1, xx2, dv1, dv2, asub_U_level, ux, lx, tag, gp_level+1, 0, xa_trans, num_thread, sn_number, sn_column_start, sn_column_end);
 
 		// lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, L, U, xx1, xx2, dv1, dv2, asub_U_level, ux, lx, tag, pri_level+1, 0, xa_trans, num_thread, sn_number);
 
 		// lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, L, U, xx1, xx2, dv1, dv2, asub_U_level, ux, lx, tag, gp_level+1, pri_level+1, xa_trans, num_thread, sn_number);
 
-		// lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next_double_computing(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, L, U, xx1, xx2, dv1, dv2, asub_U_level, ux, lx, tag, gp_level+1, xa_trans, num_thread, flag, n_after_double_column, row_ptr_U_after_double_column);
+		lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next_double_computing(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, L, U, xx1, xx2, dv1, dv2, asub_U_level, ux, lx, tag, gp_level+1, xa_trans, num_thread, symbol, sum_fl, n_new);
 
 		t_e = microtime() - t_s;
 		sum_time += t_e;
