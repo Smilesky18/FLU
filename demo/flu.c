@@ -113,20 +113,71 @@ int main( int argc[], char *argv[])
     for ( i = 0; i < lnz; i++ ) row_ptr_L[i] = ui[i];	// assignment: get ui from NicSLU
     for ( i = 0; i < unz; i++ ) row_ptr_U[i] = li[i];	// assignment: get li from NicSLU
 
-	double *xx = ( double *)_mm_malloc(sizeof(double) * n, 64);
-	memset(xx, 0, sizeof(double) * n);
+    int *sn_record = (int *)malloc(sizeof(int) * n);	
+    memset(sn_record, 0, sizeof(int) * n);
+	int *sn_number = (int *)malloc(sizeof(int) * n);	
+    memset(sn_number, -1, sizeof(int) * n);
+	int *sn_row_num = (int *)malloc(sizeof(int) * n);	
+    memset(sn_row_num, -1, sizeof(int) * n);
+	int *sn_column_start = (int *)malloc(sizeof(int) * n);
+    memset(sn_column_start, 0, sizeof(int) * n);
+    int *sn_column_end = (int *)malloc(sizeof(int) * n);
+    memset(sn_column_end, 0, sizeof(int) * n);
+    int prior_column_c = n;
+	int *asub_U_level = (int *)malloc(sizeof(int) * prior_column_c);
+	int *xa_trans = (int *)malloc(sizeof(int) * prior_column_c);
+    int num_thread;
+    if ( atoi(argv[2]) == 0 ) num_thread = 32;
+	else num_thread = atoi(argv[2]);
+    int gp_level, pri_level, sn_sum_final;
+	FLU_Detect_SuperNode(row_ptr_L, offset_L, sn_record, sn_number, sn_row_num, n, sn_column_start, sn_column_end, &sn_sum_final);
+	FLU_Dependency_Analysis(row_ptr_U, offset_U, asub_U_level, xa_trans, prior_column_c, num_thread, &gp_level, &pri_level);
+
 	double *L = (double *)_mm_malloc(sizeof(double) * lnz, 64);
 	double *U = (double *)_mm_malloc(sizeof(double) * unz, 64);
 	for ( i = 0; i < n; i++ )
 	{
 		L[offset_L[i]] = 1.0;
 	}
+    double** xx1 = malloc(sizeof(double*)* num_thread);
+	double** xx2 = malloc(sizeof(double*)* num_thread);
+	double** dv1 = malloc(sizeof(double*)* num_thread);
+	double** dv2 = malloc(sizeof(double*)* num_thread);
+ #pragma omp parallel for
+ for(int i=0; i<num_thread; i++){
+    xx1[i] = ( double *)_mm_malloc(sizeof(double) * n, 64); 
+	memset(xx1[i], 0, sizeof(double) * n);
+	xx2[i] = ( double *)_mm_malloc(sizeof(double) * n, 64); 
+	memset(xx2[i], 0, sizeof(double) * n);  
+	dv1[i] = ( double * )_mm_malloc(sizeof(double) * 4096, 64);
+    memset(dv1[i], 0, sizeof(double) * 4096);
+	dv2[i] = ( double * )_mm_malloc(sizeof(double) * 4096, 64);
+    memset(dv2[i], 0, sizeof(double) * 4096);
+ }
 
-	double t1, t2;
-	t1 = microtime();
-	gp(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, L, U, xx);
-	t2 = microtime() - t1;
-	printf("GP time is: %lf\n", t2);
+    double t1, t2;
+    double sum_t = 0;
+	
+	// double *xx = ( double *)_mm_malloc(sizeof(double) * n, 64);
+	// memset(xx, 0, sizeof(double) * n);
+	// t1 = microtime();
+	// // gp(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, L, U, xx);
+	// t2 = microtime() - t1;
+	// printf("GP time is: %lf\n", t2);
+
+    char *tag = (char *)malloc(sizeof(char) * n);
+    int thresold = 4;
+
+    for ( i = 0; i < 10; i++ )
+    {
+        t1 = microtime();
+        memset(tag, 0, sizeof(char) * n);
+        lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, L, U, xx1, xx2, dv1, dv2, asub_U_level, ux, lx, tag, gp_level+1, 0, xa_trans, num_thread, sn_number, sn_column_start, sn_column_end);
+        t2 = microtime() - t1;
+        sum_t += t2;
+        printf("Time of FLU is: %lf\n", t2);
+    }
+    printf("Average Time of FLU is: %lf\n", sum_t/10);
 
 	NicsLU_Solve(solver, b, x);
 	int error_lu_gp = 0;
