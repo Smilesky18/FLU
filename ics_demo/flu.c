@@ -164,9 +164,9 @@ int main( int argc[], char *argv[])
 	    NicsLU_ReFactorize(solver, ax, atoi(argv[2]));
 	    t2 = microtime() - t1;
 	    sum_t += t2;
-        printf("Time of FLU is: %lf\n", t2);
+        printf("Time of NicSLU is: %lf\n", t2);
     }
-    printf("Average Time of FLU is: %lf\n", sum_t/100);
+    printf("Average Time of NicSLU is: %lf\n", sum_t/100);
 	
 	// double *xx = ( double *)_mm_malloc(sizeof(double) * n, 64);
 	// memset(xx, 0, sizeof(double) * n);
