@@ -74,6 +74,4 @@ void FLU_Dependency_Analysis(int *row_ptr_U, int *offset_U, int *asub_U_level, i
 		}
 	}
 	*prior_level = sum_level;
-	printf("sum_level = %d max_level = %d\n", sum_level, max_level);
-	printf("xa_trans[sum_level] = %d xa_trans[max_level] = %d\n", xa_trans[sum_level], xa_trans[max_level]);
 }

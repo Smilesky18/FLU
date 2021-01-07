@@ -32,7 +32,7 @@ int detect ( int *asub, int *xa, int lower_col, int higher_col )
         }
         else
         {
-          break;
+			break;
         }
     }
 
@@ -59,17 +59,17 @@ void FLU_Detect_SuperNode(int *row_ptr_L, int *offset_L, int *sn_record, int *sn
     /* detect supernode */ 
     for ( i = 0; i < n-1; i++ )
     {
-	higher = i + 1;
-	if ( detect(row_ptr_L, offset_L, lower, higher) )
+		higher = i + 1;
+		if ( detect(row_ptr_L, offset_L, lower, higher) )
         {
 			sn_start[sn_sum] = lower;
 			sn_end[sn_sum] = higher;
         } 
-	else
-	{
-		lower = higher;
-		sn_sum++;
-	}
+		else
+		{
+			lower = higher;
+			sn_sum++;
+		}
     }
 
     int *sn_num_record = (int *)malloc(sizeof(int) * n);
@@ -81,10 +81,9 @@ void FLU_Detect_SuperNode(int *row_ptr_L, int *offset_L, int *sn_record, int *sn
 	int divid;
 
 	int sn_div;
-	// int thre_1 = 1000000000;
 	col_thresold = 8;
-	int thre_1 = 8; // 16
-	int thre_2 = 8; // 16
+	int thre_1 = 8; 
+	int thre_2 = 8; 
 	int sn_j;
 
 	int sn_col_num, sn_num;
@@ -112,49 +111,12 @@ void FLU_Detect_SuperNode(int *row_ptr_L, int *offset_L, int *sn_record, int *sn
 						sum_sn_col += thre_2; 
 						sn_sum_final++;
 					}
-					/*else
-					{
-						for ( sn_j = j; sn_j <= sn_end[i]; sn_j++ )
-						{
-							sn_record[sn_j] = sn_end[i] - sn_j;
-							sn_number[sn_j] = sn_sum_final;
-						}
-						// sn_row_num[sn_sum_final] = offset_L[j+thre_2] - offset_L[j+thre_2-1];
-						sum_sn_col += thre_2; 
-						sn_sum_final++;
-					}*/
 					
-					// if ( sn_sum_final == 2731 ) printf("sn start = %d sn end = %d\n", j, j+thre_2-1);
 					sn_column_start[sn_sum_final] = j;
 					sn_column_end[sn_sum_final] = j+7;
-					// printf("1-sn start = %d sn end = %d\n", j, j+thre_2-1);
-					// sn_sum_final++;
-					// sum += 8;
 				}
-			}
-			/*else
-			{
-				// printf("!!!!!!!!!!!!!!!!!!!sn: %d\n", sn_end[i]-sn_start[i]+1);
-				// if ( (offset_L[sn_end[i]+1] - offset_L[sn_end[i]] - 1) / (sn_end[i] - sn_start[i] + 1) < 1 )
-				// 	printf("row: %d col: %d sn_sum_final = %d\n", offset_L[sn_end[i]+1] - offset_L[sn_end[i]] - 1, (sn_end[i] - sn_start[i] + 1), sn_sum_final );
-				for ( j = sn_start[i]; j <= sn_end[i]; j++ )
-				{
-					sn_record[j] = sn_end[i] - j;
-					// sn_num_record[j] = sn_sum_final;
-					sn_number[j] = sn_sum_final;
-					sn_number_cou[j] = sn_end[i] - sn_start[i] + 1;
-				}
-				sn_row_num[sn_sum_final] = offset_L[sn_end[i]+1] - offset_L[sn_end[i]];
-				sum_sn_col += sn_end[i] - sn_start[i] + 1;
-				sn_column_start[sn_sum_final] = sn_start[i];
-				sn_column_end[sn_sum_final] = sn_end[i];
-				sn_sum_final++;
-				// printf("2-sn start = %d sn end = %d\n", sn_start[i], sn_end[i]);
-				// continue;
-			}*/
-		
+			}	
 		}
     }
     *sn_sum_finale_re = sn_sum_final;
-	printf("sn_sum_final = %d %d columns in all sns!\n", sn_sum_final, sum_sn_col);
 }
