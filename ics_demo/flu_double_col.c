@@ -9,8 +9,85 @@
 #include <immintrin.h>
 #include <omp.h>
 # include <math.h>
+// #include "metis.h"
+// #include "hsl_mc64d.h"
 
 #define MICRO_IN_SEC 1000000.00
+
+typedef union{
+	unsigned int bit32;
+	char boolvec[4];
+} bitInt;
+
+typedef __attribute__((aligned(64))) union
+  {
+    __m512d vec;
+    double ptr_vec[8];
+  }v2df_t;
+
+typedef union
+  {
+    __m256i vec;
+    int ptr_vec[8];
+  }v2if_t;
+
+double Abs(double x)
+{
+	  return x < 0 ? -x : x;
+} 
+bool equal( double a, double b )
+{
+	  if ( Abs(a-b) < 0.1 )
+	  {
+		  return true;
+	  }
+	  else
+	  {
+		  return false;
+	  }
+}
+
+int max ( int a, int b )
+{
+    if ( a > b ) return a;
+    return b;
+}
+ 
+int dump( int a, int *arr, int n )
+{
+	for (int i = 0; i < n; i++ )
+	{
+		if ( a != arr[i] )
+		{
+			continue;
+		}
+		else
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+
+void bubble_sort(int *a, int n)
+{
+    int i, j;
+	int temp;
+    
+    for( i = 0; i < n-1; i++)
+    {
+        for( j = 0; j < n-1-i; j++)
+        {
+            if( a[j] > a[j+1] )
+            {
+                temp = a[j];
+                a[j] = a[j+1];
+                a[j+1] = temp;
+            }
+        }
+    }
+}
+
 /* Time Stamp */
 double microtime()
 {
@@ -29,7 +106,7 @@ int main( int argc[], char *argv[])
 	_double_t *ax_csr = NULL;
     _uint_t *ai = NULL, *ap = NULL;
 	_uint_t *ai_csr = NULL, *ap_csr = NULL;
-    _uint_t n, row, col, nz, nnz, i, j, k;
+    _uint_t n, row, col, nz, nnz, i, j;
     _handle_t solver = NULL;
     _double_t res[4], cond, det1, det2, fflop, sflop;
     size_t mem;
@@ -86,11 +163,26 @@ int main( int argc[], char *argv[])
     }
 
     cfg[0] = 1.; /*enable timer*/
+    /*pre-ordering (do only once)*/
     NicsLU_Analyze(solver, n, ax, ai, ap, MATRIX_COLUMN_REAL, NULL, NULL, NULL, NULL);
+
     /*create threads (do only once)*/
     NicsLU_CreateThreads(solver, 0); /*use all physical cores*/
-    /*factor(first-time)*/
-	NicsLU_Factorize(solver, ax, 0);
+    /*factor & solve (first-time)*/
+    int thres = atoi(argv[4]);
+	int loop_2 = atoi(argv[3]);
+	double t1, t2;
+	double t_fact = 0;
+    for ( i = 0; i < 1; i++ )
+    {
+        //for (j = 0; j < nnz; ++j) ax[j] *= (_double_t)rand() / RAND_MAX * 2.;
+		t1 = microtime();
+    	NicsLU_Factorize(solver, ax, thres); /*use all created threads*/
+		t2 = microtime() - t1;
+		t_fact += t2;
+		printf("FACT time: %lf\n", t2);
+    }
+	printf("Average time of FACT is: %lf\n", t_fact/loop_2);
 
     /* Get L/U structural information from NicSLU */
     lx = (_double_t *)malloc(sizeof(_double_t) * stat[9]);
@@ -113,13 +205,7 @@ int main( int argc[], char *argv[])
     for ( i = 0; i < lnz; i++ ) row_ptr_L[i] = ui[i];	// assignment: get ui from NicSLU
     for ( i = 0; i < unz; i++ ) row_ptr_U[i] = li[i];	// assignment: get li from NicSLU
 
-    int *sn_col_offset = (int *)malloc(sizeof(int) * n+1);
-    for ( i = 0; i < n+1; i++ )
-    {
-        sn_col_offset[i] = offset_L[i];
-    }
-
-    int *sn_record = (int *)malloc(sizeof(int) * n);	
+	int *sn_record = (int *)malloc(sizeof(int) * n);	
     memset(sn_record, 0, sizeof(int) * n);
 	int *sn_number = (int *)malloc(sizeof(int) * n);	
     memset(sn_number, -1, sizeof(int) * n);
@@ -129,17 +215,47 @@ int main( int argc[], char *argv[])
     memset(sn_column_start, 0, sizeof(int) * n);
     int *sn_column_end = (int *)malloc(sizeof(int) * n);
     memset(sn_column_end, 0, sizeof(int) * n);
-    int prior_column_c = n;
+	int *counter = (int *)malloc(sizeof(int) * 8);
+	memset(counter, 0, sizeof(int) * 8);
+	counter[7] = 0;
+	counter[6] = 7;
+	counter[5] = 13;
+	counter[4] = 18;
+	counter[3] = 22;
+	counter[2] = 25;
+	counter[1] = 27;
+	counter[0] = 0;
+	// int prior_column_c = atoi(argv[7]);
+	int prior_column_c = n;
 	int *asub_U_level = (int *)malloc(sizeof(int) * prior_column_c);
 	int *xa_trans = (int *)malloc(sizeof(int) * prior_column_c);
-    int num_thread;
-    if ( atoi(argv[2]) == 0 ) num_thread = 32;
+	int *flag = (int *)malloc(sizeof(int) * n);
+	int *row_ptr_U_after_double_column = (int *)malloc(sizeof(int) * n);
+	memset(flag, 0, sizeof(int) * n);
+	int num_thread;
+	if ( atoi(argv[2]) == 0 ) num_thread = 32;
 	else num_thread = atoi(argv[2]);
-    int gp_level, pri_level, sn_sum_final;
+	int gp_level, pri_level, sn_sum_final;
 	FLU_Detect_SuperNode(row_ptr_L, offset_L, sn_record, sn_number, sn_row_num, n, sn_column_start, sn_column_end, &sn_sum_final);
 	FLU_Dependency_Analysis(row_ptr_U, offset_U, asub_U_level, xa_trans, prior_column_c, num_thread, &gp_level, &pri_level);
 
-    char *fl = (char *)malloc(sizeof(char) * n);
+	int *sn_offset = (int *)malloc(sizeof(int) * sn_sum_final+1);
+	memset(sn_offset, 0, sizeof(int) * sn_sum_final+1);
+	int *sn_len = (int *)malloc(sizeof(int) * sn_sum_final);
+	
+	for ( i = 0; i < sn_sum_final; i++ )
+	{
+		sn_len[i] = 28 + sn_row_num[i] * 8;
+	}
+	for ( i = 0; i < sn_sum_final; i++ )
+	{
+		sn_offset[i+1] = sn_offset[i] + sn_len[i];
+	}
+	double *sn_value = (double *)malloc(sizeof(double) * sn_offset[sn_sum_final]); 
+	memset(sn_value, 0, sizeof(double) * sn_offset[sn_sum_final]);
+	printf("sn_offset[sn_sum_final] = %d\n", sn_offset[sn_sum_final]);
+
+	char *fl = (char *)malloc(sizeof(char) * n);
 	memset(fl, 0, sizeof(char) * n);
 	int sum_fl = 0;
 	int sum_sn_cols = 0;
@@ -205,139 +321,92 @@ int main( int argc[], char *argv[])
 		}
 		
 	}
+    // for ( )
 
-    printf("sn_sum_final = %d\n", sn_sum_final);
-    int *counter = (int *)malloc(sizeof(int) * 8);
-	counter[0] = 0;
-	counter[1] = 7;
-	counter[2] = 13;
-	counter[3] = 18;
-	counter[4] = 22;
-	counter[5] = 25;
-	counter[6] = 27;
-	counter[7] = 28;
-
-    // int pack_i;
-    int column_divid, sn_row;
-   /* for ( i = 0; i < n; i+=pack_i )
+    /* Run NicSLU code */
+	double time = 0;
+    int th2 = atoi(argv[2]);
+    // int loop2 = atoi(argv[3]);
+	int loop2 = atoi(argv[6]);
+    double ts_nic, te_nic;
+    for (j = 0; j < loop2; ++j) 
     {
-        if ( sn_number[i] >= 0 )
-        {
-            // printf("sn: %d\n", i);
-            column_divid = sn_row_num[sn_number[i]] % 16;
-            sn_row = sn_row_num[sn_number[i]];
-
-            // j = offset_L[i];
-            // row_ptr_L[j] = i+1;
-            // row_ptr_L[j+1] = i+2;
-            // row_ptr_L[j+2] = i+3;
-            // row_ptr_L[j+3] = i+4;
-            // row_ptr_L[j+4] = i+5;
-            // row_ptr_L[j+5] = i+6;
-            // row_ptr_L[j+6] = i+7;
-            // for ( j = offset_L[i]+7, k = offset_L[i+7]+1; j < offset_L[i]+7+column_divid, k < offset_L[i+7]+1+column_divid; j++, k++ )
-            // {
-            //     row_ptr_L[j] = row_ptr_L[k];
-            // }
-            // for ( j = offset_L[i]+28+column_divid*8, k = offset_L[i+7]+1+column_divid; j < offset_L[i]+28+column_divid*8+sn_row-column_divid, k < offset_L[i+7]+1+column_divid+sn_row-column_divid; j++, k++ )
-            // {
-            //     row_ptr_L[j] = row_ptr_L[k];
-            // }
-            offset_L[i+1] = offset_L[i] + 7 + column_divid;
-            offset_L[i+2] = offset_L[i+1] + 6 + column_divid;
-            offset_L[i+3] = offset_L[i+2] + 5 + column_divid;
-            offset_L[i+4] = offset_L[i+3] + 4 + column_divid;
-            offset_L[i+5] = offset_L[i+4] + 3 + column_divid;
-            offset_L[i+6] = offset_L[i+5] + 2 + column_divid;
-            offset_L[i+7] = offset_L[i+6] + 1 + column_divid;
-
-            pack_i = 8;
-        }
-        else
-        {
-            pack_i = 1;
-        }
-    }*/
-
-    int *sn_offset = (int *)malloc(sizeof(int) * sn_sum_final+1);
-    sn_offset[0] = 0;
-    int sn_lp;
-    for ( i = 0; i < sn_sum_final; i++ )
-    {
-        sn_lp = sn_row_num[i]*8 + 28;
-        sn_offset[i+1] = sn_offset[i] + sn_lp;
+        //for (i = 0; i < nnz; ++i) ax[i] *= (_double_t)rand() / RAND_MAX * 2.;
+        //for (i = 0; i < n; ++i) b[i] *= (_double_t)rand() / RAND_MAX * 2.;
+		ts_nic = microtime();
+        NicsLU_ReFactorize(solver, ax, th2);
+		te_nic = microtime() - ts_nic;
+        printf("Time of NicSLU is: %g\n", te_nic);
+        time += te_nic;
     }
-    double *sn_value = (double *)malloc(sizeof(double) * sn_offset[sn_sum_final]);
+	printf("Average time of NicSLU is: %lf\n", time/loop2);
 
-    // double *xx = (double *)_mm_malloc(sizeof(double) * n, 64);
-	double *L = (double *)_mm_malloc(sizeof(double) * lnz, 64);
-    double *LL = (double *)_mm_malloc(sizeof(double) * lnz, 64);
-	double *U = (double *)_mm_malloc(sizeof(double) * unz, 64);
- 
+    /* Run FLU code */
+	double *L, *U;
+	L = ( double * )_mm_malloc(sizeof(double) * lnz, 64);
+	U = ( double * )_mm_malloc(sizeof(double) * unz, 64);
 	for ( i = 0; i < n; i++ )
 	{
 		L[offset_L[i]] = 1.0;
-        // xx[i] = 0;
-        // LL[offset_L[i]] = 1.0;
 	}
     double** xx1 = malloc(sizeof(double*)* num_thread);
 	double** xx2 = malloc(sizeof(double*)* num_thread);
 	double** dv1 = malloc(sizeof(double*)* num_thread);
 	double** dv2 = malloc(sizeof(double*)* num_thread);
-    double** xx = malloc(sizeof(double*)* num_thread);
  #pragma omp parallel for
  for(int i=0; i<num_thread; i++){
     xx1[i] = ( double *)_mm_malloc(sizeof(double) * n, 64); 
 	memset(xx1[i], 0, sizeof(double) * n);
 	xx2[i] = ( double *)_mm_malloc(sizeof(double) * n, 64); 
 	memset(xx2[i], 0, sizeof(double) * n);  
-    xx[i] = ( double *)_mm_malloc(sizeof(double) * n, 64); 
-	memset(xx[i], 0, sizeof(double) * n);  
 	dv1[i] = ( double * )_mm_malloc(sizeof(double) * 4096, 64);
     memset(dv1[i], 0, sizeof(double) * 4096);
 	dv2[i] = ( double * )_mm_malloc(sizeof(double) * 4096, 64);
     memset(dv2[i], 0, sizeof(double) * 4096);
- }
-
-    double t1, t2;
-    double sum_t = 0;
-    int loop = atoi(argv[3]);
-
-    for (j = 0; j < 0; ++j) /*do 5 iterations*/
-    {
-	    t1 = microtime();
-	    NicsLU_ReFactorize(solver, ax, atoi(argv[2]));
-	    t2 = microtime() - t1;
-	    sum_t += t2;
-        printf("Time of NicSLU is: %lf\n", t2);
-    }
-    printf("Average Time of NicSLU is: %lf\n", sum_t/loop);
 	
-	// double *xx = ( double *)_mm_malloc(sizeof(double) * n, 64);
-	// memset(xx, 0, sizeof(double) * n);
-	// t1 = microtime();
-	// // gp(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, L, U, xx);
-	// t2 = microtime() - t1;
-	// printf("GP time is: %lf\n", t2);
+}
+	double t_s, t_e;    
+	int loop = atoi(argv[3]);
+    double sum_time = 0;	
 
-    char *tag = (char *)malloc(sizeof(char) * n);
-    int thresold = 4;
-    sum_t = 0;
+	printf("loop = %d\n", loop);
+	printf("Number of nonzeros in factors = %d\n", lnz+unz);
+	// int thresold = atoi(argv[3]);
+	int thresold = 4;
+	char *tag = (char *)malloc(sizeof(char) * n);
 
-    for ( i = 0; i < loop; i++ )
-    {
-        t1 = microtime();
-        memset(tag, 0, sizeof(char) * n);
-        lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, L, U, xx1, xx2, dv1, dv2, asub_U_level, ux, lx, tag, gp_level+1, 0, xa_trans, num_thread, sn_number, sn_column_start, sn_column_end, counter, sn_row_num, xx, LL, sn_value, sn_offset, sn_col_offset);
+	for ( i = 0; i < 1; i++ )
+	{
+		printf("max_level = %d xa_trans[max_level/2] = %d\n", gp_level, xa_trans[gp_level/2]);
+	} 
+// for ( i = 0; i < lnz; i++ ) printf("L[%d] = %lf\n", i, L[i]);
+    t_s = microtime();
+	memset(tag, 0, sizeof(char) * n);
+	// lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, L, U, xx1, xx2, dv1, dv2, asub_U_level, ux, lx, tag, gp_level+1, 0, xa_trans, num_thread, sn_number, sn_column_start, sn_column_end);
+	t_e = microtime() - t_s;
+	printf("Time of FLU is: %lf\n", t_e);
 
-        // lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next_double_computing(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, L, U, xx1, xx2, dv1, dv2, asub_U_level, ux, lx, tag, gp_level+1, xa_trans, num_thread, symbol, sum_fl, n_new);
-        t2 = microtime() - t1;
-        sum_t += t2;
-        printf("Time of FLU is: %lf\n", t2);
-    }
-    printf("Average Time of FLU is: %lf\n", sum_t/loop);
+	// for ( i = 0; i < lnz; i++ ) printf("L[%d] = %lf\n", i, L[i]);
+
+	for ( int jj = 0; jj < loop; jj++ )
+	{
+		t_s = microtime();
+
+		memset(tag, 0, sizeof(char) * n);
+
+		lu_gp_sparse_supernode_dense_column_computing_v5_multi_row_computing_prior_next_double_computing(ax, ai, ap, n, lnz, unz, row_perm_inv, col_perm, row_ptr_L, offset_L, row_ptr_U, offset_U, sn_record, thresold, L, U, xx1, xx2, dv1, dv2, asub_U_level, ux, lx, tag, gp_level+1, xa_trans, num_thread, symbol, sum_fl, n_new);
+
+		t_e = microtime() - t_s;
+		sum_time += t_e;
+		
+	    printf("Time of FLU is: %lf\n", t_e);
+	}
+
+	printf("Average Time of FLU is: %lf\n", sum_time/loop);
+	printf("nnz(factors): %.0lf\n", stat[8]);
 
 	NicsLU_Solve(solver, b, x);
+
 	int error_lu_gp = 0;
 	int error_nic = 0;
 
@@ -379,22 +448,24 @@ int main( int argc[], char *argv[])
 	for ( i = 0; i < n; i++ ) x_real[row_perm_inv[i]] = x_me[i];
 	for ( i = 0; i < n; i++ )
 	{
+		//   printf("nicslu[%d] = %lf me_x[%d] = %lf\n", i, x[i], i, x_real[i]);
 		if ( fabs(x[i]-x_real[i]) > 0.1 )
 		{
 			error_nic++;
+			// printf("nicslu[%d] = %lf me[%d] = %lf\n", i, x[i], i, x_real[i]);
 		}	
 	}
-    // printf("error of x results are: %d\n", error_nic);
+    printf("error of x results are: %d\n", error_nic);
 
  	/* compariosn of U */
     error_nic = 0;
 	for ( i = 0; i < unz; i++ )
 	{
-        // printf("nicslu_U[%d] = %lf me[%d] = %lf\n", i, lx[i], i, U[i]);
+	//   printf("nicslu_U[%d] = %lf me_U[%d] = %lf\n", i, lx[i], i, U[i]);
 	  if ( fabs(lx[i]-U[i]) > 0.1 )
 	  {
 		  error_nic++;
-        //   printf("nicslu_U[%d] = %lf me[%d] = %lf\n", i, lx[i], i, U[i]);
+		//   printf("nicslu_U[%d] = %lf me_U[%d] = %lf\n", i, lx[i], i, U[i]);
 	  }	
 	}
 	printf("error of U results are: %d\n", error_nic); 
@@ -403,12 +474,14 @@ int main( int argc[], char *argv[])
 	error_lu_gp = 0;
 	for ( i = 0; i < lnz; i++ )
 	{
+	//   printf("nicslu_L[%d] = %lf me_L[%d] = %lf\n", i, ux[i], i, L[i]);
 	  if ( fabs(ux[i]-L[i]) > 0.1 )
 	  {
 		  error_lu_gp++;
+		//   printf("nicslu[%d] = %lf me_L[%d] = %lf\n", i, ux[i], i, L[i]);
 	  }
 	}
-	// printf("error of L results are: %d\n", error_lu_gp); 
+	printf("error of L results are: %d\n", error_lu_gp); 
 
 EXIT:
     free(ax);
