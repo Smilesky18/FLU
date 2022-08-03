@@ -1,0 +1,224 @@
+***********../../circuit_dataset/ASIC_100k.mtx: row 99340, col 99340, nnz 954163
+n = 99340 sum_fl = 98583
+lnz= 1766947 unz = 1767014 nnz = 954163
+Scatter mode!
+Average Time of FLU in scatter is: 0.016927
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/ASIC_100ks.mtx: row 99190, col 99190, nnz 578890
+n = 99190 sum_fl = 98455
+lnz= 1455776 unz = 1455776 nnz = 578890
+Scatter mode!
+Average Time of FLU in scatter is: 0.013963
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/ASIC_320k.mtx: row 321821, col 321821, nnz 2635364
+n = 321821 sum_fl = 320983
+lnz= 2689315 unz = 2689386 nnz = 2635364
+Scatter mode!
+Average Time of FLU in scatter is: 0.029741
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/ASIC_680k.mtx: row 682862, col 682862, nnz 3871773
+n = 682862 sum_fl = 682067
+lnz= 3403432 unz = 3403505 nnz = 3871773
+Scatter mode!
+Average Time of FLU in scatter is: 0.039933
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/Freescale1.mtx: row 3428755, col 3428755, nnz 18920347
+n = 3428755 sum_fl = 3415419
+lnz= 28995337 unz = 28379117 nnz = 18920347
+Scatter mode!
+Average Time of FLU in scatter is: 0.371116
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/G2_circuit.mtx: row 150102, col 150102, nnz 438388
+n = 150102 sum_fl = 150098
+lnz= 1244866 unz = 1250588 nnz = 438388
+Scatter mode!
+Average Time of FLU in scatter is: 0.007038
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/G3_circuit.mtx: row 1585478, col 1585478, nnz 4623152
+n = 1585478 sum_fl = 1585478
+lnz= 16624328 unz = 17212065 nnz = 4623152
+Scatter mode!
+Average Time of FLU in scatter is: 0.124403
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/Hamrle2.mtx: row 5952, col 5952, nnz 22162
+n = 5952 sum_fl = 5952
+lnz= 29002 unz = 34463 nnz = 22162
+Scatter mode!
+Average Time of FLU in scatter is: 0.001499
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/Raj1.mtx: row 263743, col 263743, nnz 1302464
+n = 263743 sum_fl = 261710
+lnz= 3426265 unz = 3427271 nnz = 1302464
+Scatter mode!
+Average Time of FLU in scatter is: 0.025149
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/add32.mtx: row 4960, col 4960, nnz 23884
+n = 4960 sum_fl = 4960
+lnz= 14440 unz = 14440 nnz = 23884
+Scatter mode!
+Average Time of FLU in scatter is: 0.000281
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/bcircuit.mtx: row 68902, col 68902, nnz 375558
+n = 68902 sum_fl = 68899
+lnz= 502525 unz = 502525 nnz = 375558
+Scatter mode!
+Average Time of FLU in scatter is: 0.002355
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/circuit5M.mtx: row 5558326, col 5558326, nnz 59524291
+n = 5558326 sum_fl = 5554376
+lnz= 33717996 unz = 33717717 nnz = 59524291
+Scatter mode!
+Average Time of FLU in scatter is: 0.374936
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/circuit5M_dc.mtx: row 3523317, col 3523317, nnz 19194193
+n = 3523317 sum_fl = 3508412
+lnz= 31208405 unz = 30594107 nnz = 19194193
+Scatter mode!
+Average Time of FLU in scatter is: 0.376590
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/circuit_2.mtx: row 4510, col 4510, nnz 21199
+n = 4510 sum_fl = 4509
+lnz= 16988 unz = 20223 nnz = 21199
+Scatter mode!
+Average Time of FLU in scatter is: 0.000449
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/dc2.mtx: row 116835, col 116835, nnz 766396
+n = 116835 sum_fl = 116682
+lnz= 598320 unz = 598736 nnz = 766396
+Scatter mode!
+Average Time of FLU in scatter is: 0.005558
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/mult_dcop_01.mtx: row 25187, col 25187, nnz 193276
+n = 25187 sum_fl = 25179
+lnz= 1051965 unz = 628779 nnz = 193276
+Scatter mode!
+Average Time of FLU in scatter is: 0.004149
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/mult_dcop_02.mtx: row 25187, col 25187, nnz 193276
+n = 25187 sum_fl = 25187
+lnz= 507647 unz = 889746 nnz = 193276
+Scatter mode!
+Average Time of FLU in scatter is: 0.002426
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/mult_dcop_03.mtx: row 25187, col 25187, nnz 193216
+n = 25187 sum_fl = 25187
+lnz= 384555 unz = 493752 nnz = 193216
+Scatter mode!
+Average Time of FLU in scatter is: 0.002086
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/onetone1.mtx: row 36057, col 36057, nnz 341088
+n = 36057 sum_fl = 35323
+lnz= 1381376 unz = 1707445 nnz = 341088
+Scatter mode!
+Average Time of FLU in scatter is: 0.017038
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/onetone2.mtx: row 36057, col 36057, nnz 227628
+n = 36057 sum_fl = 35605
+lnz= 643115 unz = 720283 nnz = 227628
+Scatter mode!
+Average Time of FLU in scatter is: 0.007232
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/rajat13.mtx: row 7598, col 7598, nnz 48922
+n = 7598 sum_fl = 7598
+lnz= 32758 unz = 32823 nnz = 48922
+Scatter mode!
+Average Time of FLU in scatter is: 0.000375
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/rajat16.mtx: row 94294, col 94294, nnz 641159
+n = 94294 sum_fl = 93832
+lnz= 1062710 unz = 1068979 nnz = 641159
+Scatter mode!
+Average Time of FLU in scatter is: 0.010186
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/rajat17.mtx: row 94294, col 94294, nnz 641159
+n = 94294 sum_fl = 93832
+lnz= 1062618 unz = 1068920 nnz = 641159
+Scatter mode!
+Average Time of FLU in scatter is: 0.010072
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/rajat18.mtx: row 94294, col 94294, nnz 485143
+n = 94294 sum_fl = 94294
+lnz= 331998 unz = 445575 nnz = 485143
+Scatter mode!
+Average Time of FLU in scatter is: 0.002669
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/rajat20.mtx: row 86916, col 86916, nnz 605045
+n = 86916 sum_fl = 86503
+lnz= 1022591 unz = 980853 nnz = 605045
+Scatter mode!
+Average Time of FLU in scatter is: 0.010751
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/rajat21.mtx: row 411676, col 411676, nnz 1893370
+n = 411676 sum_fl = 411676
+lnz= 1224313 unz = 1630570 nnz = 1893370
+Scatter mode!
+Average Time of FLU in scatter is: 0.017541
+error of U results are: 2
+error of L results are: 6
+***********../../circuit_dataset/rajat24.mtx: row 358172, col 358172, nnz 1948235
+n = 358172 sum_fl = 357700
+lnz= 2098655 unz = 2099314 nnz = 1948235
+Scatter mode!
+Average Time of FLU in scatter is: 0.023260
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/rajat25.mtx: row 87190, col 87190, nnz 607235
+n = 87190 sum_fl = 86773
+lnz= 1033778 unz = 992038 nnz = 607235
+Scatter mode!
+Average Time of FLU in scatter is: 0.010734
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/rajat27.mtx: row 20640, col 20640, nnz 99777
+n = 20640 sum_fl = 20639
+lnz= 80853 unz = 83848 nnz = 99777
+Scatter mode!
+Average Time of FLU in scatter is: 0.000600
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/rajat28.mtx: row 87190, col 87190, nnz 607235
+n = 87190 sum_fl = 86754
+lnz= 1096877 unz = 1011923 nnz = 607235
+Scatter mode!
+Average Time of FLU in scatter is: 0.010989
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/trans5.mtx: row 116835, col 116835, nnz 766396
+n = 116835 sum_fl = 116682
+lnz= 598320 unz = 598736 nnz = 766396
+Scatter mode!
+Average Time of FLU in scatter is: 0.005697
+error of U results are: 0
+error of L results are: 0
+***********../../circuit_dataset/transient.mtx: row 178866, col 178866, nnz 961790
+n = 178866 sum_fl = 178508
+lnz= 1037633 unz = 1037368 nnz = 961790
+Scatter mode!
+Average Time of FLU in scatter is: 0.011002
+error of U results are: 0
+error of L results are: 0

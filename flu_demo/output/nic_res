@@ -1,0 +1,352 @@
+******************************Matrix ../../circuit_dataset/ASIC_100k.mtx: row 99340, col 99340, nnz 954163
+best ordering method: AMO3
+Estimated number of nonzeros in L + U - I = 3434621
+Runtime of factorization = 0.326108
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 258.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0271471
+nnz(factors): 3434621
+nnz of LU = 3533961
+******************************Matrix ../../circuit_dataset/ASIC_100ks.mtx: row 99190, col 99190, nnz 578890
+best ordering method: AMO3
+Estimated number of nonzeros in L + U - I = 2812362
+Runtime of factorization = 0.259496
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 245.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0211438
+nnz(factors): 2812362
+nnz of LU = 2911552
+******************************Matrix ../../circuit_dataset/ASIC_320k.mtx: row 321821, col 321821, nnz 2635364
+best ordering method: AMO1
+Estimated number of nonzeros in L + U - I = 5056880
+Runtime of factorization = 0.681151
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 196.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0495402
+nnz(factors): 5056880
+nnz of LU = 5378701
+******************************Matrix ../../circuit_dataset/ASIC_680k.mtx: row 682862, col 682862, nnz 3871773
+best ordering method: AMM
+Estimated number of nonzeros in L + U - I = 6124075
+Runtime of factorization = 1.613696
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 197.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0633261
+nnz(factors): 6124075
+nnz of LU = 6806937
+******************************Matrix ../../circuit_dataset/Freescale1.mtx: row 3428755, col 3428755, nnz 18920347
+best ordering method: AMO2
+Estimated number of nonzeros in L + U - I = 53945699
+Runtime of factorization = 5.792720
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 2649.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.432177
+nnz(factors): 53945699
+nnz of LU = 57374454
+******************************Matrix ../../circuit_dataset/G2_circuit.mtx: row 150102, col 150102, nnz 438388
+best ordering method: AMO3
+Estimated number of nonzeros in L + U - I = 2345352
+Runtime of factorization = 0.110328
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0101151
+nnz(factors): 2345352
+nnz of LU = 2495454
+******************************Matrix ../../circuit_dataset/G3_circuit.mtx: row 1585478, col 1585478, nnz 4623152
+best ordering method: AMO2
+Estimated number of nonzeros in L + U - I = 32250915
+Runtime of factorization = 2.086682
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.135623
+nnz(factors): 32250915
+nnz of LU = 33836393
+******************************Matrix ../../circuit_dataset/Hamrle2.mtx: row 5952, col 5952, nnz 22162
+best ordering method: AMO3
+Estimated number of nonzeros in L + U - I = 56793
+Runtime of factorization = 0.002468
+Number of off-diagonal pivots = 21
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.00178325
+nnz(factors): 57513
+nnz of LU = 63465
+******************************Matrix ../../circuit_dataset/Raj1.mtx: row 263743, col 263743, nnz 1302464
+best ordering method: AMM
+Estimated number of nonzeros in L + U - I = 6589670
+Runtime of factorization = 0.570780
+Number of off-diagonal pivots = 3
+sn of NICSLU is: 395.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0312702
+nnz(factors): 6589793
+nnz of LU = 6853536
+******************************Matrix ../../circuit_dataset/add32.mtx: row 4960, col 4960, nnz 23884
+best ordering method: AMO3
+Estimated number of nonzeros in L + U - I = 23920
+Runtime of factorization = 0.001278
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.000166821
+nnz(factors): 23920
+nnz of LU = 28880
+******************************Matrix ../../circuit_dataset/bcircuit.mtx: row 68902, col 68902, nnz 375558
+best ordering method: AMO1
+Estimated number of nonzeros in L + U - I = 936148
+Runtime of factorization = 0.029157
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.00314824
+nnz(factors): 936148
+nnz of LU = 1005050
+******************************Matrix ../../circuit_dataset/circuit5M.mtx: row 5558326, col 5558326, nnz 59524291
+best ordering method: AMO2
+Estimated number of nonzeros in L + U - I = 61877387
+Runtime of factorization = 1.642988
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.352422
+nnz(factors): 61877387
+nnz of LU = 67435713
+******************************Matrix ../../circuit_dataset/circuit5M_dc.mtx: row 3523317, col 3523317, nnz 19194193
+best ordering method: AMO1
+Estimated number of nonzeros in L + U - I = 58279195
+Runtime of factorization = 6.184324
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 2984.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.45689
+nnz(factors): 58279195
+nnz of LU = 61802512
+******************************Matrix ../../circuit_dataset/circuit_2.mtx: row 4510, col 4510, nnz 21199
+best ordering method: AMD
+Estimated number of nonzeros in L + U - I = 32701
+Runtime of factorization = 0.002044
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.00058089
+nnz(factors): 32701
+nnz of LU = 37211
+******************************Matrix ../../circuit_dataset/dc2.mtx: row 116835, col 116835, nnz 766396
+best ordering method: AMO2
+Estimated number of nonzeros in L + U - I = 1080221
+Runtime of factorization = 0.035315
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.00847055
+nnz(factors): 1080221
+nnz of LU = 1197056
+******************************Matrix ../../circuit_dataset/mult_dcop_01.mtx: row 25187, col 25187, nnz 193276
+best ordering method: AMO2
+Estimated number of nonzeros in L + U - I = 363539
+Runtime of factorization = 0.067801
+Number of off-diagonal pivots = 221
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0108102
+nnz(factors): 1655557
+nnz of LU = 1680744
+******************************Matrix ../../circuit_dataset/mult_dcop_02.mtx: row 25187, col 25187, nnz 193276
+best ordering method: AMO2
+Estimated number of nonzeros in L + U - I = 363534
+Runtime of factorization = 0.054250
+Number of off-diagonal pivots = 261
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.00854557
+nnz(factors): 1372206
+nnz of LU = 1397393
+******************************Matrix ../../circuit_dataset/mult_dcop_03.mtx: row 25187, col 25187, nnz 193216
+best ordering method: AMO2
+Estimated number of nonzeros in L + U - I = 358323
+Runtime of factorization = 0.043424
+Number of off-diagonal pivots = 2420
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.00660086
+nnz(factors): 853120
+nnz of LU = 878307
+******************************Matrix ../../circuit_dataset/onetone1.mtx: row 36057, col 36057, nnz 341088
+best ordering method: AMM
+Estimated number of nonzeros in L + U - I = 3051112
+Runtime of factorization = 0.187353
+Number of off-diagonal pivots = 229
+sn of NICSLU is: 608.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0272476
+nnz(factors): 3052764
+nnz of LU = 3088821
+******************************Matrix ../../circuit_dataset/onetone2.mtx: row 36057, col 36057, nnz 227628
+best ordering method: AMO2
+Estimated number of nonzeros in L + U - I = 1314278
+Runtime of factorization = 0.098827
+Number of off-diagonal pivots = 219
+sn of NICSLU is: 207.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.011004
+nnz(factors): 1327341
+nnz of LU = 1363398
+******************************Matrix ../../circuit_dataset/rajat13.mtx: row 7598, col 7598, nnz 48922
+best ordering method: AMD
+Estimated number of nonzeros in L + U - I = 57961
+Runtime of factorization = 0.001658
+Number of off-diagonal pivots = 3
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.000547478
+nnz(factors): 57983
+nnz of LU = 65581
+******************************Matrix ../../circuit_dataset/rajat16.mtx: row 94294, col 94294, nnz 641159
+best ordering method: AMM
+Estimated number of nonzeros in L + U - I = 2037397
+Runtime of factorization = 0.203811
+Number of off-diagonal pivots = 5
+sn of NICSLU is: 166.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.016676
+nnz(factors): 2037395
+nnz of LU = 2131689
+******************************Matrix ../../circuit_dataset/rajat17.mtx: row 94294, col 94294, nnz 641159
+best ordering method: AMM
+Estimated number of nonzeros in L + U - I = 2037433
+Runtime of factorization = 0.206051
+Number of off-diagonal pivots = 23
+sn of NICSLU is: 166.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0170351
+nnz(factors): 2037244
+nnz of LU = 2131538
+******************************Matrix ../../circuit_dataset/rajat18.mtx: row 94294, col 94294, nnz 485143
+best ordering method: AMO1
+Estimated number of nonzeros in L + U - I = 683272
+Runtime of factorization = 0.025337
+Number of off-diagonal pivots = 22
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.00405292
+nnz(factors): 683279
+nnz of LU = 777573
+******************************Matrix ../../circuit_dataset/rajat20.mtx: row 86916, col 86916, nnz 605045
+best ordering method: AMM
+Estimated number of nonzeros in L + U - I = 1852671
+Runtime of factorization = 0.189937
+Number of off-diagonal pivots = 13
+sn of NICSLU is: 167.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0173631
+nnz(factors): 1916528
+nnz of LU = 2003444
+******************************Matrix ../../circuit_dataset/rajat21.mtx: row 411676, col 411676, nnz 1893370
+best ordering method: AMO1
+Estimated number of nonzeros in L + U - I = 2443245
+Runtime of factorization = 0.085764
+Number of off-diagonal pivots = 30
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0238003
+nnz(factors): 2443207
+nnz of LU = 2854883
+******************************Matrix ../../circuit_dataset/rajat24.mtx: row 358172, col 358172, nnz 1948235
+best ordering method: AMO1
+Estimated number of nonzeros in L + U - I = 3748680
+Runtime of factorization = 0.542356
+Number of off-diagonal pivots = 13
+sn of NICSLU is: 150.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0331392
+nnz(factors): 3839797
+nnz of LU = 4197969
+******************************Matrix ../../circuit_dataset/rajat25.mtx: row 87190, col 87190, nnz 607235
+best ordering method: AMM
+Estimated number of nonzeros in L + U - I = 1874771
+Runtime of factorization = 0.197453
+Number of off-diagonal pivots = 11
+sn of NICSLU is: 168.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0173736
+nnz(factors): 1938626
+nnz of LU = 2025816
+******************************Matrix ../../circuit_dataset/rajat27.mtx: row 20640, col 20640, nnz 99777
+best ordering method: AMD
+Estimated number of nonzeros in L + U - I = 143424
+Runtime of factorization = 0.004508
+Number of off-diagonal pivots = 24
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.00076334
+nnz(factors): 144061
+nnz of LU = 164701
+******************************Matrix ../../circuit_dataset/rajat28.mtx: row 87190, col 87190, nnz 607235
+best ordering method: AMM
+Estimated number of nonzeros in L + U - I = 1888447
+Runtime of factorization = 0.200289
+Number of off-diagonal pivots = 35
+sn of NICSLU is: 159.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.0170468
+nnz(factors): 2021610
+nnz of LU = 2108800
+******************************Matrix ../../circuit_dataset/trans5.mtx: row 116835, col 116835, nnz 766396
+best ordering method: AMO2
+Estimated number of nonzeros in L + U - I = 1080221
+Runtime of factorization = 0.035798
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 0.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.00815136
+nnz(factors): 1080221
+nnz of LU = 1197056
+******************************Matrix ../../circuit_dataset/transient.mtx: row 178866, col 178866, nnz 961790
+best ordering method: AMM
+Estimated number of nonzeros in L + U - I = 1896135
+Runtime of factorization = 0.273754
+Number of off-diagonal pivots = 0
+sn of NICSLU is: 70.000000
+sn has least 80.000000 columns
+th = 0 loop = 100
+Average time of refact is: 0.018827
+nnz(factors): 1896135
+nnz of LU = 2075001
